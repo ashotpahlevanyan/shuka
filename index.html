@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shuka — Armenian goods, one market to the world</title>
+<meta name="description" content="Shuka turns hundreds of fragmented Armenian producers into one trustworthy supply source, so EU and US buyers come to them — one requirement, many suppliers, one consolidated, compliant, escrow-protected container.">
+<meta name="theme-color" content="#A32138">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Shuka — Armenian goods, one market to the world">
+<meta property="og:description" content="Russia is closing to Armenian producers. Shuka is the re-routing rail to the EU and US: one supply pool, demand-led, consolidated and escrow-protected.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Shuka — Armenian goods, one market to the world">
+<meta name="twitter:description" content="One market for Armenian goods, reaching the EU and US.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%87%3C/text%3E%3C/svg%3E">
+<style>
+  html,body{margin:0;padding:0}
+  img{max-width:100%;height:auto}
+  button{font-family:inherit}
+  :root{
+    --ground:#F6EDE6;--surface:#FFFFFF;--surface-2:#FBF3ED;--ink:#2B1B1E;--ink-soft:#7A645C;
+    --line:#E7D8CE;--pom:#A32138;--pom-deep:#7C1A2E;--on-pom:#FEF6F2;--apricot:#E0862A;
+    --apricot-ink:#2B1B1E;--wine:#5E2233;--herb:#4E7A5B;--on-herb:#F4FAF5;
+    --shadow:0 1px 2px rgba(43,27,30,.06),0 8px 28px rgba(124,26,46,.07);
+    --shadow-lg:0 20px 60px rgba(124,26,46,.16);
+    --serif:"Hoefler Text","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono:"SF Mono",ui-monospace,"Cascadia Code",Menlo,monospace;
+    --maxw:1160px;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --ground:#181012;--surface:#241A1C;--surface-2:#2C2023;--ink:#F2E6DF;--ink-soft:#B49C93;
+    --line:#3A2A2D;--pom:#C8506A;--pom-deep:#A33350;--on-pom:#1A1012;--apricot:#EBA24A;
+    --apricot-ink:#1A1012;--wine:#B36A7E;--herb:#78A585;--on-herb:#12201A;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);--shadow-lg:0 24px 70px rgba(0,0,0,.5);}}
+  :root[data-theme="light"]{--ground:#F6EDE6;--surface:#FFFFFF;--surface-2:#FBF3ED;--ink:#2B1B1E;
+    --ink-soft:#7A645C;--line:#E7D8CE;--pom:#A32138;--pom-deep:#7C1A2E;--on-pom:#FEF6F2;
+    --apricot:#E0862A;--apricot-ink:#2B1B1E;--wine:#5E2233;--herb:#4E7A5B;--on-herb:#F4FAF5;}
+  :root[data-theme="dark"]{--ground:#181012;--surface:#241A1C;--surface-2:#2C2023;--ink:#F2E6DF;
+    --ink-soft:#B49C93;--line:#3A2A2D;--pom:#C8506A;--pom-deep:#A33350;--on-pom:#1A1012;
+    --apricot:#EBA24A;--apricot-ink:#1A1012;--wine:#B36A7E;--herb:#78A585;--on-herb:#12201A;}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);line-height:1.6;
+    -webkit-font-smoothing:antialiased;}
+  a{color:inherit}
+  .container{max-width:var(--maxw);margin:0 auto;padding:0 clamp(16px,4vw,32px);}
+  section{padding:clamp(48px,7vw,88px) 0;}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--pom);margin:0 0 14px;font-weight:600;}
+  h2.sh{font-family:var(--serif);font-weight:600;font-size:clamp(26px,4vw,40px);line-height:1.08;
+    letter-spacing:-.01em;margin:0 0 14px;text-wrap:balance;}
+  p.si{max-width:64ch;color:var(--ink-soft);font-size:clamp(15px,1.7vw,17.5px);margin:0;}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--ground) 86%,transparent);
+    backdrop-filter:blur(12px);border-bottom:1px solid var(--line);}
+  .navin{display:flex;align-items:center;gap:20px;height:60px;}
+  .logo{font-family:var(--serif);font-weight:600;font-size:21px;letter-spacing:-.01em;display:flex;align-items:center;gap:8px;}
+  .logo .seed{width:15px;height:19px;background:var(--pom);border-radius:50% 50% 50% 50%/60% 60% 40% 40%;
+    transform:rotate(-8deg);display:inline-block;}
+  .navlinks{display:flex;gap:22px;margin-left:14px;font-size:14px;font-weight:500;}
+  .navlinks a{color:var(--ink-soft);text-decoration:none;transition:color .15s;}
+  .navlinks a:hover{color:var(--pom);}
+  .navcta{margin-left:auto;}
+  .btn{display:inline-flex;align-items:center;gap:7px;font-family:var(--sans);font-weight:600;font-size:14px;
+    border-radius:10px;padding:10px 18px;cursor:pointer;border:1px solid transparent;text-decoration:none;
+    transition:transform .12s,background .15s,border-color .15s;white-space:nowrap;}
+  .btn-p{background:var(--pom);color:var(--on-pom);} .btn-p:hover{transform:translateY(-1px);background:var(--pom-deep);}
+  .btn-o{background:transparent;color:var(--ink);border-color:var(--line);} .btn-o:hover{border-color:var(--pom);color:var(--pom);}
+  .btn-g{background:var(--surface);color:var(--ink);border-color:var(--line);box-shadow:var(--shadow);} .btn-g:hover{transform:translateY(-1px);}
+  @media (max-width:760px){.navlinks{display:none;}}
+
+  /* hero */
+  .hero{padding-top:clamp(40px,6vw,72px);position:relative;overflow:hidden;}
+  .hero .container{position:relative;z-index:2;}
+  .hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(34px,6.2vw,64px);line-height:1.02;
+    letter-spacing:-.02em;margin:0 0 20px;max-width:16ch;text-wrap:balance;}
+  .hero h1 em{font-style:italic;color:var(--pom);}
+  .hero .sub{font-size:clamp(16px,2vw,20px);color:var(--ink-soft);max-width:62ch;margin:0 0 28px;}
+  .heroctas{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:36px;}
+  .flowstrip{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:14px 18px;background:var(--surface);
+    border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);max-width:640px;}
+  .fnode{font-weight:600;font-size:13.5px;display:flex;align-items:center;gap:7px;}
+  .fnode .fe{font-size:17px;}
+  .frail{flex:1;min-width:44px;height:22px;overflow:hidden;position:relative;border-radius:6px;
+    background:color-mix(in srgb,var(--pom) 8%,var(--surface));}
+  .frail .cv{position:absolute;inset:0;display:flex;align-items:center;color:var(--pom);font-weight:800;
+    font-size:15px;white-space:nowrap;will-change:transform;animation:slideR 8s linear infinite;}
+  @keyframes slideR{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+  .fnode.hub{color:var(--pom);}
+
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);
+    border-radius:14px;overflow:hidden;margin-top:40px;}
+  @media (max-width:680px){.stats{grid-template-columns:repeat(2,1fr);}}
+  .stat{background:var(--surface);padding:20px 18px;}
+  .stat .sv{font-family:var(--serif);font-size:clamp(24px,3.4vw,32px);font-weight:600;line-height:1;color:var(--pom);}
+  .stat .sl{font-size:12.5px;color:var(--ink-soft);margin-top:7px;}
+
+  /* why now */
+  .shift-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;align-items:center;margin-top:12px;}
+  @media (max-width:820px){.shift-grid{grid-template-columns:1fr;}}
+  .shift-card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:var(--shadow);}
+  .beforeafter{display:flex;flex-direction:column;gap:12px;}
+  .ba{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:12px;}
+  .ba.old{background:color-mix(in srgb,var(--wine) 9%,var(--surface));}
+  .ba.new{background:color-mix(in srgb,var(--herb) 12%,var(--surface));}
+  .ba .bt{font-family:var(--mono);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+    padding:4px 9px;border-radius:20px;flex:none;}
+  .ba.old .bt{background:var(--wine);color:#fff;} .ba.new .bt{background:var(--herb);color:var(--on-herb);}
+  .ba .bx{font-size:14px;} .ba .bx b{color:var(--ink);}
+
+  /* model - three principles */
+  .principles{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:34px;}
+  @media (max-width:820px){.principles{grid-template-columns:1fr;}}
+  .principle{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:var(--shadow);}
+  .principle .pn{font-family:var(--mono);font-size:13px;color:var(--pom);font-weight:700;}
+  .principle h3{font-family:var(--serif);font-size:20px;font-weight:600;margin:10px 0 8px;}
+  .principle p{margin:0;font-size:14px;color:var(--ink-soft);}
+
+  /* how it works */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:32px;}
+  @media (max-width:820px){.steps{grid-template-columns:1fr;}}
+  .step{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;box-shadow:var(--shadow);
+    display:flex;gap:14px;align-items:flex-start;}
+  .step .snum{flex:none;width:32px;height:32px;border-radius:50%;background:var(--pom);color:var(--on-pom);
+    font-family:var(--mono);font-weight:700;display:grid;place-items:center;font-size:14px;}
+  .step h4{margin:0 0 3px;font-size:15px;font-weight:600;} .step p{margin:0;font-size:13px;color:var(--ink-soft);}
+  .steplink{margin-top:20px;}
+
+  /* audiences */
+  .audsec{background:var(--surface-2);}
+  .tabs{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px;gap:3px;
+    margin:24px 0 28px;box-shadow:var(--shadow);flex-wrap:wrap;}
+  .tabs button{font-family:var(--sans);font-size:14.5px;font-weight:600;color:var(--ink-soft);background:transparent;
+    border:0;border-radius:9px;padding:10px 20px;cursor:pointer;transition:.15s;}
+  .tabs button.on{background:var(--pom);color:var(--on-pom);}
+  .tabs button:focus-visible{outline:2px solid var(--pom);outline-offset:2px;}
+  .audpanel{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow-lg);
+    overflow:hidden;}
+  .audhead{padding:28px clamp(20px,3vw,34px) 6px;}
+  .audhead .at{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--pom);font-weight:700;}
+  .audhead h3{font-family:var(--serif);font-size:clamp(22px,3vw,30px);font-weight:600;margin:10px 0 10px;text-wrap:balance;}
+  .audhead p{margin:0;color:var(--ink-soft);font-size:15.5px;max-width:70ch;}
+  .audpoints{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:var(--line);margin:24px 0 0;border-top:1px solid var(--line);}
+  @media (max-width:720px){.audpoints{grid-template-columns:1fr;}}
+  .apoint{background:var(--surface);padding:20px clamp(20px,3vw,34px);}
+  .apoint .ai{font-size:20px;} .apoint h5{margin:8px 0 5px;font-size:15px;font-weight:600;}
+  .apoint p{margin:0;font-size:13.5px;color:var(--ink-soft);}
+  .audfoot{padding:22px clamp(20px,3vw,34px);display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;}
+  .audfoot .afn{font-size:13px;color:var(--ink-soft);}
+
+  /* platform tools */
+  .tools{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px;}
+  @media (max-width:900px){.tools{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:560px){.tools{grid-template-columns:1fr;}}
+  .tool{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:var(--shadow);
+    display:flex;flex-direction:column;text-decoration:none;transition:transform .14s,border-color .15s,box-shadow .15s;}
+  .tool:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--pom) 35%,var(--line));box-shadow:var(--shadow-lg);}
+  .tool .te{font-size:26px;margin-bottom:12px;} .tool h4{font-family:var(--serif);font-size:18px;font-weight:600;margin:0 0 6px;}
+  .tool p{margin:0 0 16px;font-size:13.5px;color:var(--ink-soft);flex:1;}
+  .tool .open{font-size:13px;font-weight:700;color:var(--pom);}
+
+  /* business model */
+  .revs{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:30px;}
+  @media (max-width:900px){.revs{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:520px){.revs{grid-template-columns:1fr;}}
+  .rev{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow);}
+  .rev .rn{font-family:var(--mono);font-size:11px;color:var(--apricot);font-weight:700;}
+  .rev h4{margin:8px 0 5px;font-size:15px;font-weight:600;} .rev p{margin:0;font-size:12.5px;color:var(--ink-soft);}
+  .econ{margin-top:22px;background:color-mix(in srgb,var(--apricot) 8%,var(--surface));border:1px solid color-mix(in srgb,var(--apricot) 35%,var(--line));
+    border-radius:14px;padding:18px 20px;font-size:14px;color:var(--ink);}
+  .econ b{color:var(--pom);}
+
+  /* faq */
+  .faq{margin-top:28px;border-top:1px solid var(--line);}
+  .qa{border-bottom:1px solid var(--line);}
+  .qa button{width:100%;text-align:left;background:transparent;border:0;padding:18px 4px;cursor:pointer;
+    font-family:var(--sans);font-size:16px;font-weight:600;color:var(--ink);display:flex;justify-content:space-between;gap:16px;align-items:center;}
+  .qa button:focus-visible{outline:2px solid var(--pom);outline-offset:2px;}
+  .qa .qi{flex:none;color:var(--pom);font-size:20px;transition:transform .2s;}
+  .qa.open .qi{transform:rotate(45deg);}
+  .qa .ans{max-height:0;overflow:hidden;transition:max-height .28s ease;}
+  .qa .ans p{margin:0 4px 18px;color:var(--ink-soft);font-size:14.5px;max-width:74ch;}
+
+  /* final cta */
+  .final{background:linear-gradient(135deg,var(--pom-deep),var(--pom));color:var(--on-pom);border-radius:22px;
+    padding:clamp(32px,5vw,56px);text-align:center;box-shadow:var(--shadow-lg);}
+  .final h2{font-family:var(--serif);font-size:clamp(26px,4vw,40px);font-weight:600;margin:0 0 12px;color:var(--on-pom);text-wrap:balance;}
+  .final p{margin:0 auto 26px;max-width:56ch;color:color-mix(in srgb,var(--on-pom) 82%,var(--pom));font-size:16px;}
+  .final .fbtns{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;}
+  .final .btn-w{background:var(--on-pom);color:var(--pom-deep);} .final .btn-w:hover{transform:translateY(-1px);}
+  .final .btn-t{background:transparent;color:var(--on-pom);border-color:color-mix(in srgb,var(--on-pom) 45%,transparent);}
+
+  footer.foot{border-top:1px solid var(--line);padding:36px 0;}
+  .footin{display:flex;flex-wrap:wrap;gap:18px;justify-content:space-between;align-items:center;}
+  .foot .fl{font-size:13px;color:var(--ink-soft);max-width:52ch;}
+  .disclaim{margin-top:22px;font-size:11.5px;color:var(--ink-soft);opacity:.85;max-width:78ch;}
+
+  /* consolidation viz */
+  .vizcard{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);
+    padding:clamp(14px,3vw,26px);margin-top:26px;}
+  .pack-svgwrap{width:100%;overflow-x:auto;}
+  .pack-svgwrap svg{width:100%;height:auto;display:block;min-width:560px;}
+  .controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-top:16px;}
+  .cmetrics{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:13px;color:var(--ink-soft);}
+  .cmetrics b{font-family:var(--mono);color:var(--ink);font-size:15px;}
+  .pallet{transition:opacity .25s ease,transform .3s cubic-bezier(.2,.8,.3,1.2);transform-origin:center bottom;cursor:pointer;}
+  .pallet.hidden{opacity:0;transform:scaleY(0);}
+  #c-boxes.dim .pallet:not(.hot){opacity:.22;}
+  .lgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:18px;}
+  @media (max-width:680px){.lgrid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:440px){.lgrid{grid-template-columns:1fr;}}
+  .lgitem{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid var(--line);border-radius:11px;
+    background:var(--surface-2);cursor:pointer;transition:border-color .15s,background .15s;text-align:left;font-family:inherit;}
+  .lgitem:hover{border-color:var(--pom);} .lgitem.on{border-color:var(--pom);background:color-mix(in srgb,var(--pom) 8%,var(--surface));}
+  .lgitem:focus-visible{outline:2px solid var(--pom);outline-offset:2px;}
+  .lgitem .sw{width:16px;height:16px;border-radius:4px;flex:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15);}
+  .lgitem .ln{font-weight:600;font-size:13.5px;} .lgitem .lc{font-size:11.5px;color:var(--ink-soft);}
+  .lgitem .lct{margin-left:auto;font-family:var(--mono);font-size:12px;font-weight:700;color:var(--ink);}
+
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease;}
+  .reveal.in{opacity:1;transform:none;}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none;}
+    .frail .cv{animation:none;}*{scroll-behavior:auto;}}
+
+  /* theme toggle */
+  #themebtn{width:40px;padding:10px 0;justify-content:center;font-size:16px;line-height:1;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container navin">
+    <span class="logo"><span class="seed"></span>Shuka</span>
+    <div class="navlinks">
+      <a href="#why">Why now</a><a href="#model">Model</a><a href="#how">How it works</a>
+      <a href="#consolidation">Container</a><a href="#audiences">For you</a><a href="#platform">Platform</a><a href="#faq">FAQ</a>
+    </div>
+    <div class="navcta" style="display:flex;gap:10px;align-items:center">
+      <button id="themebtn" class="btn btn-o" aria-label="Toggle light or dark theme" title="Toggle theme">☾</button>
+      <a href="#final" class="btn btn-p">Get started</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <p class="eyebrow reveal">Armenian goods · EU · US · one market</p>
+    <h1 class="reveal">Armenian goods, <em>one market</em> to the world.</h1>
+    <p class="sub reveal">Russia is closing to Armenian producers. Shuka turns hundreds of fragmented growers,
+      winemakers and makers into a single, trustworthy supply source — so EU and US buyers come to them.
+      One requirement, many suppliers, one consolidated, compliant, escrow-protected container.</p>
+    <div class="heroctas reveal">
+      <a href="#audiences" class="btn btn-p">I'm a buyer</a>
+      <a href="#audiences" class="btn btn-o">I'm a producer</a>
+      <a href="#audiences" class="btn btn-o">I'm an investor</a>
+    </div>
+    <div class="flowstrip reveal">
+      <span class="fnode"><span class="fe">🇦🇲</span> Producers</span>
+      <span class="frail"><span class="cv">›&nbsp;›&nbsp;›&nbsp;›&nbsp;›&nbsp;›&nbsp;›&nbsp;›&nbsp;›&nbsp;›&nbsp;›&nbsp;›&nbsp;</span></span>
+      <span class="fnode hub"><span class="fe">◈</span> Shuka hub</span>
+      <span class="frail"><span class="cv">›&nbsp;›&nbsp;›&nbsp;›&nbsp;›&nbsp;›&nbsp;›&nbsp;›&nbsp;›&nbsp;›&nbsp;›&nbsp;›&nbsp;</span></span>
+      <span class="fnode"><span class="fe">🇪🇺</span> Buyers</span>
+    </div>
+    <div class="stats reveal">
+      <div class="stat"><div class="sv">1</div><div class="sl">counterparty for all of Armenian supply</div></div>
+      <div class="stat"><div class="sv">3</div><div class="sl">demand pools · EU · US · diaspora</div></div>
+      <div class="stat"><div class="sv">∞</div><div class="sl">categories &amp; suppliers per container</div></div>
+      <div class="stat"><div class="sv">0</div><div class="sl">trade fairs a producer must attend</div></div>
+    </div>
+  </div>
+</header>
+
+<section id="why">
+  <div class="container">
+    <p class="eyebrow reveal">Why now</p>
+    <h2 class="sh reveal">A market being forced to re-route.</h2>
+    <p class="si reveal">For decades a large share of Armenia's food and drink flowed north to Russia and the EAEU.
+      As that door closes, thousands of small producers face a wall — the EU and US are wealthier markets,
+      but a lone grower has no way to reach them, clear their regulations, or fill a container. Shuka is the
+      re-routing rail, built exactly for this moment.</p>
+    <div class="shift-grid">
+      <div class="shift-card reveal">
+        <div class="beforeafter">
+          <div class="ba old"><span class="bt">Before</span><span class="bx">One big buyer to the north. <b>Simple, but now closing — and concentrated risk.</b></span></div>
+          <div class="ba new"><span class="bt">With Shuka</span><span class="bx">Many EU/US buyers reached through one hub. <b>Compliant, diversified, escrow-safe.</b></span></div>
+        </div>
+      </div>
+      <div class="reveal">
+        <p class="si">The producer's problem was never quality — it was <b>access, compliance, logistics and trust</b>.
+        Shuka absorbs all four so the goods can travel where the demand actually is.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="model" style="background:var(--surface-2)">
+  <div class="container">
+    <p class="eyebrow reveal">The model</p>
+    <h2 class="sh reveal">Armenia, represented as a single market.</h2>
+    <p class="si reveal">Producers don't chase buyers. They list their goods, stay compliant, and the market comes
+      to them — pulled through the hub by real demand.</p>
+    <div class="principles">
+      <div class="principle reveal"><div class="pn">01</div><h3>One supply pool</h3>
+        <p>Hundreds of producers appear to the world as one trustworthy source. Buyers sign one contract, not a hundred.</p></div>
+      <div class="principle reveal"><div class="pn">02</div><h3>Demand-led</h3>
+        <p>Buyers post what they need; Shuka matches and pulls exactly the right producers. No prospecting on the producer's side.</p></div>
+      <div class="principle reveal"><div class="pn">03</div><h3>Consolidated</h3>
+        <p>Many suppliers and categories combine into one container, cleared once, delivered duty-paid — economics no small producer could reach alone.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="container">
+    <p class="eyebrow reveal">How it works</p>
+    <h2 class="sh reveal">From a buyer's requirement to a producer's payout.</h2>
+    <p class="si reveal">A quote-and-accept flow — not an auction. Six steps from need to delivered, with money held safely in between.</p>
+    <div class="steps">
+      <div class="step reveal"><span class="snum">1</span><div><h4>Post a requirement</h4><p>A buyer states categories and quantities in one basket.</p></div></div>
+      <div class="step reveal"><span class="snum">2</span><div><h4>Receive vetted offers</h4><p>Eligible producers submit real offers per line — no live bidding.</p></div></div>
+      <div class="step reveal"><span class="snum">3</span><div><h4>Approve the mix</h4><p>Pick any combination, even splitting a line across producers.</p></div></div>
+      <div class="step reveal"><span class="snum">4</span><div><h4>Fund escrow</h4><p>Funds are held — released to no one until delivery is verified.</p></div></div>
+      <div class="step reveal"><span class="snum">5</span><div><h4>Consolidate &amp; ship</h4><p>Producers pool at the hub; one compliant container clears customs.</p></div></div>
+      <div class="step reveal"><span class="snum">6</span><div><h4>Delivered · settled</h4><p>Buyer receives the container; each producer is paid their share.</p></div></div>
+    </div>
+    <div class="steplink reveal"><a href="https://claude.ai/code/artifact/0370d142-39ca-4017-829d-03c072dc2d3c" target="_blank" rel="noopener" class="btn btn-g">See the full 9-stage lifecycle →</a></div>
+  </div>
+</section>
+
+<section id="consolidation" style="background:var(--surface-2)">
+  <div class="container">
+    <p class="eyebrow reveal">Consolidation, made visible</p>
+    <h2 class="sh reveal">Six producers. Six categories. One sealed container.</h2>
+    <p class="si reveal">Goods from producers who could never fill a box alone are checked, labelled and packed
+      together into a single export-grade consignment. Press pack, or click a product to trace its pallets.</p>
+    <div class="vizcard reveal">
+      <div class="pack-svgwrap">
+        <svg id="c-scene" viewBox="0 0 900 440" role="img" aria-label="Cutaway of a shipping container packed with pallets from several Armenian producers">
+          <rect x="70" y="356" width="700" height="16" rx="4" fill="var(--line)"/>
+          <g fill="var(--ink)" opacity="0.75"><circle cx="180" cy="392" r="20"/><circle cx="228" cy="392" r="20"/><circle cx="640" cy="392" r="20"/><circle cx="688" cy="392" r="20"/></g>
+          <g fill="var(--surface)"><circle cx="180" cy="392" r="7"/><circle cx="228" cy="392" r="7"/><circle cx="640" cy="392" r="7"/><circle cx="688" cy="392" r="7"/></g>
+          <rect x="70" y="70" width="700" height="286" rx="8" fill="var(--surface-2)" stroke="var(--pom)" stroke-width="2.5"/>
+          <g stroke="var(--line)" stroke-width="2"><line x1="90" y1="70" x2="90" y2="356"/><line x1="130" y1="70" x2="130" y2="356" opacity=".5"/></g>
+          <g id="c-boxes"></g>
+          <g><polygon points="770,70 838,50 838,338 770,356" fill="var(--surface)" stroke="var(--pom)" stroke-width="2.5"/><line x1="804" y1="60" x2="804" y2="347" stroke="var(--line)" stroke-width="2"/><circle cx="775" cy="213" r="4" fill="var(--pom)"/></g>
+          <rect x="70" y="54" width="700" height="18" rx="5" fill="var(--pom)"/>
+          <text x="84" y="67" font-family="var(--mono)" font-size="11" fill="var(--on-pom)" font-weight="700">SHUKA · 40FT CONSOLIDATED · KÖLN DC</text>
+          <text id="c-fillseal" x="756" y="67" text-anchor="end" font-family="var(--mono)" font-size="11" fill="var(--on-pom)" font-weight="700"></text>
+        </svg>
+      </div>
+      <div class="controls">
+        <div class="cmetrics" id="c-metrics"></div>
+        <button class="btn btn-p" id="c-pack">▸ Pack the container</button>
+      </div>
+      <div class="lgrid" id="c-legend"></div>
+    </div>
+  </div>
+</section>
+
+<section id="audiences" class="audsec">
+  <div class="container">
+    <p class="eyebrow reveal">Built for everyone in the corridor</p>
+    <h2 class="sh reveal">Three sides, one platform.</h2>
+    <p class="si reveal">Whether you're buying, producing, or backing the venture — here's what Shuka does for you.</p>
+    <div class="tabs reveal" role="tablist">
+      <button data-aud="buyers" class="on" role="tab">For buyers</button>
+      <button data-aud="producers" role="tab">For producers</button>
+      <button data-aud="investors" role="tab">For investors</button>
+    </div>
+    <div class="audpanel reveal" id="audpanel"></div>
+  </div>
+</section>
+
+<section id="platform">
+  <div class="container">
+    <p class="eyebrow reveal">The platform, live</p>
+    <h2 class="sh reveal">Not slideware — working tools.</h2>
+    <p class="si reveal">Every core piece already exists as an interactive prototype. Open any of them.</p>
+    <div class="tools">
+      <a class="tool reveal" href="https://claude.ai/code/artifact/bfecc2d9-929b-4d55-94ce-07b7bf8a204c" target="_blank" rel="noopener">
+        <span class="te">◈</span><h4>Architecture map</h4><p>Armenia as one supply pool, demand flowing in through the hub. The whole model in one picture.</p><span class="open">Open live →</span></a>
+      <a class="tool reveal" href="https://claude.ai/code/artifact/1b87aff6-3d5f-4bb6-863a-6c97877e8eda" target="_blank" rel="noopener">
+        <span class="te">📦</span><h4>Consolidated order console</h4><p>A buyer approves a mix of supplier quotes with live container-fill and landed cost.</p><span class="open">Open live →</span></a>
+      <a class="tool reveal" href="https://claude.ai/code/artifact/3e372d71-99de-4614-a836-3312ff07bd5d" target="_blank" rel="noopener">
+        <span class="te">✅</span><h4>Compliance agent</h4><p>Pick a product and destination; get eligible / needs-work / blocked with the exact certs required.</p><span class="open">Open live →</span></a>
+      <a class="tool reveal" href="https://claude.ai/code/artifact/0370d142-39ca-4017-829d-03c072dc2d3c" target="_blank" rel="noopener">
+        <span class="te">🔒</span><h4>Order lifecycle</h4><p>Trace who acts and where money and goods sit across all nine stages.</p><span class="open">Open live →</span></a>
+      <a class="tool reveal" href="https://claude.ai/code/artifact/2c555861-c48a-404c-ae0c-6cc4acc6f243" target="_blank" rel="noopener">
+        <span class="te">🍎</span><h4>Year import planner</h4><p>Harvest × demand × lead-time → a month-by-month ship schedule.</p><span class="open">Open live →</span></a>
+      <a class="tool reveal" href="#final" style="background:var(--surface-2)">
+        <span class="te">➕</span><h4>And more to come</h4><p>Supplier onboarding, financing, and new corridors are next on the roadmap.</p><span class="open">Talk to us →</span></a>
+    </div>
+  </div>
+</section>
+
+<section id="business" style="background:var(--surface-2)">
+  <div class="container">
+    <p class="eyebrow reveal">Business model</p>
+    <h2 class="sh reveal">Five ways one order pays.</h2>
+    <p class="si reveal">Shuka monetises the flow it already orchestrates — no separate ad or listing model needed.</p>
+    <div class="revs">
+      <div class="rev reveal"><div class="rn">01</div><h4>Commission</h4><p>A take rate on approved order value.</p></div>
+      <div class="rev reveal"><div class="rn">02</div><h4>Logistics margin</h4><p>Consolidation &amp; freight, priced above cost.</p></div>
+      <div class="rev reveal"><div class="rn">03</div><h4>FX spread</h4><p>On cross-border AMD/EUR/USD settlement.</p></div>
+      <div class="rev reveal"><div class="rn">04</div><h4>Compliance services</h4><p>Certification &amp; labelling as a paid service.</p></div>
+      <div class="rev reveal"><div class="rn">05</div><h4>Producer financing</h4><p>Advances against confirmed orders (later stage).</p></div>
+    </div>
+    <div class="econ reveal">Illustrative: a single <b>€40,000</b> mixed container carries commission + logistics margin + FX,
+      stacking to a healthy double-digit gross margin — and every added category makes the container, and the margin, more efficient.</div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="container">
+    <p class="eyebrow reveal">Questions</p>
+    <h2 class="sh reveal">Straight answers.</h2>
+    <div class="faq reveal" id="faq"></div>
+  </div>
+</section>
+
+<section id="final">
+  <div class="container">
+    <div class="final reveal">
+      <h2>Bring Armenia to your market — or your market to Armenia.</h2>
+      <p>Buyers source with confidence. Producers reach the world without leaving the workshop. Investors back
+        the rail as the corridor forms. Tell us which one you are.</p>
+      <div class="fbtns">
+        <a href="mailto:hello@shuka.example?subject=Buyer%20enquiry" class="btn btn-w">Source from Armenia</a>
+        <a href="mailto:hello@shuka.example?subject=Producer%20enquiry" class="btn btn-t">List your goods</a>
+        <a href="mailto:hello@shuka.example?subject=Investor%20enquiry" class="btn btn-t">Request the data room</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="container">
+    <div class="footin">
+      <span class="logo"><span class="seed"></span>Shuka</span>
+      <span class="fl">One market for Armenian goods — reaching the EU and US, built for the moment producers need it most.</span>
+    </div>
+    <p class="disclaim">Concept prototype. Figures, market claims and unit economics shown here are illustrative and
+      pending validation; regulatory eligibility must be confirmed with a licensed customs broker before any shipment.
+      Escrow is provided through a licensed third party. Contact address is a placeholder.</p>
+  </div>
+</footer>
+
+<script>
+const AUD={
+ buyers:{tag:'For buyers · EU / US retail, importers &amp; food service',
+  h:'Source all of Armenia from a single counterparty.',
+  p:'Post one requirement across as many categories as you like. Receive vetted offers, approve a mix, and take delivery of one consolidated, import-ready container — landed, duty-paid and escrow-protected.',
+  cta:'Source from Armenia →', mail:'Buyer%20enquiry',
+  pts:[
+   ['🧩','One order, many suppliers','Mix categories and producers into a single container — no chasing dozens of exporters, no unmet minimums.'],
+   ['✅','Pre-cleared for import','Every product passes the compliance agent — EU 1169/2011, VI-1, phytosanitary, FDA/FSVP — before you ever see it.'],
+   ['🔒','Escrow-protected','Funds are held and released only on verified delivery. Zero counterparty risk with unfamiliar producers.'],
+   ['💶','Transparent landed cost','DDP pricing with freight and duty allocated per line — compare true delivered cost, not sticker price.'],
+   ['📅','Plan the whole year','Seasonal planning aligns harvest and holiday demand so the right goods arrive at the right time.'],
+   ['🫒','Authentic &amp; differentiated','Story-rich Armenian goods that stand out on a shelf full of the usual imports.']]},
+ producers:{tag:'For producers · Armenian growers, winemakers &amp; makers',
+  h:'Stop chasing buyers. Let the market come to you.',
+  p:'Lost the Russian market? List your goods once and Shuka puts you in front of EU and US buyers — and handles the compliance, labelling, logistics, customs and payment collection you can\'t do alone.',
+  cta:'List your goods →', mail:'Producer%20enquiry',
+  pts:[
+   ['🌍','The market finds you','No prospecting, no trade fairs, no cold outreach. Buyers post demand; we match you to it.'],
+   ['📦','Ship what you can\'t fill alone','Pool into shared containers with other producers, so small volumes finally reach export markets.'],
+   ['🧾','We handle the paperwork','EU/US labelling, certificates, customs and importer-of-record — off your plate entirely.'],
+   ['🔒','Get paid safely','Escrow guarantees payment on delivery, even from buyers you have never met.'],
+   ['🏷️','Keep your brand','Sell under your own label or white-label — your choice.'],
+   ['📈','One door, many markets','EU, US and diaspora demand reached through a single relationship.']]},
+ investors:{tag:'For investors · seed / early stage',
+  h:'The default export rail for a market being forced to re-route.',
+  p:'Russia is closing to Armenian goods, redirecting a large share of the country\'s food exports overnight. Shuka aggregates fragmented supply into a single market face — capturing the corridor as it forms.',
+  cta:'Request the data room →', mail:'Investor%20enquiry',
+  pts:[
+   ['⚡','Why now','A geopolitical shock is stranding producers and pushing supply toward the EU/US. The first mover captures the aggregation.'],
+   ['🧠','Defensible IP','A consolidation engine and a compliance agent that are hard to replicate and improve with volume.'],
+   ['💰','Multiple revenue lines','Commission, logistics margin, FX spread and compliance-as-a-service — from one order.'],
+   ['🛡️','Aggregation moat','Owning the single face of Armenian supply compounds: more producers attract more buyers attract more producers.'],
+   ['🌐','Replicable','The same rail extends to Georgia, Central Asia and other fragmented-producer regions.'],
+   ['🎯','The ask','Seed capital to ship the compliance agent, open the Armenia→Germany corridor, and stand up the first consolidation hub.']]},
+};
+let curAud='buyers';
+function renderAud(){
+  const a=AUD[curAud];
+  document.getElementById('audpanel').innerHTML=`
+    <div class="audhead"><div class="at">${a.tag}</div><h3>${a.h}</h3><p>${a.p}</p></div>
+    <div class="audpoints">${a.pts.map(p=>`<div class="apoint"><div class="ai">${p[0]}</div><h5>${p[1]}</h5><p>${p[2]}</p></div>`).join('')}</div>
+    <div class="audfoot"><span class="afn">Ready to move?</span>
+      <a href="mailto:hello@shuka.example?subject=${a.mail}" class="btn btn-p">${a.cta}</a></div>`;
+}
+document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>{
+  curAud=b.dataset.aud;
+  document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x===b));
+  renderAud();
+}));
+renderAud();
+
+const FAQ=[
+ ['Is Shuka an auction?','No. Buyers post what they need, producers submit their own real offers, and the buyer approves the ones they want. It\'s quote-and-accept — no live underbidding.'],
+ ['Can everything be exported?','No — and that\'s the point of the compliance agent. Meat and dairy are largely blocked for the EU today; wine, brandy, dried fruit, churchkhela, preserves, spices, nuts and crafts are export-ready. The agent flags each product upfront so nothing is promised that can\'t ship.'],
+ ['How can one container hold many suppliers?','The consolidation engine bin-packs SKUs from different producers and categories under weight, volume and temperature limits, then splits freight and duty into a fair per-line landed cost.'],
+ ['How do producers get paid?','Through escrow. The buyer funds once; money is held through fulfilment and released to each producer on verified delivery, with per-line dispute handling.'],
+ ['What does Shuka charge?','A commission on order value plus a logistics margin. Producers pay nothing to list — Shuka earns only when an order flows.'],
+ ['Which market comes first?','The Armenia → Germany corridor: a large Armenian diaspora, strong specialty-food retail and clear EU rules — then wider EU and the US.'],
+];
+document.getElementById('faq').innerHTML=FAQ.map((f,i)=>`
+  <div class="qa"><button aria-expanded="false"><span>${f[0]}</span><span class="qi">+</span></button>
+    <div class="ans"><p>${f[1]}</p></div></div>`).join('');
+document.querySelectorAll('.qa button').forEach(b=>b.addEventListener('click',()=>{
+  const qa=b.parentElement, ans=qa.querySelector('.ans'), open=qa.classList.toggle('open');
+  b.setAttribute('aria-expanded',open);
+  ans.style.maxHeight=open?ans.scrollHeight+'px':'0';
+}));
+
+// consolidation container viz
+(function(){
+  const CATS=[
+   {id:'apr',name:'Dried apricots',sup:'Ararat · Sevan',color:'#E0862A',n:11},
+   {id:'wine',name:'Wine',sup:'Areni Cellars',color:'#5E2233',n:8},
+   {id:'pres',name:'Preserves & honey',sup:'Lori Preserves',color:'#A32138',n:7},
+   {id:'chur',name:'Churchkhela',sup:'Areni Sweets',color:'#8A5A2B',n:4},
+   {id:'spice',name:'Spices & herbs',sup:'Tavush Herbs',color:'#4E7A5B',n:2},
+   {id:'ceram',name:'Ceramics',sup:'Goris Crafts',color:'#B08968',n:1},
+  ];
+  const COLS=12,ROWS=3,CAP=COLS*ROWS,IX=138,IB=348,BW=52,BH=90,GAP=3;
+  const slots=[]; CATS.forEach(c=>{for(let i=0;i<c.n;i++)slots.push(c);});
+  const FILLED=slots.length;
+  const boxesEl=document.getElementById('c-boxes');
+  function boxSVG(cat,idx,col,row){
+    const x=IX+col*BW, y=IB-(row+1)*BH, w=BW-GAP, h=BH-GAP;
+    return `<g class="pallet hidden" data-cat="${cat.id}" style="transition-delay:${idx*45}ms"><title>${cat.name} — ${cat.sup}</title>`+
+      `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="${cat.color}"/>`+
+      `<rect x="${x}" y="${y}" width="${w}" height="10" rx="3" fill="#ffffff" opacity=".5"/>`+
+      `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="none" stroke="rgba(0,0,0,.18)" stroke-width="1"/>`+
+      `<line x1="${x+4}" y1="${y+h*0.5}" x2="${x+w-4}" y2="${y+h*0.5}" stroke="rgba(255,255,255,.35)" stroke-width="1.5"/></g>`;
+  }
+  let bh=''; slots.forEach((c,i)=>{const col=Math.floor(i/ROWS),row=i%ROWS; bh+=boxSVG(c,i,col,row);});
+  boxesEl.innerHTML=bh;
+  let packed=false, activeCat=null;
+  const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  function setPacked(on){
+    packed=on;
+    document.querySelectorAll('#c-boxes .pallet').forEach(b=>{ if(on)b.classList.remove('hidden'); else b.classList.add('hidden'); });
+    document.getElementById('c-pack').textContent=on?'↺ Replay packing':'▸ Pack the container';
+    document.getElementById('c-fillseal').textContent=on?'◼ SEALED · '+Math.round(FILLED/CAP*100)+'% FULL':'';
+  }
+  function toggleCat(id){
+    activeCat=activeCat===id?null:id;
+    boxesEl.classList.toggle('dim',!!activeCat);
+    document.querySelectorAll('#c-boxes .pallet').forEach(b=>b.classList.toggle('hot',b.dataset.cat===activeCat));
+    document.querySelectorAll('.lgitem').forEach(l=>l.classList.toggle('on',l.dataset.cat===activeCat));
+  }
+  document.querySelectorAll('#c-boxes .pallet').forEach(b=>b.addEventListener('click',()=>toggleCat(b.dataset.cat)));
+  document.getElementById('c-legend').innerHTML=CATS.map(c=>
+    `<button class="lgitem" data-cat="${c.id}"><span class="sw" style="background:${c.color}"></span>`+
+    `<span><span class="ln">${c.name}</span><br><span class="lc">${c.sup}</span></span>`+
+    `<span class="lct">${c.n}</span></button>`).join('');
+  document.querySelectorAll('.lgitem').forEach(l=>l.addEventListener('click',()=>toggleCat(l.dataset.cat)));
+  const wt=(FILLED*0.55).toFixed(1);
+  document.getElementById('c-metrics').innerHTML=
+    `<span><b>${CATS.length}</b> producers</span><span><b>${FILLED}</b> pallets</span>`+
+    `<span><b>${Math.round(FILLED/CAP*100)}%</b> full</span><span><b>~${wt}</b> t</span>`+
+    `<span style="color:var(--pom)"><b>${CAP-FILLED}</b> slots free → lower freight/unit</span>`;
+  document.getElementById('c-pack').addEventListener('click',()=>{
+    if(packed){setPacked(false); setTimeout(()=>setPacked(true),120);} else setPacked(true);
+  });
+  if(reduce){ setPacked(true); }
+  else {
+    const pio=new IntersectionObserver((es)=>es.forEach(e=>{ if(e.isIntersecting){ setPacked(true); pio.disconnect(); } }),{threshold:.3});
+    pio.observe(document.getElementById('c-scene'));
+  }
+})();
+
+// scroll reveal
+const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+setTimeout(()=>document.querySelectorAll('.reveal:not(.in)').forEach(el=>el.classList.add('in')),1600);
+
+// theme toggle (persists to localStorage; falls back to OS preference)
+(function(){
+  const root=document.documentElement, key='shuka-theme', btn=document.getElementById('themebtn');
+  const saved=localStorage.getItem(key); if(saved)root.setAttribute('data-theme',saved);
+  function isDark(){const t=root.getAttribute('data-theme'); return t?t==='dark':matchMedia('(prefers-color-scheme:dark)').matches;}
+  function paint(){btn.textContent=isDark()?'☀':'☾';}
+  paint();
+  btn.addEventListener('click',()=>{const next=isDark()?'light':'dark';root.setAttribute('data-theme',next);localStorage.setItem(key,next);paint();});
+})();
+</script>
+</body>
+</html>
