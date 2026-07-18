@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shuka — Tender & RFP Opportunities</title>
+<meta name="description" content="Shuka finds EU & US procurement tenders the Armenian pool can fill, matches producers, and bids as one collective — gated by compliance and capacity.">
+<meta name="theme-color" content="#A32138">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%87%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --ground:#F6EDE6;--surface:#FFFFFF;--surface-2:#FBF3ED;--ink:#2B1B1E;--ink-soft:#6B554C;
+    --line:#E7D8CE;--pom:#A32138;--pom-deep:#7C1A2E;--on-pom:#FEF6F2;--apricot:#E0862A;
+    --apricot-ink:#2B1B1E;--wine:#5E2233;--herb:#43704F;--on-herb:#F4FAF5;
+    --shadow:0 1px 2px rgba(43,27,30,.06),0 10px 34px rgba(124,26,46,.10);
+    --serif:"Hoefler Text","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono:"SF Mono",ui-monospace,"Cascadia Code",Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --ground:#181012;--surface:#241A1C;--surface-2:#2C2023;--ink:#F2E6DF;--ink-soft:#BCA69C;
+    --line:#3A2A2D;--pom:#C8506A;--pom-deep:#A33350;--on-pom:#1A1012;--apricot:#EBA24A;
+    --apricot-ink:#1A1012;--wine:#B36A7E;--herb:#84B091;--on-herb:#12201A;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 40px rgba(0,0,0,.4);}}
+  :root[data-theme="light"]{--ground:#F6EDE6;--surface:#FFFFFF;--surface-2:#FBF3ED;--ink:#2B1B1E;
+    --ink-soft:#6B554C;--line:#E7D8CE;--pom:#A32138;--pom-deep:#7C1A2E;--on-pom:#FEF6F2;
+    --apricot:#E0862A;--apricot-ink:#2B1B1E;--wine:#5E2233;--herb:#43704F;--on-herb:#F4FAF5;}
+  :root[data-theme="dark"]{--ground:#181012;--surface:#241A1C;--surface-2:#2C2023;--ink:#F2E6DF;
+    --ink-soft:#BCA69C;--line:#3A2A2D;--pom:#C8506A;--pom-deep:#A33350;--on-pom:#1A1012;
+    --apricot:#EBA24A;--apricot-ink:#1A1012;--wine:#B36A7E;--herb:#84B091;--on-herb:#12201A;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1080px;margin:0 auto;padding:clamp(20px,4vw,40px) clamp(16px,4vw,28px) 60px;}
+  .back{display:inline-block;font-size:13px;font-weight:600;text-decoration:none;color:var(--ink-soft);margin-bottom:20px;}
+  .back:hover{color:var(--pom);}
+  header .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--pom);margin:0 0 10px;font-weight:700;}
+  header h1{font-family:var(--serif);font-weight:600;font-size:clamp(26px,4.6vw,40px);line-height:1.05;letter-spacing:-.01em;margin:0 0 8px;text-wrap:balance;}
+  header p{color:var(--ink-soft);font-size:16px;margin:0;max-width:64ch;}
+
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0 8px;}
+  @media (max-width:640px){.kpis{grid-template-columns:repeat(2,1fr);}}
+  .kpi{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:15px 16px;box-shadow:var(--shadow);}
+  .kpi .lab{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;margin:0 0 7px;}
+  .kpi .val{font-family:var(--serif);font-size:clamp(20px,3vw,26px);font-weight:600;line-height:1;color:var(--pom);}
+  .kpi .val small{font-family:var(--sans);font-size:12px;color:var(--ink-soft);font-weight:500;}
+
+  .layout{display:grid;grid-template-columns:340px 1fr;gap:18px;margin-top:18px;align-items:start;}
+  @media (max-width:860px){.layout{grid-template-columns:1fr;}}
+  .list{display:flex;flex-direction:column;gap:10px;}
+  .tndr{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:14px;cursor:pointer;text-align:left;font-family:inherit;box-shadow:var(--shadow);transition:border-color .15s,transform .1s;}
+  .tndr:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--pom) 35%,var(--line));}
+  .tndr.on{border-color:var(--pom);box-shadow:inset 0 0 0 1px var(--pom),var(--shadow);}
+  .tndr:focus-visible{outline:3px solid var(--pom);outline-offset:2px;}
+  .tndr .src{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px;}
+  .badge{font-family:var(--mono);font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;padding:2px 7px;border-radius:20px;background:var(--surface-2);color:var(--ink-soft);border:1px solid var(--line);}
+  .tndr .tt{font-family:var(--serif);font-size:16px;font-weight:600;line-height:1.15;}
+  .tndr .tb{font-size:12.5px;color:var(--ink-soft);margin-top:2px;}
+  .tndr .tf{display:flex;justify-content:space-between;align-items:center;margin-top:10px;}
+  .val2{font-family:var(--mono);font-weight:700;font-size:13px;}
+  .cd{font-family:var(--mono);font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:20px;background:color-mix(in srgb,var(--apricot) 16%,var(--surface));color:var(--ink);}
+  .cd.urgent{background:var(--pom);color:var(--on-pom);}
+  .st{font-family:var(--mono);font-size:9.5px;font-weight:800;text-transform:uppercase;padding:2px 7px;border-radius:20px;}
+  .st-new{background:color-mix(in srgb,var(--pom) 13%,var(--surface));color:var(--pom);}
+  .st-review{background:color-mix(in srgb,var(--apricot) 20%,var(--surface));color:var(--apricot-ink);}
+  .st-blocked{background:color-mix(in srgb,var(--ink-soft) 18%,var(--surface));color:var(--ink-soft);}
+  .st-bid{background:var(--herb);color:var(--on-herb);}
+
+  .detail{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden;}
+  .dhead{padding:20px 22px 16px;border-bottom:1px solid var(--line);}
+  .dhead .dsrc{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px;}
+  .dhead h2{font-family:var(--serif);font-size:22px;font-weight:600;margin:0;line-height:1.1;}
+  .dmeta{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:13.5px;color:var(--ink-soft);margin-top:8px;}
+  .dmeta b{color:var(--ink);font-weight:600;}
+  .dbody{padding:18px 22px 22px;}
+  .sec{margin-bottom:20px;} .sec .sh{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 10px;}
+  .lines{display:flex;flex-direction:column;gap:6px;}
+  .lineitem{display:flex;align-items:center;gap:10px;font-size:14px;padding:9px 12px;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;}
+  .lineitem .d{width:7px;height:7px;border-radius:50%;background:var(--pom);flex:none;}
+  .fitrow{display:flex;align-items:center;gap:12px;}
+  .fitrow .fb{flex:1;height:9px;border-radius:6px;background:var(--surface-2);border:1px solid var(--line);overflow:hidden;}
+  .fitrow .fb i{display:block;height:100%;background:var(--herb);}
+  .fitrow .ft{font-family:var(--mono);font-size:12.5px;font-weight:700;min-width:96px;text-align:right;}
+  .prods{display:flex;flex-wrap:wrap;gap:6px;}
+  .pchip{font-size:12.5px;font-weight:600;background:var(--surface-2);border:1px solid var(--line);border-radius:20px;padding:5px 11px;}
+
+  .gate{display:flex;gap:12px;align-items:flex-start;padding:13px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);margin-bottom:8px;}
+  .gate .gi{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:14px;font-weight:800;background:var(--surface-2);color:var(--ink-soft);border:2px solid var(--line);}
+  .gate.pass .gi{background:var(--herb);color:var(--on-herb);border-color:var(--herb);}
+  .gate.fail .gi{background:var(--pom);color:var(--on-pom);border-color:var(--pom);}
+  .gate .gt{font-size:14px;font-weight:600;} .gate .gd{font-size:12.5px;color:var(--ink-soft);margin-top:2px;}
+  .gate .ga{margin-left:auto;flex:none;}
+  .gbtn{font-family:var(--sans);font-weight:600;font-size:12.5px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);border-radius:9px;padding:8px 12px;cursor:pointer;white-space:nowrap;}
+  .gbtn:hover{border-color:var(--pom);color:var(--pom);} .gbtn:focus-visible{outline:2px solid var(--pom);outline-offset:2px;}
+
+  .warn{display:flex;gap:11px;align-items:flex-start;padding:12px 14px;border-radius:11px;font-size:13px;
+    background:color-mix(in srgb,var(--apricot) 12%,var(--surface));border:1px solid color-mix(in srgb,var(--apricot) 38%,var(--line));margin-bottom:16px;}
+  .warn .wi{color:var(--apricot);font-weight:800;flex:none;} .warn b{color:var(--ink);}
+
+  .bidbtn{width:100%;border:0;border-radius:12px;padding:14px;font-family:var(--sans);font-weight:700;font-size:15px;cursor:pointer;background:var(--pom);color:var(--on-pom);transition:opacity .15s,transform .12s;}
+  .bidbtn:hover:not(:disabled){transform:translateY(-1px);background:var(--pom-deep);}
+  .bidbtn:disabled{opacity:.4;cursor:not-allowed;}
+  .bidbtn:focus-visible{outline:3px solid var(--apricot);outline-offset:2px;}
+  .bidbtn.done{background:var(--herb);color:var(--on-herb);}
+  .bidhint{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:9px;}
+  .blockbox{padding:14px 16px;border-radius:12px;background:color-mix(in srgb,var(--pom) 9%,var(--surface));border:1px solid color-mix(in srgb,var(--pom) 30%,var(--line));font-size:14px;color:var(--ink);}
+
+  footer{margin-top:28px;padding-top:18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-soft);max-width:84ch;}
+  footer b{color:var(--ink);}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="../" class="back">← Back to Shuka</a>
+  <header>
+    <p class="eyebrow">Outbound demand · Tenders &amp; RFPs</p>
+    <h1>Shuka finds the demand producers never see.</h1>
+    <p>We scan EU &amp; US procurement — supermarket private-label RFPs, public food tenders, HoReCa contracts, distributor calls — for anything the Armenian pool can fill, then bid as one collective. No producer could win these alone; the aggregator can.</p>
+  </header>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="layout">
+    <div class="list" id="list" role="listbox" aria-label="Tender opportunities"></div>
+    <div class="detail" id="detail"></div>
+  </div>
+
+  <footer>
+    <b>Why a collective can bid where a producer can't.</b> Tenders demand volume, reliability, compliance and single-counterparty
+    accountability — exactly what aggregation provides. But every bid is gated: the <b>compliance agent</b> must clear all categories
+    and the <b>pool must confirm capacity</b> before Shuka submits, because winning a tender you can't fulfil is worse than not bidding.
+    Public tenders add bid bonds and delivery-penalty exposure. Opportunities shown are illustrative.
+  </footer>
+</div>
+
+<script>
+const SRC={plrfp:'Private-label RFP',public:'Public procurement',horeca:'HoReCa / catering',dist:'Distributor sourcing'};
+const STMETA={new:['st-new','New'],review:['st-review','Reviewing'],blocked:['st-blocked','Blocked'],bid:['st-bid','Bid submitted']};
+const TENDERS=[
+ {id:'t1',title:'Private-label dried apricots & nuts',buyer:'REWE',src:'plrfp',country:'🇩🇪 Germany',
+  value:220000,deadline:'2026-08-05',fit:92,eligible:true,
+  cnote:'All categories EU-eligible · needs labels + certificate of origin',
+  lines:['Dried apricots · 8 t','Walnuts · 3 t'],
+  producers:['Ararat Foods · 3 t','Sevan Dried Goods · 3 t','Goris Orchards · 2 t','+6 in pool'],
+  status:'new',comp:false,cap:false,bid:false},
+ {id:'t3',title:'HoReCa preserves & pomegranate program',buyer:'Carrefour HoReCa',src:'horeca',country:'🇫🇷 France',
+  value:85000,deadline:'2026-07-27',fit:88,eligible:true,
+  cnote:'All categories EU-eligible',
+  lines:['Preserves · 6,000 units','Pomegranate molasses · 3,000 units'],
+  producers:['Lori Preserves · 6,000u','Ararat Foods · 3,000u','+5 in pool'],
+  status:'review',comp:true,cap:false,bid:false},
+ {id:'t2',title:'School food procurement — organic dried fruit',buyer:'Ville de Lyon',src:'public',country:'🇫🇷 France',
+  value:140000,deadline:'2026-08-17',fit:78,eligible:true,publicWarn:true,
+  cnote:'Eligible — each producer must hold organic certification',
+  lines:['Organic dried fruit · 5 t','Organic preserves · 4,000 units'],
+  producers:['Vayots Organic · 2 t','Tavush Farms · 2 t','+4 organic-certified'],
+  status:'new',comp:false,cap:false,bid:false},
+ {id:'t5',title:'Wine & brandy retail program',buyer:'US specialty distributor',src:'dist',country:'🇺🇸 USA',
+  value:310000,deadline:'2026-08-27',fit:84,eligible:true,
+  cnote:'Eligible — TTB import permit + COLA label approval',
+  lines:['Wine · 1,200 cases','Armenian brandy · 400 cases'],
+  producers:['Areni Cellars · 700 cs','Vayots Dzor Winery · 500 cs','+4 wineries'],
+  status:'new',comp:false,cap:false,bid:false},
+ {id:'t6',title:'Private-label churchkhela & sweets',buyer:'Whole Foods',src:'plrfp',country:'🇺🇸 USA',
+  value:95000,deadline:'2026-08-02',fit:90,eligible:true,
+  cnote:'Eligible — FDA FSVP + tree-nut allergen labels',
+  lines:['Churchkhela · 5,000 units','Dried fruit mix · 2 t'],
+  producers:['Areni Sweets · 5,000u','Goris Orchards · 2 t','+3 in pool'],
+  status:'new',comp:false,cap:false,bid:false},
+ {id:'t4',title:'Deli counter — Armenian cured meats (basturma)',buyer:'Edeka',src:'plrfp',country:'🇩🇪 Germany',
+  value:60000,deadline:'2026-08-09',fit:0,eligible:false,
+  cnote:'Blocked — meat requires an EU-approved establishment (Armenia not listed for meat)',
+  lines:['Basturma / sujukh · 2 t'],
+  producers:[],
+  status:'blocked',comp:false,cap:false,bid:false},
+];
+const euro=n=>'€'+Math.round(n).toLocaleString('en-US');
+function daysUntil(iso){return Math.round((new Date(iso+'T00:00:00')-new Date())/86400000);}
+let sel='t1';
+
+function renderKPIs(){
+  const total=TENDERS.reduce((a,t)=>a+t.value,0);
+  const fillable=TENDERS.filter(t=>t.eligible).length;
+  const soon=TENDERS.filter(t=>{const d=daysUntil(t.deadline);return d>=0&&d<14;}).length;
+  document.getElementById('kpis').innerHTML=
+    `<div class="kpi"><p class="lab">Open opportunities</p><div class="val">${TENDERS.length}<small> tracked</small></div></div>`+
+    `<div class="kpi"><p class="lab">Combined value</p><div class="val">${euro(total)}</div></div>`+
+    `<div class="kpi"><p class="lab">Fillable by the pool</p><div class="val">${fillable}<small> of ${TENDERS.length}</small></div></div>`+
+    `<div class="kpi"><p class="lab">Closing within 14 days</p><div class="val">${soon}</div></div>`;
+}
+function renderList(){
+  document.getElementById('list').innerHTML=TENDERS.map(t=>{
+    const d=daysUntil(t.deadline); const sm=STMETA[t.status];
+    return `<button class="tndr ${t.id===sel?'on':''}" data-id="${t.id}" role="option" aria-selected="${t.id===sel}">
+      <div class="src"><span class="badge">${SRC[t.src]}</span><span class="st ${sm[0]}">${sm[1]}</span></div>
+      <div class="tt">${t.title}</div>
+      <div class="tb">${t.buyer} · ${t.country}</div>
+      <div class="tf"><span class="val2">${euro(t.value)}</span><span class="cd ${d<10?'urgent':''}">${d<0?'closed':d+'d left'}</span></div>
+    </button>`;
+  }).join('');
+  document.querySelectorAll('.tndr').forEach(b=>b.addEventListener('click',()=>{sel=b.dataset.id;render();}));
+}
+function renderDetail(){
+  const t=TENDERS.find(x=>x.id===sel); const d=daysUntil(t.deadline); const sm=STMETA[t.status];
+  const canBid=t.eligible&&t.comp&&t.cap&&!t.bid;
+  document.getElementById('detail').innerHTML=`
+    <div class="dhead">
+      <div class="dsrc"><span class="badge">${SRC[t.src]}</span><span class="st ${sm[0]}">${sm[1]}</span></div>
+      <h2>${t.title}</h2>
+      <div class="dmeta"><span>${t.buyer} · ${t.country}</span><span>Value <b>${euro(t.value)}</b></span><span>Deadline <b>${d<0?'closed':d+' days'}</b></span></div>
+    </div>
+    <div class="dbody">
+      <div class="sec"><p class="sh">What they need</p><div class="lines">${t.lines.map(l=>`<div class="lineitem"><span class="d"></span>${l}</div>`).join('')}</div></div>
+      ${t.eligible?`<div class="sec"><p class="sh">Pool fit</p><div class="fitrow"><div class="fb"><i style="width:${t.fit}%"></i></div><span class="ft">${t.fit}% fillable</span></div></div>
+      <div class="sec"><p class="sh">Matched producers</p><div class="prods">${t.producers.map(p=>`<span class="pchip">${p}</span>`).join('')}</div></div>`:''}
+      ${t.publicWarn?`<div class="warn"><span class="wi">!</span><span><b>Public tender.</b> Requires a bid bond and carries delivery-penalty exposure. Confirm capacity commitments in writing before submitting.</span></div>`:''}
+      <div class="sec"><p class="sh">Bid gate — both must pass before Shuka submits</p>
+        ${t.eligible?`
+        <div class="gate ${t.comp?'pass':''}"><div class="gi">${t.comp?'✓':'1'}</div><div><div class="gt">Compliance cleared</div><div class="gd">${t.cnote}</div></div>${t.comp?'':`<div class="ga"><button class="gbtn" id="gcomp">Run check</button></div>`}</div>
+        <div class="gate ${t.cap?'pass':''}"><div class="gi">${t.cap?'✓':'2'}</div><div><div class="gt">Pool capacity confirmed</div><div class="gd">${t.cap?t.producers.length+' producers committed the required volume':'Producers must commit the volume before bidding'}</div></div>${t.cap?'':`<div class="ga"><button class="gbtn" id="gcap">Confirm capacity</button></div>`}</div>
+        `:`<div class="gate fail"><div class="gi">✕</div><div><div class="gt">Compliance blocked</div><div class="gd">${t.cnote}</div></div></div>`}
+      </div>
+      ${t.eligible?`<button class="bidbtn ${t.bid?'done':''}" id="bid" ${canBid?'':'disabled'}>${t.bid?'✓ Collective bid submitted':'Submit collective bid'}</button>
+      <div class="bidhint">${t.bid?'Shuka is bidding as the single counterparty for the Armenian pool.':'Enabled once compliance and capacity both pass.'}</div>`:
+      `<div class="blockbox"><b>Can't bid.</b> This tender can't be filled compliantly today. Flagged so no producer is promised an order that can't ship — this is the gate doing its job.</div>`}
+    </div>`;
+  const gc=document.getElementById('gcomp'); if(gc)gc.addEventListener('click',()=>{t.comp=true;renderDetail();});
+  const gp=document.getElementById('gcap'); if(gp)gp.addEventListener('click',()=>{t.cap=true;renderDetail();});
+  const bd=document.getElementById('bid'); if(bd)bd.addEventListener('click',()=>{if(t.eligible&&t.comp&&t.cap){t.bid=true;t.status='bid';render();}});
+}
+function render(){renderKPIs();renderList();renderDetail();}
+render();
+</script>
+</body>
+</html>
