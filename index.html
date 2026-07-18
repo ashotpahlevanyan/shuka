@@ -183,20 +183,18 @@
     border-radius:14px;padding:18px 20px;font-size:15px;color:var(--ink);}
   .econ b{color:var(--pom);}
 
-  /* faq — centered */
-  #faq .eyebrow,#faq h2.sh{text-align:center;}
-  #faq h2.sh{margin-left:auto;margin-right:auto;}
-  .faq{margin:28px auto 0;max-width:760px;border-top:1px solid var(--line);}
+  /* faq — left aligned with page content */
+  .faq{margin:28px 0 0;max-width:820px;border-top:1px solid var(--line);}
   .qa{border-bottom:1px solid var(--line);}
   .qa h3{margin:0;font:inherit;font-weight:inherit;}
-  .qa button{width:100%;text-align:center;background:transparent;border:0;padding:18px 4px;cursor:pointer;
+  .qa button{width:100%;text-align:left;background:transparent;border:0;padding:18px 4px;cursor:pointer;
     font-family:var(--sans);font-size:17px;font-weight:600;color:var(--ink);display:flex;
-    justify-content:center;gap:12px;align-items:center;}
+    justify-content:space-between;gap:16px;align-items:center;}
   .qa button:focus-visible{outline:3px solid var(--pom);outline-offset:2px;}
   .qa .qi{flex:none;color:var(--pom);font-size:22px;transition:transform .2s;}
   .qa[data-open="true"] .qi{transform:rotate(45deg);}
   .qa .ans{max-height:0;overflow:hidden;transition:max-height .28s ease;}
-  .qa .ans p{margin:0 auto 18px;color:var(--ink-soft);font-size:16px;max-width:66ch;text-align:center;}
+  .qa .ans p{margin:0 4px 18px;color:var(--ink-soft);font-size:16px;max-width:74ch;text-align:left;}
 
   /* final cta */
   .final{background:linear-gradient(135deg,var(--pom-deep),var(--pom));color:var(--on-pom);border-radius:22px;
