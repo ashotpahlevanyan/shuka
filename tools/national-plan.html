@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shuka — National Export Plan</title>
+<meta name="description" content="Armenia's annual food-export plan: category capacity vs demand, government-support ROI levers, and a national export calendar.">
+<meta name="theme-color" content="#A32138">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%87%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --ground:#F6EDE6;--surface:#FFFFFF;--surface-2:#FBF3ED;--ink:#2B1B1E;--ink-soft:#6B554C;
+    --line:#E7D8CE;--pom:#A32138;--pom-deep:#7C1A2E;--on-pom:#FEF6F2;--apricot:#E0862A;
+    --apricot-ink:#2B1B1E;--wine:#5E2233;--herb:#43704F;--on-herb:#F4FAF5;
+    --shadow:0 1px 2px rgba(43,27,30,.06),0 10px 34px rgba(124,26,46,.10);
+    --serif:"Hoefler Text","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono:"SF Mono",ui-monospace,"Cascadia Code",Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --ground:#181012;--surface:#241A1C;--surface-2:#2C2023;--ink:#F2E6DF;--ink-soft:#BCA69C;
+    --line:#3A2A2D;--pom:#C8506A;--pom-deep:#A33350;--on-pom:#1A1012;--apricot:#EBA24A;
+    --apricot-ink:#1A1012;--wine:#B36A7E;--herb:#84B091;--on-herb:#12201A;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 40px rgba(0,0,0,.4);}}
+  :root[data-theme="light"]{--ground:#F6EDE6;--surface:#FFFFFF;--surface-2:#FBF3ED;--ink:#2B1B1E;
+    --ink-soft:#6B554C;--line:#E7D8CE;--pom:#A32138;--pom-deep:#7C1A2E;--on-pom:#FEF6F2;
+    --apricot:#E0862A;--apricot-ink:#2B1B1E;--wine:#5E2233;--herb:#43704F;--on-herb:#F4FAF5;}
+  :root[data-theme="dark"]{--ground:#181012;--surface:#241A1C;--surface-2:#2C2023;--ink:#F2E6DF;
+    --ink-soft:#BCA69C;--line:#3A2A2D;--pom:#C8506A;--pom-deep:#A33350;--on-pom:#1A1012;
+    --apricot:#EBA24A;--apricot-ink:#1A1012;--wine:#B36A7E;--herb:#84B091;--on-herb:#12201A;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1080px;margin:0 auto;padding:clamp(20px,4vw,40px) clamp(16px,4vw,28px) 64px;}
+  .back{display:inline-block;font-size:13px;font-weight:600;text-decoration:none;color:var(--ink-soft);margin-bottom:20px;}
+  .back:hover{color:var(--pom);}
+  header .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--pom);margin:0 0 10px;font-weight:700;}
+  header h1{font-family:var(--serif);font-weight:600;font-size:clamp(26px,4.6vw,42px);line-height:1.05;letter-spacing:-.01em;margin:0 0 8px;text-wrap:balance;}
+  header p{color:var(--ink-soft);font-size:16px;margin:0;max-width:66ch;}
+
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0 10px;}
+  @media (max-width:680px){.kpis{grid-template-columns:repeat(2,1fr);}}
+  .kpi{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:var(--shadow);}
+  .kpi .lab{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;margin:0 0 8px;}
+  .kpi .val{font-family:var(--serif);font-size:clamp(22px,3.2vw,30px);font-weight:600;line-height:1;color:var(--pom);}
+  .kpi .val small{font-family:var(--sans);font-size:12px;color:var(--ink-soft);font-weight:500;}
+  .kpi.up .val{color:var(--herb);} .kpi.lock .val{color:var(--apricot);}
+
+  section.blk{margin-top:34px;}
+  .blk > h2{font-family:var(--serif);font-size:23px;font-weight:600;margin:0 0 4px;letter-spacing:-.01em;}
+  .blk > .si{color:var(--ink-soft);font-size:14.5px;margin:0 0 18px;max-width:70ch;}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:clamp(16px,3vw,24px);}
+
+  /* legend */
+  .leg{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--ink-soft);margin-bottom:16px;}
+  .leg span{display:inline-flex;align-items:center;gap:6px;}
+  .sw{width:22px;height:11px;border-radius:3px;}
+  .sw.cur{background:var(--pom);} .sw.up{background:var(--herb);}
+  .sw.lock{background:repeating-linear-gradient(45deg,var(--pom-deep) 0 4px,transparent 4px 7px);border:1px solid var(--pom-deep);}
+
+  .carow{display:grid;grid-template-columns:150px 1fr 150px;gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer;transition:background .12s;}
+  .carow:last-child{border-bottom:0;}
+  .carow:hover{background:var(--surface-2);}
+  .carow.on{background:color-mix(in srgb,var(--pom) 7%,var(--surface));}
+  @media (max-width:680px){.carow{grid-template-columns:1fr;gap:6px;}}
+  .cname{font-weight:600;font-size:14px;display:flex;flex-direction:column;gap:4px;}
+  .ctag{font-family:var(--mono);font-size:9.5px;font-weight:800;text-transform:uppercase;padding:2px 7px;border-radius:20px;width:fit-content;}
+  .tg-open{background:color-mix(in srgb,var(--herb) 18%,var(--surface));color:var(--herb);}
+  .tg-needs{background:color-mix(in srgb,var(--apricot) 20%,var(--surface));color:var(--apricot-ink);}
+  .tg-block{background:color-mix(in srgb,var(--pom) 14%,var(--surface));color:var(--pom);}
+  .cbar{height:22px;border-radius:6px;background:var(--surface-2);border:1px solid var(--line);overflow:hidden;display:flex;}
+  .cbar .seg{height:100%;} .cbar .cur{background:var(--pom);} .cbar .up{background:var(--herb);}
+  .cbar .lock{background:repeating-linear-gradient(45deg,var(--pom-deep) 0 5px,color-mix(in srgb,var(--pom-deep) 40%,var(--surface)) 5px 9px);}
+  .cnums{font-size:12.5px;text-align:right;font-variant-numeric:tabular-nums;}
+  .cnums b{font-family:var(--mono);color:var(--ink);} .cnums .lk{color:var(--apricot);font-weight:700;}
+  @media (max-width:680px){.cnums{text-align:left;}}
+
+  /* levers */
+  .levers{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+  @media (max-width:680px){.levers{grid-template-columns:1fr;}}
+  .lever{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:15px 16px;cursor:pointer;text-align:left;font-family:inherit;box-shadow:var(--shadow);transition:border-color .15s,transform .1s;}
+  .lever:hover{transform:translateY(-1px);border-color:var(--pom);} .lever.on{border-color:var(--pom);box-shadow:inset 0 0 0 1px var(--pom),var(--shadow);}
+  .lever:focus-visible{outline:3px solid var(--pom);outline-offset:2px;}
+  .lever .lh{display:flex;justify-content:space-between;align-items:baseline;gap:10px;}
+  .lever .ln{font-weight:600;font-size:14.5px;} .lever .roi{font-family:var(--mono);font-weight:800;font-size:15px;color:var(--herb);white-space:nowrap;}
+  .lever .lflow{font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin-top:7px;}
+  .lever .lflow b{color:var(--ink);} .lever .lcat{font-size:11.5px;color:var(--ink-soft);margin-top:6px;}
+  .roibar{height:6px;border-radius:4px;background:var(--surface-2);border:1px solid var(--line);overflow:hidden;margin-top:9px;}
+  .roibar i{display:block;height:100%;background:var(--herb);}
+  .ldetail{margin-top:14px;padding:14px 16px;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;font-size:14px;color:var(--ink-soft);}
+  .ldetail b{color:var(--ink);}
+
+  /* calendar */
+  .calwrap{overflow-x:auto;}
+  table.cal{border-collapse:collapse;width:100%;min-width:620px;}
+  table.cal th,table.cal td{text-align:center;font-variant-numeric:tabular-nums;}
+  table.cal thead th{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;color:var(--ink-soft);font-weight:700;padding:8px 4px;border-bottom:1px solid var(--line);}
+  table.cal thead th.cn{text-align:left;padding-left:6px;}
+  table.cal td.mc{padding:3px;border-bottom:1px solid var(--line);}
+  table.cal td .cell{height:26px;border-radius:5px;}
+  table.cal td.cn{text-align:left;font-weight:600;font-size:13px;padding:6px;border-bottom:1px solid var(--line);white-space:nowrap;}
+  table.cal tr.on td{background:color-mix(in srgb,var(--pom) 7%,var(--surface));}
+  .calnote{font-size:12.5px;color:var(--ink-soft);margin-top:12px;}
+
+  footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:var(--ink-soft);max-width:84ch;}
+  footer b{color:var(--ink);}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="../" class="back">← Back to Shuka</a>
+  <header>
+    <p class="eyebrow">National export planning · Armenia</p>
+    <h1>What Armenia can plan to export next year.</h1>
+    <p>Shuka aggregates live demand — buyer requirements, tenders and the trade-fair pipeline — against national production capacity to produce a single export plan for the whole country. Run as Shuka's centralized planning hub, it shows the opportunity per category, where compliance blocks it, and where government support unlocks the most value.</p>
+  </header>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div style="margin:16px 0 4px;padding:13px 16px;border:1px solid color-mix(in srgb,var(--pom) 25%,var(--line));border-radius:12px;background:color-mix(in srgb,var(--pom) 6%,var(--surface));font-size:13.5px;color:var(--ink)">
+    <b>For government partners:</b> Shuka already operates this planning hub on live market data. The Ministry of Economy and producer associations can be given direct access — one shared, up-to-date view of the nation's export opportunity, with no system to build.
+  </div>
+
+  <section class="blk">
+    <h2>1 · Capacity vs demand</h2>
+    <p class="si">What sells now, what more the pool could ship, and what's locked behind compliance. Click a category to trace it into the calendar below.</p>
+    <div class="card">
+      <div class="leg"><span><span class="sw cur"></span> Current exports</span><span><span class="sw up"></span> Achievable uplift</span><span><span class="sw lock"></span> Locked by compliance</span></div>
+      <div id="carows"></div>
+    </div>
+  </section>
+
+  <section class="blk">
+    <h2>2 · Where government support pays off</h2>
+    <p class="si">Support levers ranked by return — export value unlocked per euro invested. Targeted, measurable, and tied to real demand. Click one for detail.</p>
+    <div class="levers" id="levers"></div>
+    <div class="ldetail" id="ldetail"></div>
+  </section>
+
+  <section class="blk">
+    <h2>3 · National export calendar</h2>
+    <p class="si">When each category ships across the year, aggregated nationally — so capacity, logistics and support can be timed to the harvest and demand peaks.</p>
+    <div class="card">
+      <div class="calwrap"><table class="cal" id="cal"></table></div>
+      <p class="calnote" id="calnote"></p>
+    </div>
+  </section>
+
+  <footer>
+    <b>Illustrative model.</b> Figures are indicative and designed to be replaced with real data from Armenia's Statistical Committee,
+    the Ministry of Economy and producer capacity surveys. The positioning: Shuka runs the export-planning hub on live demand data, and
+    can give government partners direct access — so the state targets support where it creates the most export, and producers see the
+    opportunity ahead, without anyone building a new system.
+  </footer>
+</div>
+
+<script>
+const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+// values in € millions (illustrative)
+const CATS=[
+ {id:'wine',name:'Wine',cur:12,plan:26,dem:26,comp:'open',cal:[1,1,1,2,1,1,2,1,1,2,2,3]},
+ {id:'brandy',name:'Brandy',cur:20,plan:30,dem:30,comp:'open',cal:[1,1,1,1,1,1,1,1,1,2,2,3]},
+ {id:'dried',name:'Dried fruit & nuts',cur:15,plan:24,dem:24,comp:'open',cal:[1,1,1,2,1,1,1,1,1,3,3,3]},
+ {id:'churchkhela',name:'Churchkhela',cur:3,plan:7,dem:7,comp:'open',cal:[2,1,0,0,0,0,0,0,0,1,3,3]},
+ {id:'preserves',name:'Preserves & honey',cur:5,plan:9,dem:11,comp:'needs',cal:[1,1,1,1,1,1,1,1,1,1,2,2]},
+ {id:'spices',name:'Spices & herbs',cur:2,plan:3.5,dem:4,comp:'needs',cal:[1,1,1,1,1,1,1,1,1,1,1,1]},
+ {id:'fresh',name:'Fresh fruit',cur:4,plan:8,dem:12,comp:'needs',cal:[0,0,0,0,0,1,3,3,2,2,0,0]},
+ {id:'ceramics',name:'Ceramics & crafts',cur:2,plan:5,dem:5,comp:'open',cal:[1,1,1,1,1,1,1,1,1,2,2,2]},
+ {id:'cheese',name:'Cheese (dairy)',cur:1,plan:1,dem:15,comp:'block',cal:null},
+ {id:'meat',name:'Cured meats',cur:0.5,plan:0.5,dem:8,comp:'block',cal:null},
+];
+const TAG={open:['tg-open','Export-ready'],needs:['tg-needs','Needs a step'],block:['tg-block','Blocked']};
+const LEVERS=[
+ {n:'Organic certification subsidy',inv:0.4,unlock:5,cats:'Dried fruit · preserves',
+  d:'Subsidise organic certification for producers so the pool can bid on organic public tenders and premium retail lines that are currently out of reach.'},
+ {n:'Shared compliance & labelling centre',inv:0.5,unlock:6,cats:'All food categories',
+  d:'A national facility that produces EU/US-compliant labels, dossiers and testing for any producer — removing the single biggest barrier for small workshops, across every category.'},
+ {n:'Dairy EU establishment-listing',inv:1.2,unlock:14,cats:'Cheese',
+  d:'Fund the multi-year veterinary audit and establishment-listing programme so Armenian dairy can legally enter the EU — unlocking the single largest blocked category.'},
+ {n:'Aflatoxin testing laboratories',inv:0.3,unlock:3,cats:'Spices · nuts',
+  d:'Accredited testing labs let spice and nut exporters clear EU contaminant checks quickly, removing detentions and reinforced-control delays.'},
+ {n:'Cold-chain & reefer logistics',inv:2,unlock:10,cats:'Fresh fruit · perishables',
+  d:'Cold-chain infrastructure and reefer freight make fresh apricot and pomegranate export viable, and speed perishable shipments to the EU.'},
+ {n:'Meat establishment-listing',inv:1.5,unlock:7,cats:'Cured meats',
+  d:'Bring basturma and sujukh producers up to EU/US-approved establishment standards — a longer programme, but it opens an iconic blocked category.'},
+ {n:'Wine & brandy capacity',inv:3,unlock:12,cats:'Wine · brandy',
+  d:'Vineyard expansion and cellar capacity in the highest-margin, fully-eligible categories — where demand already exceeds what Armenia can ship.'},
+].map(l=>({...l,roi:l.unlock/l.inv})).sort((a,b)=>b.roi-a.roi);
+
+const eur=n=>'€'+(Math.round(n*10)/10)+'m';
+let selCat=null, selLever=0;
+
+function renderKPIs(){
+  const cur=CATS.reduce((a,c)=>a+c.cur,0), plan=CATS.reduce((a,c)=>a+c.plan,0);
+  const locked=CATS.reduce((a,c)=>a+Math.max(0,c.dem-c.plan),0);
+  const uplift=Math.round((plan-cur)/cur*100);
+  document.getElementById('kpis').innerHTML=
+    `<div class="kpi"><p class="lab">Exports today</p><div class="val">${eur(cur)}<small> / yr</small></div></div>`+
+    `<div class="kpi up"><p class="lab">Plannable next year</p><div class="val">${eur(plan)}</div></div>`+
+    `<div class="kpi up"><p class="lab">Achievable uplift</p><div class="val">+${uplift}%</div></div>`+
+    `<div class="kpi lock"><p class="lab">Locked by compliance</p><div class="val">${eur(locked)}<small> · gov't action</small></div></div>`;
+}
+function renderCats(){
+  const max=Math.max(...CATS.map(c=>c.dem));
+  const rows=CATS.slice().sort((a,b)=>(b.dem-b.cur)-(a.dem-a.cur));
+  document.getElementById('carows').innerHTML=rows.map(c=>{
+    const up=Math.max(0,c.plan-c.cur), lock=Math.max(0,c.dem-c.plan); const t=TAG[c.comp];
+    const w=v=>v/max*100;
+    return `<div class="carow ${selCat===c.id?'on':''}" data-id="${c.id}">
+      <div class="cname">${c.name}<span class="ctag ${t[0]}">${t[1]}</span></div>
+      <div class="cbar"><span class="seg cur" style="width:${w(c.cur)}%"></span><span class="seg up" style="width:${w(up)}%"></span><span class="seg lock" style="width:${w(lock)}%"></span></div>
+      <div class="cnums"><b>${eur(c.plan)}</b> plannable${up>0?` · +${eur(up)}`:''}${lock>0?` · <span class="lk">${eur(lock)} locked</span>`:''}</div>
+    </div>`;
+  }).join('');
+  document.querySelectorAll('.carow').forEach(r=>r.addEventListener('click',()=>{selCat=selCat===r.dataset.id?null:r.dataset.id;renderCats();renderCal();}));
+}
+function renderLevers(){
+  const maxRoi=Math.max(...LEVERS.map(l=>l.roi));
+  document.getElementById('levers').innerHTML=LEVERS.map((l,i)=>
+    `<button class="lever ${i===selLever?'on':''}" data-i="${i}">
+      <div class="lh"><span class="ln">${l.n}</span><span class="roi">${l.roi.toFixed(1)}×</span></div>
+      <div class="lflow">Invest <b>${eur(l.inv)}</b> → unlock <b>${eur(l.unlock)}</b> of exports</div>
+      <div class="roibar"><i style="width:${l.roi/maxRoi*100}%"></i></div>
+      <div class="lcat">Affects: ${l.cats}</div>
+    </button>`).join('');
+  document.querySelectorAll('.lever').forEach(b=>b.addEventListener('click',()=>{selLever=+b.dataset.i;renderLevers();renderLdetail();}));
+}
+function renderLdetail(){
+  const l=LEVERS[selLever];
+  document.getElementById('ldetail').innerHTML=`<b>${l.n} — ${l.roi.toFixed(1)}× return.</b> ${l.d} <b>Invest ${eur(l.inv)} → unlock ${eur(l.unlock)}.</b>`;
+}
+function renderCal(){
+  const cats=CATS.filter(c=>c.cal);
+  let h='<thead><tr><th class="cn">Category</th>'+MONTHS.map(m=>`<th>${m}</th>`).join('')+'</tr></thead><tbody>';
+  cats.forEach(c=>{
+    h+=`<tr class="${selCat===c.id?'on':''}"><td class="cn">${c.name}</td>`;
+    c.cal.forEach(v=>{const pct=v===0?0:v*30+10;h+=`<td class="mc"><div class="cell" style="background:${v===0?'var(--surface-2)':`color-mix(in srgb,var(--pom) ${pct}%,var(--surface))`}" title="${v===0?'off-season':'export activity '+v+'/3'}"></div></td>`;});
+    h+='</tr>';
+  });
+  h+='</tbody>';
+  document.getElementById('cal').innerHTML=h;
+  document.getElementById('calnote').innerHTML='Darker = higher export activity. <b>Cheese and cured meats are omitted</b> — blocked until the compliance levers above are funded.';
+}
+renderKPIs();renderCats();renderLevers();renderLdetail();renderCal();
+</script>
+</body>
+</html>
