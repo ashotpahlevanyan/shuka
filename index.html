@@ -615,6 +615,12 @@ setTimeout(()=>document.querySelectorAll('.reveal:not(.in)').forEach(el=>el.clas
   paint();
   btn.addEventListener('click',()=>{const next=isDark()?'light':'dark';root.setAttribute('data-theme',next);localStorage.setItem(key,next);paint();});
 })();
+
+// logo → scroll to very top (reliable even with a sticky nav)
+document.querySelectorAll('a.logo').forEach(l=>l.addEventListener('click',e=>{
+  e.preventDefault();
+  window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});
+}));
 </script>
 </body>
 </html>
