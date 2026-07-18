@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shuka — Trade-Fair Campaigns</title>
+<meta name="description" content="Plan Shuka sales campaigns at EU and US trade fairs — one Armenian stand, curated producers, pre-order targets and booth logistics.">
+<meta name="theme-color" content="#A32138">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%87%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --ground:#F6EDE6;--surface:#FFFFFF;--surface-2:#FBF3ED;--ink:#2B1B1E;--ink-soft:#6B554C;
+    --line:#E7D8CE;--pom:#A32138;--pom-deep:#7C1A2E;--on-pom:#FEF6F2;--apricot:#E0862A;
+    --apricot-ink:#2B1B1E;--wine:#5E2233;--herb:#43704F;--on-herb:#F4FAF5;
+    --shadow:0 1px 2px rgba(43,27,30,.06),0 10px 34px rgba(124,26,46,.10);
+    --serif:"Hoefler Text","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono:"SF Mono",ui-monospace,"Cascadia Code",Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --ground:#181012;--surface:#241A1C;--surface-2:#2C2023;--ink:#F2E6DF;--ink-soft:#BCA69C;
+    --line:#3A2A2D;--pom:#C8506A;--pom-deep:#A33350;--on-pom:#1A1012;--apricot:#EBA24A;
+    --apricot-ink:#1A1012;--wine:#B36A7E;--herb:#84B091;--on-herb:#12201A;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 40px rgba(0,0,0,.4);}}
+  :root[data-theme="light"]{--ground:#F6EDE6;--surface:#FFFFFF;--surface-2:#FBF3ED;--ink:#2B1B1E;
+    --ink-soft:#6B554C;--line:#E7D8CE;--pom:#A32138;--pom-deep:#7C1A2E;--on-pom:#FEF6F2;
+    --apricot:#E0862A;--apricot-ink:#2B1B1E;--wine:#5E2233;--herb:#43704F;--on-herb:#F4FAF5;}
+  :root[data-theme="dark"]{--ground:#181012;--surface:#241A1C;--surface-2:#2C2023;--ink:#F2E6DF;
+    --ink-soft:#BCA69C;--line:#3A2A2D;--pom:#C8506A;--pom-deep:#A33350;--on-pom:#1A1012;
+    --apricot:#EBA24A;--apricot-ink:#1A1012;--wine:#B36A7E;--herb:#84B091;--on-herb:#12201A;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1080px;margin:0 auto;padding:clamp(20px,4vw,40px) clamp(16px,4vw,28px) 60px;}
+  .back{display:inline-block;font-size:13px;font-weight:600;text-decoration:none;color:var(--ink-soft);margin-bottom:20px;}
+  .back:hover{color:var(--pom);}
+  header .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--pom);margin:0 0 10px;font-weight:700;}
+  header h1{font-family:var(--serif);font-weight:600;font-size:clamp(26px,4.6vw,40px);line-height:1.05;letter-spacing:-.01em;margin:0 0 8px;text-wrap:balance;}
+  header p{color:var(--ink-soft);font-size:16px;margin:0;max-width:64ch;}
+
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0 8px;}
+  @media (max-width:640px){.kpis{grid-template-columns:repeat(2,1fr);}}
+  .kpi{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:15px 16px;box-shadow:var(--shadow);}
+  .kpi .lab{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;margin:0 0 7px;}
+  .kpi .val{font-family:var(--serif);font-size:clamp(20px,3vw,26px);font-weight:600;line-height:1;color:var(--pom);}
+  .kpi .val small{font-family:var(--sans);font-size:12px;color:var(--ink-soft);font-weight:500;}
+
+  .layout{display:grid;grid-template-columns:300px 1fr;gap:18px;margin-top:18px;align-items:start;}
+  @media (max-width:820px){.layout{grid-template-columns:1fr;}}
+  .faircol{display:flex;flex-direction:column;gap:10px;}
+  .fair{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:14px;cursor:pointer;
+    text-align:left;font-family:inherit;transition:border-color .15s,transform .1s;box-shadow:var(--shadow);}
+  .fair:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--pom) 35%,var(--line));}
+  .fair.on{border-color:var(--pom);box-shadow:inset 0 0 0 1px var(--pom),var(--shadow);}
+  .fair:focus-visible{outline:3px solid var(--pom);outline-offset:2px;}
+  .fair .fn{font-family:var(--serif);font-size:17px;font-weight:600;display:flex;align-items:center;gap:7px;}
+  .fair .fmeta{font-size:12.5px;color:var(--ink-soft);margin-top:3px;}
+  .fair .fwhen{display:flex;justify-content:space-between;align-items:center;margin-top:9px;}
+  .cd{font-family:var(--mono);font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;
+    background:color-mix(in srgb,var(--apricot) 16%,var(--surface));color:var(--ink);}
+  .cd.past{background:var(--surface-2);color:var(--ink-soft);}
+  .pill{font-family:var(--mono);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:2px 8px;border-radius:20px;}
+  .st-radar{background:var(--surface-2);color:var(--ink-soft);}
+  .st-plan{background:color-mix(in srgb,var(--apricot) 20%,var(--surface));color:var(--apricot-ink);}
+  .st-conf{background:var(--herb);color:var(--on-herb);}
+
+  .detail{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden;}
+  .dhead{padding:20px 22px 16px;border-bottom:1px solid var(--line);}
+  .dhead .dt{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;}
+  .dhead h2{font-family:var(--serif);font-size:23px;font-weight:600;margin:0;}
+  .dhead .dloc{font-size:13.5px;color:var(--ink-soft);margin-top:5px;}
+  .dhead .dfit{font-size:14px;color:var(--ink);margin:12px 0 0;padding:11px 13px;background:color-mix(in srgb,var(--pom) 6%,var(--surface));border-radius:10px;border:1px solid color-mix(in srgb,var(--pom) 18%,var(--line));}
+  .dbody{padding:18px 22px 22px;}
+  .sec{margin-bottom:22px;}
+  .sec .sh{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 10px;}
+  .stand{display:flex;flex-wrap:wrap;gap:7px;}
+  .chip{font-size:13px;font-weight:600;background:var(--surface-2);border:1px solid var(--line);border-radius:20px;padding:5px 12px;}
+  .standnote{font-size:13px;color:var(--ink-soft);margin-top:10px;}
+  .standnote b{color:var(--ink);}
+
+  .targets{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media (max-width:520px){.targets{grid-template-columns:1fr;}}
+  .tgt{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:14px;}
+  .tgt .tl{font-size:12.5px;color:var(--ink-soft);font-weight:600;}
+  .tgt .tv{font-family:var(--serif);font-size:20px;font-weight:600;margin:4px 0 8px;font-variant-numeric:tabular-nums;}
+  .tgt .tv small{font-family:var(--sans);font-size:12.5px;color:var(--ink-soft);font-weight:500;}
+  .pbar{height:9px;border-radius:6px;background:var(--surface);border:1px solid var(--line);overflow:hidden;}
+  .pbar i{display:block;height:100%;background:var(--herb);transition:width .4s ease;}
+  .pbar.pom i{background:var(--pom);}
+
+  .check{display:flex;flex-direction:column;gap:2px;}
+  .ci{display:flex;align-items:center;gap:12px;padding:11px 12px;border:1px solid var(--line);border-radius:11px;
+    background:var(--surface);cursor:pointer;text-align:left;font-family:inherit;transition:background .12s;margin-bottom:6px;}
+  .ci:hover{background:var(--surface-2);}
+  .ci:focus-visible{outline:3px solid var(--pom);outline-offset:2px;}
+  .ci .box{width:22px;height:22px;border-radius:6px;border:2px solid var(--line);flex:none;display:grid;place-items:center;font-size:13px;color:#fff;}
+  .ci.done .box{background:var(--herb);border-color:var(--herb);}
+  .ci .lab{font-size:14px;font-weight:500;} .ci.done .lab{color:var(--ink-soft);text-decoration:line-through;}
+  .readbar{display:flex;align-items:center;gap:12px;margin-top:12px;}
+  .readbar .rb{flex:1;height:10px;border-radius:6px;background:var(--surface-2);border:1px solid var(--line);overflow:hidden;}
+  .readbar .rb i{display:block;height:100%;background:var(--herb);transition:width .3s ease;}
+  .readbar .rt{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--ink);min-width:96px;text-align:right;}
+
+  footer{margin-top:28px;padding-top:18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-soft);max-width:82ch;}
+  footer b{color:var(--ink);}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="../" class="back">← Back to Shuka</a>
+  <header>
+    <p class="eyebrow">Go to market · Trade-fair campaigns</p>
+    <h1>One Armenian stand at the fairs that matter.</h1>
+    <p>Producers don't attend — Shuka does, for the whole pool. Each campaign curates the right producers into a single stand, sets buyer-meeting and pre-order targets, and turns fair leads straight into consolidated orders.</p>
+  </header>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="layout">
+    <div class="faircol" id="faircol" role="listbox" aria-label="Trade fairs"></div>
+    <div class="detail" id="detail"></div>
+  </div>
+
+  <footer>
+    <b>How campaigns feed the pipeline.</b> A fair isn't the sale — it's lead generation for the consolidation engine.
+    Pre-orders taken at the stand become requirements in the platform, get matched to producers, funded through escrow,
+    and shipped as consolidated containers. Fair dates and targets here are illustrative and update as campaigns are booked.
+  </footer>
+</div>
+
+<script>
+const CATS={wine:'Wine',brandy:'Brandy',dried:'Dried fruit & nuts',chur:'Churchkhela',pres:'Preserves & jams',
+  honey:'Honey',spices:'Spices & herbs',walnuts:'Walnuts',pom:'Pomegranate products',ceramics:'Ceramics'};
+const FAIRS=[
+ {id:'sial',name:'SIAL Paris',flag:'🇫🇷',city:'Paris, France',date:'2026-10-17',focus:"World's largest food-innovation show",
+  fit:"Flagship EU debut for the whole pool — the single biggest room of specialty buyers in Europe.",
+  status:'conf', producers:14, stand:['wine','brandy','dried','chur','pres','spices','pom'],
+  mTarget:40,mBooked:22, pTarget:180000,pPipe:95000,
+  check:[['Book booth & floor space',1],['Confirm producer line-up',1],['Ship product samples',1],['EU compliance dossier ready',1],['Print unified Shuka catalogue',0],['Schedule buyer meetings',0],['Set up on-stand pre-order flow',0],['Plan post-fair follow-up',0]]},
+ {id:'wff',name:'Winter Fancy Food Show',flag:'🇺🇸',city:'Las Vegas, USA',date:'2027-01-17',focus:'Top US specialty-food trade show',
+  fit:"US market entry plus the affluent Armenian diaspora — the launchpad for the American corridor.",
+  status:'plan', producers:10, stand:['dried','chur','pres','pom','spices','ceramics'],
+  mTarget:30,mBooked:8, pTarget:120000,pPipe:34000,
+  check:[['Book booth & floor space',1],['Confirm producer line-up',1],['Ship product samples',0],['US FDA/FSVP dossier ready',0],['Print unified Shuka catalogue',0],['Schedule buyer meetings',0],['Set up on-stand pre-order flow',0],['Plan post-fair follow-up',0]]},
+ {id:'biofach',name:'BioFach',flag:'🇩🇪',city:'Nuremberg, Germany',date:'2027-02-11',focus:"World's leading organic trade fair",
+  fit:"Positions organic-certified Armenian producers where premium organic buyers actually shop.",
+  status:'plan', producers:8, stand:['dried','pres','spices','honey','walnuts','pom'],
+  mTarget:25,mBooked:5, pTarget:70000,pPipe:18000,
+  check:[['Book booth & floor space',1],['Confirm organic-certified line-up',1],['Verify organic certifications',0],['Ship product samples',0],['EU compliance dossier (+ honey residue plan)',0],['Print catalogue',0],['Set up pre-order flow',0],['Plan follow-up',0]]},
+ {id:'prowein',name:'ProWein',flag:'🇩🇪',city:'Düsseldorf, Germany',date:'2027-03-14',focus:'The global wine & spirits trade fair',
+  fit:"A dedicated Armenian wine & brandy showcase — the category with the strongest story and margins.",
+  status:'plan', producers:6, stand:['wine','brandy'],
+  mTarget:35,mBooked:12, pTarget:140000,pPipe:52000,
+  check:[['Book booth & floor space',1],['Confirm winery line-up',1],['Ship wine & brandy samples',0],['VI-1 / labelling dossier ready',0],['Print tasting catalogue',0],['Schedule sommelier & buyer tastings',0],['Set up pre-order flow',0],['Plan follow-up',0]]},
+ {id:'anuga',name:'Anuga',flag:'🇩🇪',city:'Cologne, Germany',date:'2027-10-09',focus:"World's largest food & beverage fair (biennial)",
+  fit:"The anchor of the German corridor — full-range Armenian stand at the fair every major buyer attends.",
+  status:'radar', producers:20, stand:['wine','brandy','dried','chur','pres','honey','spices','walnuts','pom','ceramics'],
+  mTarget:60,mBooked:0, pTarget:300000,pPipe:0,
+  check:[['Reserve booth (books early!)',0],['Draft full producer line-up',0],['Budget & sponsorship plan',0],['Compliance dossier (full range)',0],['Catalogue & booth design',0],['Pre-book anchor buyer meetings',0],['Set up pre-order flow',0],['Plan follow-up & consolidation',0]]},
+];
+const STMETA={radar:['st-radar','On radar'],plan:['st-plan','Planning'],conf:['st-conf','Confirmed']};
+const euro=n=>'€'+Math.round(n).toLocaleString('en-US');
+function daysUntil(iso){const now=new Date();const d=new Date(iso+'T00:00:00');return Math.round((d-now)/86400000);}
+function cd(iso){const d=daysUntil(iso);if(d<0)return['past','past'];if(d===0)return['today','today'];if(d<45)return['soon',d+'d'];if(d<400)return['',d+'d'];return['',Math.round(d/30)+'mo'];}
+
+let sel='sial';
+
+function renderKPIs(){
+  const totalTarget=FAIRS.reduce((a,f)=>a+f.pTarget,0);
+  const totalPipe=FAIRS.reduce((a,f)=>a+f.pPipe,0);
+  const upcoming=FAIRS.filter(f=>daysUntil(f.date)>=0);
+  const next=upcoming.slice().sort((a,b)=>daysUntil(a.date)-daysUntil(b.date))[0];
+  document.getElementById('kpis').innerHTML=
+    `<div class="kpi"><p class="lab">Fairs on the radar</p><div class="val">${upcoming.length}<small> upcoming</small></div></div>`+
+    `<div class="kpi"><p class="lab">Combined pre-order target</p><div class="val">${euro(totalTarget)}</div></div>`+
+    `<div class="kpi"><p class="lab">Pipeline so far</p><div class="val">${euro(totalPipe)}<small> · ${Math.round(totalPipe/totalTarget*100)}%</small></div></div>`+
+    `<div class="kpi"><p class="lab">Next fair</p><div class="val" style="font-size:19px">${next?next.name.split(' ')[0]:'—'}<small> · ${next?daysUntil(next.date)+' days':''}</small></div></div>`;
+}
+function renderList(){
+  document.getElementById('faircol').innerHTML=FAIRS.map(f=>{
+    const [c,txt]=cd(f.date); const sm=STMETA[f.status];
+    return `<button class="fair ${f.id===sel?'on':''}" data-id="${f.id}" role="option" aria-selected="${f.id===sel}">
+      <div class="fn"><span aria-hidden="true">${f.flag}</span>${f.name}</div>
+      <div class="fmeta">${f.city} · ${new Date(f.date+'T00:00:00').toLocaleDateString('en-GB',{month:'short',year:'numeric'})}</div>
+      <div class="fwhen"><span class="pill ${sm[0]}">${sm[1]}</span><span class="cd ${c==='past'?'past':''}">${txt}</span></div>
+    </button>`;
+  }).join('');
+  document.querySelectorAll('.fair').forEach(b=>b.addEventListener('click',()=>{sel=b.dataset.id;render();}));
+}
+function renderDetail(){
+  const f=FAIRS.find(x=>x.id===sel); const sm=STMETA[f.status];
+  const done=f.check.filter(c=>c[1]).length; const ready=Math.round(done/f.check.length*100);
+  const dleft=daysUntil(f.date);
+  document.getElementById('detail').innerHTML=`
+    <div class="dhead">
+      <div class="dt"><h2>${f.flag} ${f.name}</h2><span class="pill ${sm[0]}">${sm[1]}</span></div>
+      <div class="dloc">${f.city} · ${new Date(f.date+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})} · ${f.focus} · ${dleft>=0?dleft+' days away':'past'}</div>
+      <p class="dfit">🎯 ${f.fit}</p>
+    </div>
+    <div class="dbody">
+      <div class="sec"><p class="sh">The Armenian stand · ${f.producers} producers</p>
+        <div class="stand">${f.stand.map(c=>`<span class="chip">${CATS[c]}</span>`).join('')}</div>
+        <p class="standnote">Curated as <b>one unified stand</b> — buyers meet Armenia, not ${f.producers} separate exporters.</p>
+      </div>
+      <div class="sec"><p class="sh">Campaign targets</p>
+        <div class="targets">
+          <div class="tgt"><div class="tl">Buyer meetings</div><div class="tv">${f.mBooked}<small> / ${f.mTarget} booked</small></div>
+            <div class="pbar"><i style="width:${Math.min(100,f.mBooked/f.mTarget*100)}%"></i></div></div>
+          <div class="tgt"><div class="tl">Pre-order pipeline</div><div class="tv">${euro(f.pPipe)}<small> / ${euro(f.pTarget)}</small></div>
+            <div class="pbar pom"><i style="width:${Math.min(100,f.pPipe/f.pTarget*100)}%"></i></div></div>
+        </div>
+      </div>
+      <div class="sec"><p class="sh">Booth &amp; logistics checklist</p>
+        <div class="check">${f.check.map((c,i)=>`<button class="ci ${c[1]?'done':''}" data-i="${i}" aria-pressed="${c[1]?'true':'false'}">
+          <span class="box">${c[1]?'✓':''}</span><span class="lab">${c[0]}</span></button>`).join('')}</div>
+        <div class="readbar"><div class="rb"><i style="width:${ready}%"></i></div><span class="rt">${ready}% ready</span></div>
+      </div>
+    </div>`;
+  document.querySelectorAll('.ci').forEach(b=>b.addEventListener('click',()=>{
+    const i=+b.dataset.i; f.check[i][1]=f.check[i][1]?0:1; renderDetail();
+  }));
+}
+function render(){renderKPIs();renderList();renderDetail();}
+render();
+</script>
+</body>
+</html>
