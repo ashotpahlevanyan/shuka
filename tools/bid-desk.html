@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shuka — Bid Desk</title>
+<meta name="description" content="Shuka's tender bid desk: sources, application documents and compliance rules — auto-generating tender applications from existing and planned goods.">
+<meta name="theme-color" content="#A32138">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%87%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --ground:#F6EDE6;--surface:#FFFFFF;--surface-2:#FBF3ED;--ink:#2B1B1E;--ink-soft:#6B554C;
+    --line:#E7D8CE;--pom:#A32138;--pom-deep:#7C1A2E;--on-pom:#FEF6F2;--apricot:#E0862A;
+    --apricot-ink:#2B1B1E;--wine:#5E2233;--herb:#43704F;--on-herb:#F4FAF5;
+    --shadow:0 1px 2px rgba(43,27,30,.06),0 10px 34px rgba(124,26,46,.10);
+    --serif:"Hoefler Text","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono:"SF Mono",ui-monospace,"Cascadia Code",Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --ground:#181012;--surface:#241A1C;--surface-2:#2C2023;--ink:#F2E6DF;--ink-soft:#BCA69C;
+    --line:#3A2A2D;--pom:#C8506A;--pom-deep:#A33350;--on-pom:#1A1012;--apricot:#EBA24A;
+    --apricot-ink:#1A1012;--wine:#B36A7E;--herb:#84B091;--on-herb:#12201A;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 40px rgba(0,0,0,.4);}}
+  :root[data-theme="light"]{--ground:#F6EDE6;--surface:#FFFFFF;--surface-2:#FBF3ED;--ink:#2B1B1E;
+    --ink-soft:#6B554C;--line:#E7D8CE;--pom:#A32138;--pom-deep:#7C1A2E;--on-pom:#FEF6F2;
+    --apricot:#E0862A;--apricot-ink:#2B1B1E;--wine:#5E2233;--herb:#43704F;--on-herb:#F4FAF5;}
+  :root[data-theme="dark"]{--ground:#181012;--surface:#241A1C;--surface-2:#2C2023;--ink:#F2E6DF;
+    --ink-soft:#BCA69C;--line:#3A2A2D;--pom:#C8506A;--pom-deep:#A33350;--on-pom:#1A1012;
+    --apricot:#EBA24A;--apricot-ink:#1A1012;--wine:#B36A7E;--herb:#84B091;--on-herb:#12201A;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1020px;margin:0 auto;padding:clamp(20px,4vw,40px) clamp(16px,4vw,28px) 64px;}
+  .back{display:inline-block;font-size:13px;font-weight:600;text-decoration:none;color:var(--ink-soft);margin-bottom:20px;}
+  .back:hover{color:var(--pom);}
+  header .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--pom);margin:0 0 10px;font-weight:700;}
+  header h1{font-family:var(--serif);font-weight:600;font-size:clamp(26px,4.6vw,42px);line-height:1.05;letter-spacing:-.01em;margin:0 0 8px;text-wrap:balance;}
+  header p{color:var(--ink-soft);font-size:16px;margin:0;max-width:66ch;}
+
+  section.blk{margin-top:32px;}
+  .blk > h2{font-family:var(--serif);font-size:22px;font-weight:600;margin:0 0 4px;letter-spacing:-.01em;}
+  .blk > .si{color:var(--ink-soft);font-size:14.5px;margin:0 0 16px;max-width:70ch;}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:clamp(16px,3vw,22px);}
+
+  /* generator */
+  .picker{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
+  @media (max-width:720px){.picker{grid-template-columns:1fr;}}
+  .pk{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:13px;cursor:pointer;text-align:left;font-family:inherit;transition:border-color .15s;box-shadow:var(--shadow);}
+  .pk:hover{border-color:var(--pom);} .pk.on{border-color:var(--pom);box-shadow:inset 0 0 0 1px var(--pom),var(--shadow);}
+  .pk:focus-visible{outline:3px solid var(--pom);outline-offset:2px;}
+  .pk .pt{font-weight:600;font-size:13.5px;line-height:1.2;} .pk .pm{font-size:12px;color:var(--ink-soft);margin-top:4px;}
+  .pk .flags{margin-top:7px;display:flex;gap:5px;flex-wrap:wrap;}
+  .fl{font-family:var(--mono);font-size:9px;font-weight:800;text-transform:uppercase;padding:2px 6px;border-radius:20px;background:var(--surface-2);color:var(--ink-soft);border:1px solid var(--line);}
+  .genbtn{width:100%;border:0;border-radius:12px;padding:13px;font-family:var(--sans);font-weight:700;font-size:15px;cursor:pointer;background:var(--pom);color:var(--on-pom);transition:transform .12s,background .15s;}
+  .genbtn:hover{transform:translateY(-1px);background:var(--pom-deep);} .genbtn:focus-visible{outline:3px solid var(--apricot);outline-offset:2px;}
+
+  .draft{margin-top:18px;border-top:1px solid var(--line);padding-top:18px;}
+  .readrow{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+  .readrow .rb{flex:1;height:11px;border-radius:6px;background:var(--surface-2);border:1px solid var(--line);overflow:hidden;}
+  .readrow .rb i{display:block;height:100%;background:var(--herb);transition:width .4s ease;}
+  .readrow .rt{font-family:var(--mono);font-size:13px;font-weight:800;min-width:120px;text-align:right;}
+  .sect{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);}
+  .sect:last-of-type{border-bottom:0;}
+  .sect .si2{flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:800;margin-top:1px;}
+  .s-ok{background:var(--herb);color:var(--on-herb);} .s-warn{background:var(--apricot);color:var(--apricot-ink);} .s-gap{background:var(--pom);color:var(--on-pom);} .s-na{background:var(--surface-2);color:var(--ink-soft);border:1px solid var(--line);}
+  .sect .sn{font-weight:600;font-size:14px;} .sect .sc{font-size:13px;color:var(--ink-soft);margin-top:2px;}
+  .tips{margin-top:16px;padding:13px 15px;border-radius:12px;background:color-mix(in srgb,var(--apricot) 11%,var(--surface));border:1px solid color-mix(in srgb,var(--apricot) 34%,var(--line));}
+  .tips .tt{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);margin:0 0 8px;}
+  .tips ul{margin:0;padding-left:18px;font-size:13.5px;color:var(--ink);} .tips li{margin-bottom:5px;}
+
+  /* repository */
+  .repo{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media (max-width:760px){.repo{grid-template-columns:1fr;}}
+  .src{display:flex;gap:11px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--line);}
+  .src:last-child{border-bottom:0;}
+  .src a{font-weight:600;font-size:14px;color:var(--ink);text-decoration:none;}
+  .src a:hover{color:var(--pom);text-decoration:underline;}
+  .src .sd{font-size:12.5px;color:var(--ink-soft);margin-top:2px;}
+  .src .stg{margin-left:auto;flex:none;font-family:var(--mono);font-size:9.5px;font-weight:800;text-transform:uppercase;padding:2px 7px;border-radius:20px;background:var(--surface-2);color:var(--ink-soft);border:1px solid var(--line);}
+  .doc{display:flex;gap:11px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);}
+  .doc:last-child{border-bottom:0;}
+  .doc .dn{font-weight:600;font-size:13.5px;} .doc .dd{font-size:12px;color:var(--ink-soft);}
+  .doc .dstat{margin-left:auto;flex:none;font-family:var(--mono);font-size:9.5px;font-weight:800;text-transform:uppercase;padding:2px 8px;border-radius:20px;}
+  .d-ready{background:color-mix(in srgb,var(--herb) 18%,var(--surface));color:var(--herb);}
+  .d-auto{background:color-mix(in srgb,var(--pom) 13%,var(--surface));color:var(--pom);}
+  .d-perprod{background:color-mix(in srgb,var(--apricot) 20%,var(--surface));color:var(--apricot-ink);}
+  .d-todo{background:var(--surface-2);color:var(--ink-soft);border:1px solid var(--line);}
+
+  .related{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+  .related a{font-size:12.5px;font-weight:600;text-decoration:none;color:var(--pom);border:1px solid color-mix(in srgb,var(--pom) 30%,var(--line));border-radius:20px;padding:5px 12px;}
+  .related a:hover{background:color-mix(in srgb,var(--pom) 8%,var(--surface));}
+
+  footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:var(--ink-soft);max-width:84ch;}
+  footer b{color:var(--ink);}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="../" class="back">← Back to Shuka</a>
+  <header>
+    <p class="eyebrow">Tenders · Bid desk</p>
+    <h1>The repository that writes the bid.</h1>
+    <p>One place for tender sources, application documents and compliance rules — so Shuka can auto-draft a tender application from the pool's existing and planned goods, and raise the odds of winning. The library below is the fuel; the generator turns it into a bid.</p>
+  </header>
+
+  <section class="blk">
+    <h2>Auto-generate a tender application</h2>
+    <p class="si">Pick an opportunity — the engine assembles a draft from the repository, the matched goods, and the compliance dossier, then scores how close it is to submission-ready.</p>
+    <div class="card">
+      <div class="picker" id="picker"></div>
+      <button class="genbtn" id="gen">⚙ Generate draft application</button>
+      <div class="draft" id="draft" hidden></div>
+    </div>
+  </section>
+
+  <section class="blk">
+    <h2>The repository</h2>
+    <p class="si">The knowledge base that powers every bid — kept current so nothing is re-created from scratch.</p>
+    <div class="repo">
+      <div class="card"><p class="si" style="font-weight:700;color:var(--ink);margin:0 0 12px">📡 Tender sources — monitored</p><div id="sources"></div></div>
+      <div class="card"><p class="si" style="font-weight:700;color:var(--ink);margin:0 0 12px">📄 Application document library</p><div id="docs"></div></div>
+    </div>
+    <div class="related">
+      <a href="tenders.html">→ Tender board</a>
+      <a href="compliance.html">→ Compliance rules</a>
+      <a href="national-plan.html">→ Planned goods</a>
+      <a href="onboarding.html">→ Producer pool</a>
+    </div>
+  </section>
+
+  <footer>
+    <b>Discovery-first, generation-next.</b> The repository (sources, documents, rules) is the foundation. Auto-generation drafts the bid,
+    but a human confirms compliance and producer capacity before submission — never bidding on what the pool can't fulfil. Public tenders
+    still require bid bonds and carry penalty exposure. Sources are real monitoring targets; document statuses are illustrative.
+  </footer>
+</div>
+
+<script>
+const SOURCES=[
+ {n:'EU — TED (Tenders Electronic Daily)',u:'https://ted.europa.eu',d:'Every EU public tender above threshold',t:'Public · EU'},
+ {n:'France — BOAMP',u:'https://www.boamp.fr',d:'French public procurement notices',t:'Public · FR'},
+ {n:'Germany — eVergabe / service.bund.de',u:'https://www.evergabe-online.de',d:'German federal & regional tenders',t:'Public · DE'},
+ {n:'US — SAM.gov',u:'https://sam.gov',d:'US federal contracting opportunities',t:'Public · US'},
+ {n:'Retail private-label RFPs',u:'#',d:'REWE · Carrefour · EDEKA · Whole Foods supplier portals — relationship-driven',t:'Private'},
+ {n:'Distributors & HoReCa',u:'#',d:'Direct sourcing calls from importers & catering groups',t:'Private'},
+];
+const DOCS=[
+ {n:'Consortium / bidder profile',d:'Shuka as single counterparty',s:'ready'},
+ {n:'Producer pool roster & capacity',d:'Live from onboarding + national plan',s:'ready'},
+ {n:'EU/US compliance dossiers',d:'Per product, from the compliance agent',s:'ready'},
+ {n:'Certificate of origin',d:'Standard per shipment',s:'ready'},
+ {n:'HACCP / food-safety certs',d:'Held per producer, aggregated',s:'perprod'},
+ {n:'Organic certifications',d:'Certified producers only',s:'perprod'},
+ {n:'Capacity & delivery commitment',d:'Auto-assembled from pool confirmations',s:'auto'},
+ {n:'Landed-cost / pricing sheet',d:'From the consolidation engine',s:'auto'},
+ {n:'References & track record',d:'Builds as pilots deliver',s:'todo'},
+ {n:'Bid bond / financial guarantee',d:'Public tenders — financing partner TBD',s:'todo'},
+];
+const DSTAT={ready:['d-ready','On file'],auto:['d-auto','Auto'],perprod:['d-perprod','Per producer'],todo:['d-todo','To prepare']};
+
+const TENDERS=[
+ {id:'t1',title:'REWE — private-label apricots & nuts',market:'EU · Germany',public:false,organic:false,producers:9,
+  offer:['Dried apricots · 8 t (6 t existing + 2 t planned)','Walnuts · 3 t (existing)']},
+ {id:'t6',title:'Whole Foods — churchkhela & sweets',market:'US · USA',public:false,organic:false,producers:5,
+  offer:['Churchkhela · 5,000 units (planned autumn crop)','Dried fruit mix · 2 t (existing)']},
+ {id:'t2',title:'Ville de Lyon — organic dried fruit',market:'EU · France',public:true,organic:true,producers:6,
+  offer:['Organic dried fruit · 5 t (planned)','Organic preserves · 4,000 units (existing)']},
+];
+let sel='t1';
+
+function renderPicker(){
+  document.getElementById('picker').innerHTML=TENDERS.map(t=>
+    `<button class="pk ${t.id===sel?'on':''}" data-id="${t.id}">
+      <div class="pt">${t.title}</div><div class="pm">${t.market}</div>
+      <div class="flags">${t.public?'<span class="fl">Public</span>':'<span class="fl">Private</span>'}${t.organic?'<span class="fl">Organic</span>':''}</div>
+    </button>`).join('');
+  document.querySelectorAll('.pk').forEach(b=>b.addEventListener('click',()=>{sel=b.dataset.id;renderPicker();document.getElementById('draft').hidden=true;}));
+}
+function generate(){
+  const t=TENDERS.find(x=>x.id===sel);
+  const sect=[
+   ['ok','Bidder profile','Shuka consortium — the single accountable counterparty for the Armenian producer pool.'],
+   ['ok','Product offer','From the plan: '+t.offer.join(' · ')+'.'],
+   ['ok','Capacity commitment',t.producers+' producers auto-committed the required volume through the pool.'],
+   t.organic?['warn','Compliance & certifications','EU dossier ready — but organic certification required per producer (available for certified producers only).']
+             :['ok','Compliance & certifications','EU/US dossier auto-generated by the compliance agent — all categories eligible.'],
+   ['ok','Pricing (landed, DDP)','Per-line landed cost drawn from the consolidation engine.'],
+   ['warn','References & track record','Building — pilot delivery references still accumulating.'],
+   t.public?['gap','Bid bond / guarantee','Required for this public tender — financing partner to confirm before submission.']
+           :['na','Bid bond / guarantee','Not required (private RFP).'],
+  ];
+  const applicable=sect.filter(s=>s[0]!=='na');
+  const ok=applicable.filter(s=>s[0]==='ok').length;
+  const pct=Math.round(ok/applicable.length*100);
+  const tips=sect.filter(s=>s[0]==='warn'||s[0]==='gap').map(s=>{
+    if(s[1].startsWith('Compliance'))return 'Verify organic certificates for the '+t.producers+' matched producers.';
+    if(s[1].startsWith('References'))return 'Attach 2–3 delivery references (auto-fills once pilots complete).';
+    if(s[1].startsWith('Bid bond'))return 'Secure a bid bond / guarantee via a financing partner before submitting.';
+    return s[1];
+  });
+  const ICON={ok:['s-ok','✓'],warn:['s-warn','!'],gap:['s-gap','✕'],na:['s-na','–']};
+  const d=document.getElementById('draft'); d.hidden=false;
+  d.innerHTML=`
+    <div class="readrow"><div class="rb"><i style="width:${pct}%"></i></div><span class="rt">${pct}% submission-ready</span></div>
+    ${sect.map(s=>`<div class="sect"><span class="si2 ${ICON[s[0]][0]}">${ICON[s[0]][1]}</span><div><div class="sn">${s[1]}</div><div class="sc">${s[2]}</div></div></div>`).join('')}
+    ${tips.length?`<div class="tips"><p class="tt">To raise the win odds</p><ul>${tips.map(x=>`<li>${x}</li>`).join('')}</ul></div>`:''}`;
+  d.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'nearest'});
+}
+document.getElementById('gen').addEventListener('click',generate);
+
+function renderRepo(){
+  document.getElementById('sources').innerHTML=SOURCES.map(s=>
+    `<div class="src"><div><a href="${s.u}"${s.u!=='#'?' target="_blank" rel="noopener"':''}>${s.n}</a><div class="sd">${s.d}</div></div><span class="stg">${s.t}</span></div>`).join('');
+  document.getElementById('docs').innerHTML=DOCS.map(x=>{const st=DSTAT[x.s];
+    return `<div class="doc"><div><div class="dn">${x.n}</div><div class="dd">${x.d}</div></div><span class="dstat ${st[0]}">${st[1]}</span></div>`;}).join('');
+}
+renderPicker();renderRepo();
+</script>
+</body>
+</html>
