@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%87%3C/text%3E%3C/svg%3E">
+<style>
+.shuka-back{position:fixed;top:14px;right:14px;z-index:999;font-family:system-ui,-apple-system,sans-serif;font-size:13px;font-weight:600;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);padding:7px 13px;border-radius:20px;box-shadow:0 4px 14px rgba(0,0,0,.14);}
+.shuka-back:hover{color:var(--pom);border-color:var(--pom);}
+.shuka-back:focus-visible{outline:2px solid var(--pom);outline-offset:2px;}
+</style>
+<title>Shuka — Order Lifecycle</title>
+<style>
+  :root{
+    --ground:#F6EDE6; --surface:#FFFFFF; --surface-2:#FBF3ED;
+    --ink:#2B1B1E; --ink-soft:#7A645C; --line:#E7D8CE;
+    --pom:#A32138; --pom-deep:#7C1A2E; --on-pom:#FEF6F2;
+    --apricot:#E0862A; --apricot-ink:#2B1B1E; --wine:#5E2233; --herb:#4E7A5B; --on-herb:#F4FAF5;
+    --shadow:0 1px 2px rgba(43,27,30,.06),0 8px 28px rgba(124,26,46,.07);
+    --serif:"Hoefler Text","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono:"SF Mono",ui-monospace,"Cascadia Code",Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --ground:#181012; --surface:#241A1C; --surface-2:#2C2023;
+      --ink:#F2E6DF; --ink-soft:#B49C93; --line:#3A2A2D;
+      --pom:#C8506A; --pom-deep:#A33350; --on-pom:#1A1012;
+      --apricot:#EBA24A; --apricot-ink:#1A1012; --herb:#78A585; --on-herb:#12201A;
+      --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="light"]{
+    --ground:#F6EDE6;--surface:#FFFFFF;--surface-2:#FBF3ED;--ink:#2B1B1E;--ink-soft:#7A645C;
+    --line:#E7D8CE;--pom:#A32138;--pom-deep:#7C1A2E;--on-pom:#FEF6F2;--apricot:#E0862A;
+    --apricot-ink:#2B1B1E;--herb:#4E7A5B;--on-herb:#F4FAF5;
+  }
+  :root[data-theme="dark"]{
+    --ground:#181012;--surface:#241A1C;--surface-2:#2C2023;--ink:#F2E6DF;--ink-soft:#B49C93;
+    --line:#3A2A2D;--pom:#C8506A;--pom-deep:#A33350;--on-pom:#1A1012;--apricot:#EBA24A;
+    --apricot-ink:#1A1012;--herb:#78A585;--on-herb:#12201A;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
+    line-height:1.5;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1120px;margin:0 auto;padding:clamp(20px,4vw,44px) clamp(16px,4vw,32px) 64px;}
+  header .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--pom);margin:0 0 10px;}
+  header h1{font-family:var(--serif);font-weight:600;font-size:clamp(28px,5vw,44px);line-height:1.05;
+    letter-spacing:-.01em;margin:0;text-wrap:balance;}
+  header h1 em{font-style:italic;color:var(--pom);}
+  header p.lead{max-width:64ch;color:var(--ink-soft);font-size:clamp(15px,1.7vw,17px);margin:14px 0 0;}
+
+  .legend{display:flex;flex-wrap:wrap;gap:16px;align-items:center;font-size:12.5px;color:var(--ink-soft);
+    margin:22px 0 10px;}
+  .legend .item{display:inline-flex;align-items:center;gap:7px;}
+  .chip{display:inline-block;width:24px;height:12px;border-radius:3px;}
+  .c-held{background:var(--apricot);} .c-rel{background:var(--herb);}
+  .c-move{background:var(--pom);} .c-none{background:var(--line);}
+
+  /* swimlane matrix */
+  .board{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    box-shadow:var(--shadow);padding:4px;}
+  .matrix{display:grid;grid-template-columns:150px repeat(9,minmax(96px,1fr));min-width:940px;}
+  .mrow{display:contents;}
+  .rlabel{position:sticky;left:0;background:var(--surface);z-index:2;display:flex;flex-direction:column;
+    justify-content:center;gap:2px;padding:10px 12px;border-bottom:1px solid var(--line);}
+  .rlabel .rn{font-weight:600;font-size:13.5px;} .rlabel .rs{font-size:11px;color:var(--ink-soft);}
+  .rlabel.party{border-left:3px solid var(--pom);}
+
+  .stagebtn{border:0;background:transparent;cursor:pointer;text-align:center;padding:12px 6px 10px;
+    border-bottom:1px solid var(--line);border-left:1px solid var(--line);color:var(--ink-soft);
+    display:flex;flex-direction:column;align-items:center;gap:6px;transition:background .15s;}
+  .stagebtn:hover{background:var(--surface-2);}
+  .stagebtn .num{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--line);display:grid;
+    place-items:center;font-family:var(--mono);font-size:12px;font-weight:700;color:var(--ink-soft);}
+  .stagebtn .stt{font-size:11px;font-weight:600;line-height:1.2;color:var(--ink);text-wrap:balance;}
+  .stagebtn:focus-visible{outline:2px solid var(--pom);outline-offset:-2px;}
+
+  .cell{border-bottom:1px solid var(--line);border-left:1px solid var(--line);min-height:40px;
+    display:flex;align-items:center;justify-content:center;padding:6px 5px;}
+  .act{display:flex;align-items:center;gap:5px;font-size:10.5px;line-height:1.15;text-align:center;
+    color:var(--ink);font-weight:500;}
+  .act .d{flex:none;width:9px;height:9px;border-radius:50%;background:var(--pom);
+    box-shadow:0 0 0 3px color-mix(in srgb,var(--pom) 18%,transparent);}
+  .cell.idle{color:var(--ink-soft);}
+  .cell.idle::before{content:"·";font-size:20px;color:var(--line);}
+
+  .track{border-bottom:1px solid var(--line);border-left:1px solid var(--line);min-height:38px;
+    display:flex;align-items:center;justify-content:center;padding:5px;}
+  .pill{width:100%;border-radius:6px;padding:5px 4px;font-family:var(--mono);font-size:10px;font-weight:700;
+    letter-spacing:.02em;text-align:center;text-transform:uppercase;}
+  .p-none{background:var(--surface-2);color:var(--ink-soft);}
+  .p-pending{background:color-mix(in srgb,var(--apricot) 18%,var(--surface));color:var(--ink);
+    box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--apricot) 55%,transparent);}
+  .p-held{background:var(--apricot);color:var(--apricot-ink);}
+  .p-released{background:var(--herb);color:var(--on-herb);}
+  .p-alloc{background:color-mix(in srgb,var(--pom) 16%,var(--surface));color:var(--ink);
+    box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--pom) 45%,transparent);}
+  .p-moving{background:var(--pom);color:var(--on-pom);}
+  .p-delivered{background:var(--herb);color:var(--on-herb);}
+
+  /* selected column highlight */
+  .matrix.sel-active [data-col].on{background:color-mix(in srgb,var(--apricot) 9%,var(--surface));}
+  .stagebtn.on{background:color-mix(in srgb,var(--apricot) 12%,var(--surface));}
+  .stagebtn.on .num{border-color:var(--pom);color:var(--on-pom);background:var(--pom);}
+
+  /* detail */
+  .detail{margin-top:20px;background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    box-shadow:var(--shadow);overflow:hidden;}
+  .dhead{display:flex;align-items:center;gap:14px;padding:18px 22px;border-bottom:1px solid var(--line);
+    background:var(--surface-2);}
+  .dhead .dnum{flex:none;width:38px;height:38px;border-radius:50%;background:var(--pom);color:var(--on-pom);
+    display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:16px;}
+  .dhead h3{font-family:var(--serif);font-size:23px;font-weight:600;margin:0;letter-spacing:-.01em;}
+  .dhead .dsub{font-size:13px;color:var(--ink-soft);margin-top:2px;}
+  .dbody{padding:18px 22px 22px;}
+  .dbody>p{margin:0 0 18px;max-width:74ch;color:var(--ink-soft);font-size:14.5px;}
+  .dbody>p b{color:var(--ink);}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+  @media (max-width:720px){.cards{grid-template-columns:1fr;}}
+  .card{border:1px solid var(--line);border-radius:11px;padding:13px 15px;background:var(--surface);}
+  .card .ct{font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--ink-soft);
+    margin:0 0 7px;display:flex;align-items:center;gap:7px;}
+  .card .cv{font-size:13.5px;color:var(--ink);}
+  .card.money{border-color:color-mix(in srgb,var(--apricot) 45%,var(--line));}
+  .card.goods{border-color:color-mix(in srgb,var(--pom) 35%,var(--line));}
+  .statetag{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:700;text-transform:uppercase;
+    padding:2px 8px;border-radius:20px;margin-bottom:6px;}
+
+  .nav{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:16px;}
+  .nav button{font-family:var(--sans);font-size:13.5px;font-weight:600;color:var(--ink);background:var(--surface);
+    border:1px solid var(--line);border-radius:9px;padding:9px 16px;cursor:pointer;box-shadow:var(--shadow);
+    transition:transform .12s;}
+  .nav button:hover{transform:translateY(-1px);} .nav button:disabled{opacity:.4;cursor:default;transform:none;}
+  .nav button:focus-visible{outline:2px solid var(--pom);outline-offset:2px;}
+  .nav .prog{font-family:var(--mono);font-size:12px;color:var(--ink-soft);}
+
+  footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-soft);
+    max-width:80ch;}
+  footer b{color:var(--ink);}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style></head>
+<body>
+<a href="../" class="shuka-back">← Back to Shuka</a>
+
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Shuka · Consolidated procurement hub</p>
+    <h1>One order, many suppliers, one container — from <em>quote</em> to escrow to a buyer's dock.</h1>
+    <p class="lead">This is the RFQ-and-accept flow, not an auction: a buyer says what they need, Armenian
+      suppliers submit real offers, the buyer approves a mix, money sits safely in escrow, and Shuka packs
+      the whole basket into shared containers. Follow the money 🟠 and the goods 🔴 down the board, or click
+      any stage.</p>
+  </header>
+
+  <div class="legend">
+    <span class="item"><span class="chip c-none"></span> idle</span>
+    <span class="item"><span class="chip c-held"></span> money held in escrow</span>
+    <span class="item"><span class="chip c-rel"></span> settled / delivered</span>
+    <span class="item"><span class="chip c-move"></span> goods in motion</span>
+    <span class="item"><span class="d" style="display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--pom)"></span> party acts here</span>
+  </div>
+
+  <div class="board"><div class="matrix" id="matrix"></div></div>
+
+  <div class="nav">
+    <button id="prev">← Previous</button>
+    <span class="prog" id="prog"></span>
+    <button id="next">Next →</button>
+  </div>
+
+  <div class="detail" id="detail"></div>
+
+  <footer>
+    <b>The two hard parts live in stages 2 and 6.</b> Stage&nbsp;2 is the compliance agent that gates what may
+    legally enter the EU/US. Stage&nbsp;6 is the consolidation engine — bin-packing many suppliers' SKUs into
+    shared containers and splitting freight &amp; customs into a fair per-line landed cost. Escrow (stages 5–9)
+    runs through a licensed provider such as Mangopay or Lemonway, not a home-built wallet. Money locks at
+    approval, is <b>held</b> through fulfilment, and is released to each supplier only on verified delivery.
+  </footer>
+</div>
+
+<script>
+const P={buyer:'Buyer (EU / US)',supplier:'Suppliers (Armenia)',shuka:'Shuka hub'};
+const STAGES=[
+ {n:1,title:'Requirement posted',sub:'Buyer opens a basket',
+  buyer:'Posts needs: categories, quantities, delivery window & destination',
+  supplier:null, shuka:'Validates and opens the requirement',
+  money:['none','—','No money in play yet'],
+  goods:['none','—','Nothing moving yet'],
+  desc:'A buyer — say a German supermarket chain — states a multi-category requirement in one place: <b>2,000 kg dried apricots, 500 cases wine, 800 units preserves</b>, needed by a date, delivered to a depot. One requirement can span many categories at once.'},
+ {n:2,title:'Eligibility match',sub:'Compliance agent gates it',
+  buyer:null, supplier:null,
+  shuka:'Compliance agent filters to EU/US-eligible products & vetted suppliers',
+  money:['none','—','No money in play yet'],
+  goods:['none','—','Nothing moving yet'],
+  desc:'The <b>curation / compliance agent</b> screens each requested category against the destination’s import rules — animal vs non-animal, labelling (EU Reg. 1169/2011), HACCP, certificate of origin, phytosanitary. Only eligible products and suppliers who can actually export are invited to quote. This is the gate that makes the redirect away from Russia real.'},
+ {n:3,title:'Suppliers quote',sub:'Offers, not bids',
+  buyer:'Watches quotes arrive',
+  supplier:'Each submits a real offer per line: price, available qty, lead time, certs',
+  shuka:'Normalises quotes, flags gaps or missing certs',
+  money:['none','—','No money in play yet'],
+  goods:['none','—','Nothing moving yet'],
+  desc:'Not an auction — no live underbidding. Each supplier submits <b>their own standing offer</b> on the lines they can serve. A single line (e.g. apricots) can be split across several suppliers if no one can fill it alone.'},
+ {n:4,title:'Buyer approves the mix',sub:'Basket is locked',
+  buyer:'Approves chosen supplier-line offers, building the final basket',
+  supplier:null, shuka:'Locks basket, computes provisional landed cost per line',
+  money:['pending','Locked','Order value fixed — not yet charged'],
+  goods:['none','—','Nothing moving yet'],
+  desc:'The buyer picks the combination they want — <b>Supplier A for apricots, Supplier B for wine, Suppliers C+D for preserves</b>. The approved lines become one binding basket with a provisional landed cost.'},
+ {n:5,title:'Escrow funded',sub:'Money held safely',
+  buyer:'Funds the approved total into escrow',
+  supplier:null, shuka:'Escrow provider holds funds; suppliers cleared to produce',
+  money:['held','In escrow','Full amount held, released to no one'],
+  goods:['none','—','Nothing moving yet'],
+  desc:'The buyer pays the total into a <b>licensed escrow account</b>. Suppliers now have a guaranteed order and start production, but the money is untouchable until goods are verified — protection for both sides in a new, cross-border relationship.'},
+ {n:6,title:'Consolidation planned',sub:'Many suppliers, one container',
+  buyer:null, supplier:null,
+  shuka:'Consolidation engine packs SKUs into shared containers & allocates freight',
+  money:['held','In escrow','Still held'],
+  goods:['alloc','Allocated','Each line assigned to a container slot'],
+  desc:'The core engine runs: it <b>bin-packs the approved SKUs from different suppliers and categories</b> into shared containers under weight, volume and temperature limits, reconciles supplier MOQs, and splits freight + customs + insurance into a fair, transparent landed cost per line.'},
+ {n:7,title:'Fulfilment to hub',sub:'Pick, QC, label, load',
+  buyer:null,
+  supplier:'Deliver produced goods to the Armenian consolidation hub',
+  shuka:'QC, EU/US labelling, and container loading',
+  money:['held','In escrow','Still held'],
+  goods:['moving','At hub → loaded','Goods gather in Armenia and load'],
+  desc:'Suppliers deliver into the <b>Armenian consolidation warehouse</b>. Shuka inspects, applies compliant labelling, and loads the mixed container. This is where scattered small producers become one export-grade shipment.'},
+ {n:8,title:'Customs & delivery',sub:'Armenia → EU / US',
+  buyer:null, supplier:null,
+  shuka:'Handles export, import clearance, and last-mile to the buyer',
+  money:['held','In escrow','Still held'],
+  goods:['moving','In transit','Container clears customs and ships'],
+  desc:'Shuka acts as importer of record: <b>export from Armenia, import clearance in the EU/US, and delivery</b> to the buyer’s depot. One customs event for the whole consolidated container instead of dozens of tiny ones.'},
+ {n:9,title:'Delivery accepted → escrow released',sub:'Everyone settles',
+  buyer:'Confirms receipt / raises any dispute',
+  supplier:'Paid out on verified handover',
+  shuka:'Releases escrow per line; handles disputes',
+  money:['released','Released','Paid to each supplier'],
+  goods:['delivered','Delivered','Goods with the buyer'],
+  desc:'On verified delivery the buyer confirms receipt and <b>escrow is released to each supplier</b> for their portion. Disputes on a single line can hold just that line’s funds, not the whole order. The loop closes — ready to repeat, ideally on the cadence the year-planner recommends.'},
+];
+
+const MONEY_CLS={none:'p-none',pending:'p-pending',held:'p-held',released:'p-released'};
+const GOODS_CLS={none:'p-none',alloc:'p-alloc',moving:'p-moving',delivered:'p-delivered'};
+let cur=0;
+
+function buildBoard(){
+  const m=document.getElementById('matrix');
+  let h='';
+  // header row
+  h+='<div class="mrow"><div class="rlabel"><span class="rn">Stage</span><span class="rs">click to explore</span></div>';
+  STAGES.forEach((s,i)=>{h+=`<button class="stagebtn" data-col="${i}" data-stage="${i}"><span class="num">${s.n}</span><span class="stt">${s.title}</span></button>`;});
+  h+='</div>';
+  // party lanes
+  ['buyer','supplier','shuka'].forEach(key=>{
+    h+=`<div class="mrow"><div class="rlabel party"><span class="rn">${P[key].split(' (')[0]}</span><span class="rs">${(P[key].match(/\((.*)\)/)||['','' ])[1]}</span></div>`;
+    STAGES.forEach((s,i)=>{
+      const a=s[key];
+      h+=`<div class="cell ${a?'':'idle'}" data-col="${i}">${a?`<span class="act"><span class="d"></span><span>${a}</span></span>`:''}</div>`;
+    });
+    h+='</div>';
+  });
+  // money track
+  h+='<div class="mrow"><div class="rlabel"><span class="rn">💰 Money</span><span class="rs">escrow state</span></div>';
+  STAGES.forEach((s,i)=>{h+=`<div class="track" data-col="${i}"><span class="pill ${MONEY_CLS[s.money[0]]}">${s.money[1]}</span></div>`;});
+  h+='</div>';
+  // goods track
+  h+='<div class="mrow"><div class="rlabel"><span class="rn">📦 Goods</span><span class="rs">location</span></div>';
+  STAGES.forEach((s,i)=>{h+=`<div class="track" data-col="${i}"><span class="pill ${GOODS_CLS[s.goods[0]]}">${s.goods[1]}</span></div>`;});
+  h+='</div>';
+  m.innerHTML=h;
+  m.classList.add('sel-active');
+  m.querySelectorAll('.stagebtn').forEach(b=>b.addEventListener('click',()=>select(+b.dataset.stage)));
+}
+
+function select(i){
+  cur=i;
+  const m=document.getElementById('matrix');
+  m.querySelectorAll('[data-col]').forEach(el=>el.classList.toggle('on',+el.dataset.col===i));
+  m.querySelectorAll('.stagebtn').forEach(b=>b.classList.toggle('on',+b.dataset.stage===i));
+  const s=STAGES[i];
+  const mtag=`<span class="statetag ${MONEY_CLS[s.money[0]]}">${s.money[1]}</span>`;
+  const gtag=`<span class="statetag ${GOODS_CLS[s.goods[0]]}">${s.goods[1]}</span>`;
+  document.getElementById('detail').innerHTML=`
+    <div class="dhead"><div class="dnum">${s.n}</div><div><h3>${s.title}</h3><div class="dsub">${s.sub}</div></div></div>
+    <div class="dbody">
+      <p>${s.desc}</p>
+      <div class="cards">
+        <div class="card"><p class="ct">👥 Who acts</p><div class="cv">
+          ${s.buyer?`<div><b>Buyer:</b> ${s.buyer}</div>`:''}
+          ${s.supplier?`<div style="margin-top:6px"><b>Suppliers:</b> ${s.supplier}</div>`:''}
+          ${s.shuka?`<div style="margin-top:6px"><b>Shuka:</b> ${s.shuka}</div>`:''}
+        </div></div>
+        <div class="card money"><p class="ct">💰 Money</p>${mtag}<div class="cv">${s.money[2]}</div></div>
+        <div class="card goods"><p class="ct">📦 Goods</p>${gtag}<div class="cv">${s.goods[2]}</div></div>
+      </div>
+    </div>`;
+  document.getElementById('prog').textContent=`Stage ${s.n} of ${STAGES.length}`;
+  document.getElementById('prev').disabled=i===0;
+  document.getElementById('next').disabled=i===STAGES.length-1;
+}
+document.getElementById('prev').addEventListener('click',()=>select(Math.max(0,cur-1)));
+document.getElementById('next').addEventListener('click',()=>select(Math.min(STAGES.length-1,cur+1)));
+
+buildBoard();
+select(0);
+</script>
+
+</body>
+</html>

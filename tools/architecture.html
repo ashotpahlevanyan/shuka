@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%87%3C/text%3E%3C/svg%3E">
+<style>
+.shuka-back{position:fixed;top:14px;right:14px;z-index:999;font-family:system-ui,-apple-system,sans-serif;font-size:13px;font-weight:600;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);padding:7px 13px;border-radius:20px;box-shadow:0 4px 14px rgba(0,0,0,.14);}
+.shuka-back:hover{color:var(--pom);border-color:var(--pom);}
+.shuka-back:focus-visible{outline:2px solid var(--pom);outline-offset:2px;}
+</style>
+<title>Shuka — Platform Architecture</title>
+<style>
+  :root{
+    --ground:#F6EDE6;--surface:#FFFFFF;--surface-2:#FBF3ED;--ink:#2B1B1E;--ink-soft:#7A645C;
+    --line:#E7D8CE;--pom:#A32138;--pom-deep:#7C1A2E;--on-pom:#FEF6F2;--apricot:#E0862A;
+    --apricot-ink:#2B1B1E;--wine:#5E2233;--herb:#4E7A5B;--on-herb:#F4FAF5;
+    --shadow:0 1px 2px rgba(43,27,30,.06),0 8px 28px rgba(124,26,46,.07);
+    --serif:"Hoefler Text","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono:"SF Mono",ui-monospace,"Cascadia Code",Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --ground:#181012;--surface:#241A1C;--surface-2:#2C2023;--ink:#F2E6DF;--ink-soft:#B49C93;
+    --line:#3A2A2D;--pom:#C8506A;--pom-deep:#A33350;--on-pom:#1A1012;--apricot:#EBA24A;
+    --apricot-ink:#1A1012;--wine:#B36A7E;--herb:#78A585;--on-herb:#12201A;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);}}
+  :root[data-theme="light"]{--ground:#F6EDE6;--surface:#FFFFFF;--surface-2:#FBF3ED;--ink:#2B1B1E;
+    --ink-soft:#7A645C;--line:#E7D8CE;--pom:#A32138;--pom-deep:#7C1A2E;--on-pom:#FEF6F2;
+    --apricot:#E0862A;--apricot-ink:#2B1B1E;--wine:#5E2233;--herb:#4E7A5B;--on-herb:#F4FAF5;}
+  :root[data-theme="dark"]{--ground:#181012;--surface:#241A1C;--surface-2:#2C2023;--ink:#F2E6DF;
+    --ink-soft:#B49C93;--line:#3A2A2D;--pom:#C8506A;--pom-deep:#A33350;--on-pom:#1A1012;
+    --apricot:#EBA24A;--apricot-ink:#1A1012;--wine:#B36A7E;--herb:#78A585;--on-herb:#12201A;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);line-height:1.5;
+    -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1180px;margin:0 auto;padding:clamp(20px,4vw,44px) clamp(16px,4vw,32px) 64px;}
+  header .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--pom);margin:0 0 10px;}
+  header h1{font-family:var(--serif);font-weight:600;font-size:clamp(27px,4.8vw,44px);line-height:1.05;
+    letter-spacing:-.01em;margin:0;text-wrap:balance;}
+  header h1 em{font-style:italic;color:var(--pom);}
+  header p.lead{max-width:70ch;color:var(--ink-soft);font-size:clamp(15px,1.7vw,17px);margin:13px 0 0;}
+
+  .lanes{display:flex;flex-direction:column;gap:10px;margin:26px 0 20px;}
+  .lane{background:var(--surface);border:1px solid var(--line);border-radius:13px;box-shadow:var(--shadow);
+    padding:12px 16px;cursor:pointer;transition:border-color .18s,opacity .18s;--flowc:var(--pom);}
+  .lane:hover{border-color:color-mix(in srgb,var(--flowc) 45%,var(--line));}
+  .lane.on{border-color:var(--flowc);box-shadow:0 0 0 1px var(--flowc),var(--shadow);}
+  .lanes.hassel .lane:not(.on){opacity:.5;}
+  .lane:focus-visible{outline:2px solid var(--flowc);outline-offset:2px;}
+  .lhead{display:flex;align-items:center;gap:11px;margin-bottom:8px;flex-wrap:wrap;}
+  .lbadge{font-family:var(--mono);font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--on-pom);background:var(--flowc);padding:3px 10px;border-radius:20px;}
+  .lhtxt{font-family:var(--serif);font-size:16px;font-weight:600;}
+  .track{overflow:hidden;position:relative;height:30px;border-radius:7px;
+    background:color-mix(in srgb,var(--flowc) 8%,var(--surface));
+    border:1px solid color-mix(in srgb,var(--flowc) 22%,var(--line));}
+  .chevs{position:absolute;top:0;bottom:0;display:flex;align-items:center;gap:5px;color:var(--flowc);
+    font-weight:800;font-size:18px;white-space:nowrap;will-change:transform;}
+  .lane.rev .chevs{animation:slideL 9s linear infinite;}
+  .lane.fwd .chevs{animation:slideR 9s linear infinite;}
+  @keyframes slideR{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+  @keyframes slideL{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .ends{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink-soft);margin-top:6px;}
+  .ends b{color:var(--ink);font-weight:600;}
+
+  .diagram{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:16px;align-items:stretch;}
+  @media (max-width:860px){.diagram{grid-template-columns:1fr;}}
+  .col{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);
+    padding:18px;display:flex;flex-direction:column;}
+  .col.hub{border-color:color-mix(in srgb,var(--pom) 35%,var(--line));
+    box-shadow:0 0 0 1px color-mix(in srgb,var(--pom) 22%,transparent),0 14px 40px rgba(124,26,46,.12);}
+  .colh{display:flex;align-items:center;gap:9px;margin-bottom:3px;}
+  .colh .cflag{font-size:22px;}
+  .colh h2{font-family:var(--serif);font-size:19px;font-weight:600;margin:0;}
+  .csub{font-size:12.5px;color:var(--ink-soft);margin:0 0 14px;text-wrap:balance;}
+
+  .pool{border:1.5px dashed color-mix(in srgb,var(--pom) 40%,var(--line));border-radius:12px;padding:13px;
+    background:color-mix(in srgb,var(--pom) 5%,var(--surface));}
+  .poolcap{font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--pom);font-weight:700;margin-bottom:9px;}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;}
+  .chip{font-size:12.5px;font-weight:600;background:var(--surface);border:1px solid var(--line);
+    border-radius:20px;padding:4px 11px;}
+  .subnote{margin-top:13px;font-size:12.5px;color:var(--ink-soft);padding:11px 12px;background:var(--surface-2);
+    border-radius:10px;}
+  .subnote b{color:var(--ink);}
+
+  .mods{display:flex;flex-direction:column;gap:9px;}
+  .mod{display:flex;gap:11px;align-items:flex-start;text-align:left;width:100%;font-family:inherit;
+    background:var(--surface-2);border:1px solid var(--line);border-radius:11px;padding:12px 13px;cursor:pointer;
+    transition:transform .12s,border-color .15s,background .15s,opacity .15s;}
+  .mod:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--pom) 35%,var(--line));}
+  .mod:focus-visible{outline:2px solid var(--pom);outline-offset:2px;}
+  .mod .mi{font-size:19px;flex:none;}
+  .mod .mn{font-weight:600;font-size:14px;}
+  .mod .mr{font-size:12px;color:var(--ink-soft);margin-top:1px;}
+  .mod.hot{border-color:var(--pom);background:color-mix(in srgb,var(--pom) 9%,var(--surface));
+    box-shadow:inset 0 0 0 1px var(--pom);}
+  .mods.dimming .mod:not(.hot){opacity:.4;}
+  .mod.sel{border-color:var(--pom);background:color-mix(in srgb,var(--pom) 10%,var(--surface));}
+
+  .buyers{display:flex;flex-direction:column;gap:8px;}
+  .buyer{display:flex;align-items:center;gap:9px;font-size:13.5px;font-weight:500;background:var(--surface-2);
+    border:1px solid var(--line);border-radius:10px;padding:10px 12px;}
+  .buyer .bi{font-size:16px;}
+  .flags{font-size:20px;letter-spacing:2px;margin-top:12px;}
+
+  .detail{margin-top:20px;background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    box-shadow:var(--shadow);padding:20px 22px;min-height:96px;}
+  .detail .dk{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--pom);margin:0 0 7px;}
+  .detail h3{font-family:var(--serif);font-size:21px;font-weight:600;margin:0 0 8px;letter-spacing:-.01em;text-wrap:balance;}
+  .detail p{margin:0;color:var(--ink-soft);font-size:14.5px;max-width:78ch;}
+  .detail p b{color:var(--ink);}
+
+  footer{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-soft);max-width:82ch;}
+  footer b{color:var(--ink);}
+  @media (prefers-reduced-motion:reduce){.chevs{animation:none!important;}*{transition:none!important;}}
+</style></head>
+<body>
+<a href="../" class="shuka-back">← Back to Shuka</a>
+
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Shuka · Platform architecture</p>
+    <h1>Armenia, represented as <em>one market</em> — so the buyers come to the producers, not the other way around.</h1>
+    <p class="lead">Hundreds of small Armenian producers appear to the world as a single, trustworthy supply source.
+      Demand originates in EU and US markets and is pulled through the Shuka hub to exactly the right producers.
+      Click a flow to trace it, or a hub module to see its job.</p>
+  </header>
+
+  <div class="lanes hassel" id="lanes"></div>
+
+  <div class="diagram">
+    <div class="col">
+      <div class="colh"><span class="cflag">🇦🇲</span><h2>Armenia · supply</h2></div>
+      <p class="csub">Producers list their goods and stay compliant. That's it — no prospecting, no trade fairs.</p>
+      <div class="pool">
+        <div class="poolcap">◆ One collective supply pool</div>
+        <div class="chips">
+          <span class="chip">Wine</span><span class="chip">Brandy</span><span class="chip">Dried fruit</span>
+          <span class="chip">Churchkhela</span><span class="chip">Preserves</span><span class="chip">Spices</span>
+          <span class="chip">Walnuts</span><span class="chip">Pomegranate</span><span class="chip">Ceramics</span>
+        </div>
+      </div>
+      <div class="subnote"><b>Consolidation hub</b> — a warehouse where scattered small producers become one export-grade shipment.</div>
+    </div>
+
+    <div class="col hub">
+      <div class="colh"><span class="cflag">◈</span><h2>Shuka · the hub</h2></div>
+      <p class="csub">The operating layer that does everything a lone producer can't: vet, match, pool, insure, ship.</p>
+      <div class="mods" id="mods"></div>
+    </div>
+
+    <div class="col">
+      <div class="colh"><span class="cflag">🇪🇺</span><h2>EU + US · demand</h2></div>
+      <p class="csub">Buyers transact with Shuka as a single counterparty — one contract, one container, one escrow.</p>
+      <div class="buyers">
+        <div class="buyer"><span class="bi">🛒</span> Supermarket chains</div>
+        <div class="buyer"><span class="bi">🏬</span> Importers &amp; distributors</div>
+        <div class="buyer"><span class="bi">🥖</span> Specialty grocers &amp; delis</div>
+        <div class="buyer"><span class="bi">🍽️</span> HoReCa / food service</div>
+      </div>
+      <div class="flags">🇩🇪 🇫🇷 🇳🇱 🇮🇹 🇺🇸</div>
+    </div>
+  </div>
+
+  <div class="detail" id="detail"></div>
+
+  <footer>
+    <b>Read the three flows together and the model is complete.</b> Demand flows in from the markets and is matched
+    to producers; goods flow out as one consolidated container; money flows in as escrow and is released back to
+    producers on delivery. Shuka sits in the middle as the single face of Armenian supply — the answer to producers
+    losing the Russian market and having no way, alone, to reach the EU or US.
+  </footer>
+</div>
+
+<script>
+const FLOWS=[
+ {id:'demand',name:'Demand',color:'var(--wine)',dir:'rev',chev:'‹',
+  head:'The market finds the producers',
+  left:'Armenian producers · <b>pulled in</b>', right:'EU/US buyers · <b>origin</b>',
+  desc:'Buyers post multi-category requirements. Shuka\'s engine matches them to eligible producers and pulls exactly the right ones from the pool. Producers never cold-call, prospect, or attend a single trade fair — <b>demand arrives at them.</b>',
+  mods:['rfq','compliance']},
+ {id:'goods',name:'Goods',color:'var(--pom)',dir:'fwd',chev:'›',
+  head:'Many producers → one consolidated container',
+  left:'Armenian hub · <b>origin</b>', right:'Buyer\'s dock · <b>destination</b>',
+  desc:'Approved orders are pooled at the Armenian consolidation hub, quality-checked, EU/US-labelled, and packed into shared containers. Scattered small producers ship as <b>one export-grade consignment</b> that clears customs once.',
+  mods:['consolidation']},
+ {id:'money',name:'Money',color:'var(--apricot)',dir:'rev',chev:'‹',
+  head:'Escrow protects both sides',
+  left:'Producers · <b>paid on delivery</b>', right:'Buyer · <b>funds escrow</b>',
+  desc:'The buyer funds one escrow to Shuka as the single counterparty. Funds are <b>held</b> through fulfilment and released to each producer on verified delivery — so a tiny producer gets paid safely by a buyer they have never met.',
+  mods:['escrow']},
+];
+const MODULES=[
+ {id:'compliance',icon:'✅',name:'Compliance & curation agent',role:'Gates what may enter the EU/US before it\'s offered.',
+  desc:'An AI agent screens every product against destination import rules and marks it eligible, needs-work, or blocked — so only market-ready goods and producers ever reach a buyer. This is what lets producers stay hands-off on regulation.'},
+ {id:'rfq',icon:'📋',name:'RFQ / quote engine',role:'Turns buyer requirements into matched producer offers.',
+  desc:'Receives a buyer\'s multi-category requirement, finds the eligible producers who can serve each line, collects their offers, and lets the buyer approve a mix — even splitting one line across several producers. Not an auction: offers, not live bidding.'},
+ {id:'consolidation',icon:'🚢',name:'Consolidation & logistics',role:'Pools many suppliers into shared containers; handles customs.',
+  desc:'The core engine: bin-packs SKUs from different producers and categories into shared containers under weight/volume/temperature limits, allocates freight and duty into a fair per-line landed cost, and runs export, import clearance and delivery as importer of record.'},
+ {id:'escrow',icon:'🔒',name:'Escrow & payments',role:'Holds funds; releases per producer on delivery.',
+  desc:'Runs through a licensed provider (e.g. Mangopay / Lemonway). The buyer funds once; funds are held through fulfilment and released to each producer on verified handover, with per-line dispute handling. The trust layer for strangers trading across borders.'},
+ {id:'ops',icon:'🎛️',name:'Ops console',role:'Shuka orchestrates every order end to end.',
+  desc:'The internal cockpit where the Shuka team supervises requirements, quotes, consolidation, customs and escrow across all three geographies — the human layer that keeps the single-market promise reliable.'},
+];
+const INTRO={dk:'The thesis',h:'One supply pool, demand-led',
+  p:'Instead of each producer hunting for foreign buyers, Shuka aggregates them into a single market face. Buyers bring the demand; Shuka\'s hub matches, pools, insures and ships. <b>Select a flow above or a module in the hub to explore how it works.</b>'};
+
+let activeFlow=null, activeMod=null;
+
+function renderLanes(){
+  document.getElementById('lanes').innerHTML=FLOWS.map(f=>{
+    const chevs='<span class="chevs">'+(f.chev+' ').repeat(60)+'</span>';
+    return `<div class="lane ${f.dir} ${activeFlow===f.id?'on':''}" style="--flowc:${f.color}" data-flow="${f.id}" tabindex="0" role="button" aria-pressed="${activeFlow===f.id}">
+      <div class="lhead"><span class="lbadge">${f.name}</span><span class="lhtxt">${f.head}</span></div>
+      <div class="track">${chevs}</div>
+      <div class="ends"><span>${f.left}</span><span>${f.right}</span></div>
+    </div>`;
+  }).join('');
+  document.getElementById('lanes').classList.toggle('hassel',!!activeFlow);
+  document.querySelectorAll('.lane').forEach(l=>{
+    const go=()=>selectFlow(l.dataset.flow);
+    l.addEventListener('click',go);
+    l.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});
+  });
+}
+function renderMods(){
+  const hot=activeFlow?FLOWS.find(f=>f.id===activeFlow).mods:[];
+  document.getElementById('mods').innerHTML=MODULES.map(m=>
+    `<button class="mod ${hot.includes(m.id)?'hot':''} ${activeMod===m.id?'sel':''}" data-mod="${m.id}">
+      <span class="mi">${m.icon}</span>
+      <span><span class="mn">${m.name}</span><br><span class="mr">${m.role}</span></span>
+    </button>`).join('');
+  document.getElementById('mods').classList.toggle('dimming',!!activeFlow);
+  document.querySelectorAll('.mod').forEach(b=>b.addEventListener('click',()=>selectMod(b.dataset.mod)));
+}
+function renderDetail(){
+  const d=document.getElementById('detail');
+  if(activeMod){const m=MODULES.find(x=>x.id===activeMod);
+    d.innerHTML=`<p class="dk">Hub module</p><h3>${m.icon} ${m.name}</h3><p>${m.desc}</p>`;return;}
+  if(activeFlow){const f=FLOWS.find(x=>x.id===activeFlow);
+    d.innerHTML=`<p class="dk" style="color:${f.color}">${f.name} flow</p><h3>${f.head}</h3><p>${f.desc}</p>`;return;}
+  d.innerHTML=`<p class="dk">${INTRO.dk}</p><h3>${INTRO.h}</h3><p>${INTRO.p}</p>`;
+}
+function selectFlow(id){activeFlow=activeFlow===id?null:id;activeMod=null;renderAll();}
+function selectMod(id){activeMod=activeMod===id?null:id;activeFlow=null;renderAll();}
+function renderAll(){renderLanes();renderMods();renderDetail();}
+renderAll();
+</script>
+
+</body>
+</html>

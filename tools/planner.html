@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%87%3C/text%3E%3C/svg%3E">
+<style>
+.shuka-back{position:fixed;top:14px;right:14px;z-index:999;font-family:system-ui,-apple-system,sans-serif;font-size:13px;font-weight:600;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);padding:7px 13px;border-radius:20px;box-shadow:0 4px 14px rgba(0,0,0,.14);}
+.shuka-back:hover{color:var(--pom);border-color:var(--pom);}
+.shuka-back:focus-visible{outline:2px solid var(--pom);outline-offset:2px;}
+</style>
+<title>Shuka — Armenian Import Year Planner</title>
+<style>
+  :root{
+    --ground:#F6EDE6; --surface:#FFFFFF; --surface-2:#FBF3ED;
+    --ink:#2B1B1E; --ink-soft:#7A645C; --line:#E7D8CE;
+    --pom:#A32138; --pom-deep:#7C1A2E; --on-pom:#FEF6F2;
+    --apricot:#E0862A; --wine:#5E2233; --herb:#4E7A5B;
+    --shadow:0 1px 2px rgba(43,27,30,.06),0 8px 28px rgba(124,26,46,.07);
+    --serif:"Hoefler Text","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono:"SF Mono",ui-monospace,"Cascadia Code",Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --ground:#181012; --surface:#241A1C; --surface-2:#2C2023;
+      --ink:#F2E6DF; --ink-soft:#B49C93; --line:#3A2A2D;
+      --pom:#C8506A; --pom-deep:#A33350; --on-pom:#1A1012;
+      --apricot:#EBA24A; --herb:#78A585;
+      --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="light"]{
+    --ground:#F6EDE6; --surface:#FFFFFF; --surface-2:#FBF3ED;
+    --ink:#2B1B1E; --ink-soft:#7A645C; --line:#E7D8CE;
+    --pom:#A32138; --pom-deep:#7C1A2E; --on-pom:#FEF6F2;
+    --apricot:#E0862A; --wine:#5E2233; --herb:#4E7A5B;
+  }
+  :root[data-theme="dark"]{
+    --ground:#181012; --surface:#241A1C; --surface-2:#2C2023;
+    --ink:#F2E6DF; --ink-soft:#B49C93; --line:#3A2A2D;
+    --pom:#C8506A; --pom-deep:#A33350; --on-pom:#1A1012;
+    --apricot:#EBA24A; --herb:#78A585;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
+    line-height:1.5;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1080px;margin:0 auto;padding:clamp(20px,4vw,44px) clamp(16px,4vw,32px) 64px;}
+
+  header .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--pom);margin:0 0 10px;}
+  header h1{font-family:var(--serif);font-weight:600;font-size:clamp(30px,5.5vw,46px);
+    line-height:1.04;letter-spacing:-.01em;margin:0;text-wrap:balance;}
+  header h1 em{font-style:italic;color:var(--pom);}
+  header p.lead{max-width:60ch;color:var(--ink-soft);font-size:clamp(15px,1.7vw,17px);
+    margin:14px 0 0;}
+
+  /* KPI strip */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:28px 0 8px;}
+  @media (max-width:640px){.kpis{grid-template-columns:repeat(2,1fr);}}
+  .kpi{background:var(--surface);border:1px solid var(--line);border-radius:12px;
+    padding:16px 16px 14px;box-shadow:var(--shadow);}
+  .kpi .label{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--ink-soft);margin:0 0 8px;font-weight:600;}
+  .kpi .val{font-family:var(--serif);font-size:clamp(22px,3.4vw,30px);font-weight:600;
+    line-height:1;font-variant-numeric:tabular-nums;}
+  .kpi .val small{font-family:var(--sans);font-size:13px;font-weight:500;color:var(--ink-soft);}
+  .kpi.alert .val{color:var(--pom);}
+
+  /* controls */
+  .bar{display:flex;flex-wrap:wrap;align-items:center;gap:14px;justify-content:space-between;
+    margin:26px 0 12px;}
+  .toggle{display:inline-flex;background:var(--surface-2);border:1px solid var(--line);
+    border-radius:10px;padding:3px;gap:2px;}
+  .toggle button{font-family:var(--sans);font-size:13.5px;font-weight:600;color:var(--ink-soft);
+    background:transparent;border:0;border-radius:7px;padding:7px 14px;cursor:pointer;
+    transition:background .18s,color .18s;}
+  .toggle button.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow);}
+  .toggle button:focus-visible{outline:2px solid var(--pom);outline-offset:2px;}
+  .legend{display:flex;flex-wrap:wrap;gap:16px;align-items:center;font-size:12.5px;color:var(--ink-soft);}
+  .legend .item{display:inline-flex;align-items:center;gap:7px;}
+  .swatch{width:26px;height:13px;border-radius:3px;border:1px solid var(--line);}
+  .sw-lo{background:color-mix(in srgb,var(--pom) 16%,var(--surface));}
+  .sw-hi{background:var(--pom);}
+  .sw-unavail{background:repeating-linear-gradient(135deg,transparent 0 3px,var(--line) 3px 4px);}
+  .dot-alert{width:12px;height:12px;border-radius:50%;border:2px solid var(--apricot);
+    box-shadow:0 0 0 2px color-mix(in srgb,var(--apricot) 30%,transparent);}
+
+  /* grid */
+  .gridwrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);
+    border-radius:14px;box-shadow:var(--shadow);}
+  table{border-collapse:collapse;width:100%;min-width:760px;}
+  th,td{text-align:center;font-variant-numeric:tabular-nums;}
+  thead th{position:sticky;top:0;background:var(--surface);z-index:2;
+    font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;
+    color:var(--ink-soft);font-weight:600;padding:12px 6px 10px;border-bottom:1px solid var(--line);}
+  thead th.cat-h{text-align:left;padding-left:18px;}
+  th.peakcol,td.peakcol{background:color-mix(in srgb,var(--apricot) 9%,var(--surface));}
+  .catcell{position:sticky;left:0;background:var(--surface);z-index:1;text-align:left;
+    padding:12px 14px 12px 18px;border-bottom:1px solid var(--line);min-width:190px;
+    cursor:pointer;transition:background .15s;}
+  .catcell:hover{background:var(--surface-2);}
+  tbody tr.sel .catcell{background:color-mix(in srgb,var(--pom) 10%,var(--surface));
+    box-shadow:inset 3px 0 0 var(--pom);}
+  .catname{font-weight:600;font-size:14.5px;letter-spacing:-.01em;}
+  .cattag{display:inline-block;font-size:10.5px;font-family:var(--mono);letter-spacing:.03em;
+    color:var(--ink-soft);margin-top:3px;padding:1px 7px;border:1px solid var(--line);
+    border-radius:20px;}
+  td.cell{padding:0;border-bottom:1px solid var(--line);}
+  td.cell .box{height:46px;display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-size:13px;font-weight:600;position:relative;
+    transition:transform .12s;}
+  td.cell.has:hover .box{transform:scale(1.12);z-index:3;}
+  td.cell.unavail .box{background:repeating-linear-gradient(135deg,transparent 0 4px,
+    color-mix(in srgb,var(--line) 60%,transparent) 4px 5px);}
+  td.cell .box.alert::after{content:"";position:absolute;top:4px;right:4px;width:8px;height:8px;
+    border-radius:50%;border:2px solid var(--apricot);}
+  tfoot td{border-top:2px solid var(--line);padding:12px 6px;font-family:var(--mono);
+    font-weight:700;font-size:13px;color:var(--pom);}
+  tfoot td.tlabel{text-align:left;padding-left:18px;color:var(--ink);font-family:var(--sans);
+    font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;font-weight:600;}
+  tfoot td.peakcol{color:var(--pom-deep);}
+
+  /* alerts + detail */
+  .note{display:flex;gap:12px;align-items:flex-start;margin-top:18px;padding:14px 16px;
+    background:color-mix(in srgb,var(--apricot) 10%,var(--surface));
+    border:1px solid color-mix(in srgb,var(--apricot) 40%,var(--line));border-radius:12px;
+    font-size:14px;}
+  .note .ic{flex:none;width:24px;height:24px;border-radius:50%;background:var(--apricot);
+    color:#2B1B1E;font-weight:800;display:grid;place-items:center;font-size:14px;}
+  .note strong{color:var(--ink);}
+
+  .detail{margin-top:18px;background:var(--surface);border:1px solid var(--line);
+    border-radius:14px;box-shadow:var(--shadow);overflow:hidden;}
+  .detail .dhead{display:flex;flex-wrap:wrap;gap:12px 22px;align-items:baseline;
+    padding:18px 20px;border-bottom:1px solid var(--line);}
+  .detail h3{font-family:var(--serif);font-size:22px;font-weight:600;margin:0;}
+  .detail .meta{display:flex;gap:22px;flex-wrap:wrap;font-size:13px;color:var(--ink-soft);}
+  .detail .meta b{color:var(--ink);font-weight:600;}
+  .detail .body{padding:16px 20px 20px;font-size:14px;color:var(--ink-soft);}
+  .detail .body p{margin:0 0 10px;max-width:70ch;}
+  .detail .body p:last-child{margin:0;}
+  .avail-strip{display:flex;gap:3px;margin:6px 0 16px;}
+  .avail-strip span{flex:1;height:8px;border-radius:2px;background:var(--line);}
+  .avail-strip span.on{background:var(--herb);}
+  .empty{padding:22px 20px;color:var(--ink-soft);font-size:14px;font-style:italic;}
+
+  footer{margin-top:32px;padding-top:18px;border-top:1px solid var(--line);
+    font-size:12.5px;color:var(--ink-soft);max-width:78ch;}
+  footer b{color:var(--ink);font-weight:600;}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style></head>
+<body>
+<a href="../" class="shuka-back">← Back to Shuka</a>
+
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Shuka · Import Cadence Planner</p>
+    <h1>What to ship, and <em>when</em>, to land Armenian goods in the EU on&nbsp;time.</h1>
+    <p class="lead">Every cell is a shipment. The planner works backward from when EU shoppers
+      buy — subtracting freight, customs and the Armenian harvest calendar — to tell you which
+      month to commit each category. Read down a column for that month's order list; click a row
+      for its story.</p>
+  </header>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="bar">
+    <div class="toggle" role="tablist" aria-label="View">
+      <button id="btn-order" class="on" role="tab" aria-selected="true">Ship / order plan</button>
+      <button id="btn-demand" role="tab" aria-selected="false">Demand (sell-through)</button>
+    </div>
+    <div class="legend">
+      <span class="item"><span class="swatch sw-lo"></span><span class="swatch sw-hi"></span> volume</span>
+      <span class="item"><span class="swatch sw-unavail"></span> not in season</span>
+      <span class="item"><span class="dot-alert"></span> supply-timing risk</span>
+    </div>
+  </div>
+
+  <div class="gridwrap">
+    <table id="grid"></table>
+  </div>
+
+  <div id="notes"></div>
+  <div id="detail" class="detail"><div class="empty">Select a category above to see its harvest window, lead time and month-by-month order line.</div></div>
+
+  <footer>
+    <b>How to read the numbers.</b> Volumes are in <b>shipping cases</b> using illustrative
+    baselines — replace them with your real SKUs and forecasts and the whole schedule recomputes.
+    Freight + customs lead time is modeled at ~2 months (1 for shelf-stable dry goods); the
+    Armenian harvest calendar constrains when autumn-crop goods can physically ship. The demand
+    curve reflects EU holiday gifting (December is the giant), Easter, and summer, weighted by
+    diaspora demand. <b>The point of the tool:</b> it stops you ordering seasonal goods in the
+    month you want to sell them.
+  </footer>
+</div>
+
+<script>
+const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+// avail: 'all' or list of shippable month indices. demand: monthly multiplier on base.
+const CATS=[
+ {name:'Wine',tag:'Cellared',base:40,lead:2,avail:'all',availLabel:'Year-round (cellared)',
+  demand:[1,1,1,1.3,1,1,1.1,1,1,1,1.2,3.5],
+  note:'Aged and shelf-stable, so supply is never the constraint — timing is pure freight math. The December gifting wall means committing your big allocation by October.'},
+ {name:'Brandy',tag:'Cellared',base:20,lead:2,avail:'all',availLabel:'Year-round (cellared)',
+  demand:[.9,.9,.9,1,.9,.9,.9,.9,.9,1,1.3,4],
+  note:'The flagship gift. Demand is almost flat until it explodes 4× in December, so nearly your whole year rides on the autumn order.'},
+ {name:'Dried fruit & nuts',tag:'Autumn crop',base:35,lead:2,avail:[9,10,11,0,1,2,3,4,5,6,7],availLabel:'Oct – Aug (new crop from Oct)',
+  demand:[1,1,1,1.4,1,.9,.8,.9,1,1.1,1.3,3],
+  note:'Prepared after the autumn harvest. New-crop stock is freshest Oct–Dec, which happily overlaps the December order window. A secondary Easter bump in April.'},
+ {name:'Churchkhela',tag:'Autumn crop',base:15,lead:2,avail:[10,11,0,1,2,3],availLabel:'Nov – Apr only',
+  demand:[1.2,.8,.7,.7,.6,.6,.6,.6,.7,.9,1.3,3.5],
+  note:'The classic trap. It is only made after the grape harvest, so it does not exist to ship until November — but December demand + 2-month lead wants an October order. You cannot have it. You must reserve the earliest November production and accept a tight, possibly late landing.'},
+ {name:'Walnuts',tag:'Autumn crop',base:18,lead:2,avail:[9,10,11,0,1,2,3,4,5,6],availLabel:'Oct – Jul',
+  demand:[1,1,1,1.2,1,.9,.8,.9,1,1.1,1.2,2.5],
+  note:'Autumn harvest, keeps well through spring. December order lands in the fresh-crop window, so no conflict — just order early enough.'},
+ {name:'Preserves & honey',tag:'Year-round',base:25,lead:1,avail:'all',availLabel:'Year-round',
+  demand:[.9,.9,1,1.2,1,1,1,1,1,1,1.2,1.8],
+  note:'Shelf-stable and low-drama. Short lead time lets you top up reactively. Note honey has its own EU import rules — verify before scaling.'},
+ {name:'Spices & herbs',tag:'Year-round',base:12,lead:1,avail:'all',availLabel:'Year-round',
+  demand:[1,1,1,1.1,1,1,1,1,1,1,1.1,1.3],
+  note:'Steady baseline all year, light and cheap to freight. Your easiest category to start with while you learn the pipeline.'},
+ {name:'Ceramics & crafts',tag:'Gifting',base:10,lead:2,avail:'all',availLabel:'Year-round',
+  demand:[.7,.8,.9,1,.9,.9,.8,.9,1,1.1,1.6,4],
+  note:'Not food, so customs is simpler — but the longest to make and pack. Pure gifting demand: quiet all year, then 4× in December. Commit the holiday range early.'},
+];
+
+const isAvail=(c,m)=> c.avail==='all' || c.avail.includes(m);
+function nearestFwd(c,m){ for(let k=0;k<12;k++){const mm=(m+k)%12; if(isAvail(c,mm))return mm;} return m; }
+
+// Build grids
+const order=CATS.map(()=>Array(12).fill(0));
+const demand=CATS.map(c=>c.demand.map(x=>c.base*x));
+const alertCells=new Set();      // "ci-mi" reassigned peak conflicts
+const conflicts=[];
+CATS.forEach((c,ci)=>{
+  for(let D=0;D<12;D++){
+    const vol=c.base*c.demand[D];
+    let O=(D-c.lead+12)%12;
+    if(!isAvail(c,O)){
+      const alt=nearestFwd(c,O);
+      order[ci][alt]+=vol;
+      if(c.demand[D]>=1.5){
+        alertCells.add(ci+'-'+alt);
+        conflicts.push({cat:c.name,demand:MONTHS[D],want:MONTHS[O],forced:MONTHS[alt]});
+      }
+    } else { order[ci][O]+=vol; }
+  }
+});
+
+const colTotal=Array(12).fill(0);
+order.forEach(row=>row.forEach((v,m)=>colTotal[m]+=v));
+const grandTotal=colTotal.reduce((a,b)=>a+b,0);
+const peakOrderMonth=colTotal.indexOf(Math.max(...colTotal));
+const demTotals=Array(12).fill(0);
+demand.forEach(row=>row.forEach((v,m)=>demTotals[m]+=v));
+const peakDemandMonth=demTotals.indexOf(Math.max(...demTotals));
+
+let VIEW='order';
+const activeGrid=()=>VIEW==='order'?order:demand;
+const activeTotals=()=>VIEW==='order'?colTotal:demTotals;
+const activePeak=()=>VIEW==='order'?peakOrderMonth:peakDemandMonth;
+let selected=-1;
+
+// KPIs
+document.getElementById('kpis').innerHTML=`
+  <div class="kpi"><p class="label">Busiest ship month</p><div class="val">${MONTHS[peakOrderMonth]}<small> · ${Math.round(colTotal[peakOrderMonth])} cases out</small></div></div>
+  <div class="kpi"><p class="label">Peak sell-through</p><div class="val">${MONTHS[peakDemandMonth]}<small> · ${Math.round(demTotals[peakDemandMonth])} cases sold</small></div></div>
+  <div class="kpi"><p class="label">Annual volume</p><div class="val">${Math.round(grandTotal).toLocaleString()}<small> cases / yr</small></div></div>
+  <div class="kpi ${conflicts.length?'alert':''}"><p class="label">Supply-timing risks</p><div class="val">${conflicts.length}<small> flagged</small></div></div>`;
+
+function cellPct(v,max){ if(v<=0)return 0; return Math.min(100,Math.round((0.12+0.85*(v/max))*100)); }
+
+function render(){
+  const g=activeGrid(), tot=activeTotals(), peak=activePeak();
+  const max=Math.max(...g.flat());
+  let head='<thead><tr><th class="cat-h">Category</th>';
+  MONTHS.forEach((m,i)=>head+=`<th class="${i===peak?'peakcol':''}">${m}</th>`);
+  head+='</tr></thead>';
+
+  let body='<tbody>';
+  CATS.forEach((c,ci)=>{
+    body+=`<tr data-ci="${ci}" class="${ci===selected?'sel':''}">`;
+    body+=`<td class="catcell" tabindex="0" role="button"><span class="catname">${c.name}</span><br><span class="cattag">${c.tag}</span></td>`;
+    for(let m=0;m<12;m++){
+      const v=g[ci][m];
+      const has=v>0;
+      const av=isAvail(c,m);
+      const pct=cellPct(v,max);
+      const bg=has?`background:color-mix(in srgb,var(--pom) ${pct}%,var(--surface));`:'';
+      const txt=pct>48?'color:var(--on-pom);':'color:var(--ink);';
+      const alert=alertCells.has(ci+'-'+m)&&VIEW==='order';
+      const cls=['cell',has?'has':'', !av&&!has?'unavail':'', m===peak?'peakcol':''].join(' ');
+      body+=`<td class="${cls}"><div class="box ${alert?'alert':''}" style="${bg}${has?txt:''}">${has?Math.round(v):''}</div></td>`;
+    }
+    body+='</tr>';
+  });
+  body+='</tbody>';
+
+  let foot='<tfoot><tr><td class="tlabel">'+(VIEW==='order'?'Cases to ship':'Cases sold')+'</td>';
+  tot.forEach((v,i)=>foot+=`<td class="${i===peak?'peakcol':''}">${Math.round(v)}</td>`);
+  foot+='</tr></tfoot>';
+
+  document.getElementById('grid').innerHTML=head+body+foot;
+  document.querySelectorAll('#grid tbody tr').forEach(tr=>{
+    const ci=+tr.dataset.ci;
+    const cc=tr.querySelector('.catcell');
+    cc.addEventListener('click',()=>select(ci));
+    cc.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();select(ci);}});
+  });
+}
+
+function renderNotes(){
+  const n=document.getElementById('notes');
+  if(!conflicts.length){n.innerHTML='';return;}
+  const c=conflicts.map(x=>`<b>${x.cat}</b> sells hardest in ${x.demand}, which wants a ${x.want} order — but it isn't in season then, so it's forced to ${x.forced} (tight, risks a late landing)`).join('; ');
+  n.innerHTML=`<div class="note"><span class="ic">!</span><div><strong>Supply-timing risk.</strong> ${c}. Reserve the earliest production run and consider a small air-freight backstop for the peak.</div></div>`;
+}
+
+function select(ci){
+  selected=ci;
+  document.querySelectorAll('#grid tbody tr').forEach(tr=>tr.classList.toggle('sel',+tr.dataset.ci===ci));
+  const c=CATS[ci];
+  const peaks=c.demand.map((v,i)=>({v,i})).filter(o=>o.v>=1.4).sort((a,b)=>b.v-a.v).map(o=>MONTHS[o.i]);
+  const strip=MONTHS.map((m,i)=>`<span class="${isAvail(c,i)?'on':''}" title="${m}"></span>`).join('');
+  const orderMonths=order[ci].map((v,i)=>({v,i})).filter(o=>o.v>0).sort((a,b)=>b.v-a.v).slice(0,3).map(o=>`${MONTHS[o.i]} (${Math.round(o.v)})`);
+  const risk=conflicts.find(x=>x.cat===c.name);
+  document.getElementById('detail').innerHTML=`
+    <div class="dhead">
+      <h3>${c.name}</h3>
+      <div class="meta">
+        <span>Availability <b>${c.availLabel}</b></span>
+        <span>Lead time <b>~${c.lead} mo</b></span>
+        <span>Demand peaks <b>${peaks.join(', ')||'flat'}</b></span>
+        <span>Base <b>${c.base} cases/mo</b></span>
+      </div>
+    </div>
+    <div class="body">
+      <div class="avail-strip" aria-label="Shippable months">${strip}</div>
+      <p><b style="color:var(--ink)">Order the most in:</b> ${orderMonths.join(' · ')}</p>
+      <p>${c.note}</p>
+      ${risk?`<p style="color:var(--pom)"><b>⚠ Timing risk:</b> peak ${risk.demand} demand can't be ordered in ${risk.want} (out of season) — forced to ${risk.forced}.</p>`:''}
+    </div>`;
+}
+
+document.getElementById('btn-order').addEventListener('click',()=>setView('order'));
+document.getElementById('btn-demand').addEventListener('click',()=>setView('demand'));
+function setView(v){
+  VIEW=v;
+  document.getElementById('btn-order').classList.toggle('on',v==='order');
+  document.getElementById('btn-demand').classList.toggle('on',v==='demand');
+  document.getElementById('btn-order').setAttribute('aria-selected',v==='order');
+  document.getElementById('btn-demand').setAttribute('aria-selected',v==='demand');
+  render();
+}
+
+render();
+renderNotes();
+select(3); // open Churchkhela — the instructive case
+</script>
+
+</body>
+</html>

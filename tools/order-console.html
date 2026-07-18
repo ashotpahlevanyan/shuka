@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%87%3C/text%3E%3C/svg%3E">
+<style>
+.shuka-back{position:fixed;top:14px;right:14px;z-index:999;font-family:system-ui,-apple-system,sans-serif;font-size:13px;font-weight:600;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);padding:7px 13px;border-radius:20px;box-shadow:0 4px 14px rgba(0,0,0,.14);}
+.shuka-back:hover{color:var(--pom);border-color:var(--pom);}
+.shuka-back:focus-visible{outline:2px solid var(--pom);outline-offset:2px;}
+</style>
+<title>Shuka — Consolidated Order</title>
+<style>
+  :root{
+    --ground:#F6EDE6;--surface:#FFFFFF;--surface-2:#FBF3ED;--ink:#2B1B1E;--ink-soft:#7A645C;
+    --line:#E7D8CE;--pom:#A32138;--pom-deep:#7C1A2E;--on-pom:#FEF6F2;--apricot:#E0862A;
+    --apricot-ink:#2B1B1E;--herb:#4E7A5B;--on-herb:#F4FAF5;
+    --shadow:0 1px 2px rgba(43,27,30,.06),0 8px 28px rgba(124,26,46,.07);
+    --serif:"Hoefler Text","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono:"SF Mono",ui-monospace,"Cascadia Code",Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --ground:#181012;--surface:#241A1C;--surface-2:#2C2023;--ink:#F2E6DF;--ink-soft:#B49C93;
+    --line:#3A2A2D;--pom:#C8506A;--pom-deep:#A33350;--on-pom:#1A1012;--apricot:#EBA24A;
+    --apricot-ink:#1A1012;--herb:#78A585;--on-herb:#12201A;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);}}
+  :root[data-theme="light"]{--ground:#F6EDE6;--surface:#FFFFFF;--surface-2:#FBF3ED;--ink:#2B1B1E;
+    --ink-soft:#7A645C;--line:#E7D8CE;--pom:#A32138;--pom-deep:#7C1A2E;--on-pom:#FEF6F2;
+    --apricot:#E0862A;--apricot-ink:#2B1B1E;--herb:#4E7A5B;--on-herb:#F4FAF5;}
+  :root[data-theme="dark"]{--ground:#181012;--surface:#241A1C;--surface-2:#2C2023;--ink:#F2E6DF;
+    --ink-soft:#B49C93;--line:#3A2A2D;--pom:#C8506A;--pom-deep:#A33350;--on-pom:#1A1012;
+    --apricot:#EBA24A;--apricot-ink:#1A1012;--herb:#78A585;--on-herb:#12201A;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);line-height:1.5;
+    -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1180px;margin:0 auto;padding:clamp(20px,4vw,44px) clamp(16px,4vw,32px) 64px;}
+  header .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--pom);margin:0 0 10px;}
+  header h1{font-family:var(--serif);font-weight:600;font-size:clamp(26px,4.6vw,42px);line-height:1.05;
+    letter-spacing:-.01em;margin:0;text-wrap:balance;}
+  header h1 em{font-style:italic;color:var(--pom);}
+  header p.lead{max-width:66ch;color:var(--ink-soft);font-size:clamp(15px,1.7vw,17px);margin:13px 0 0;}
+
+  .reqbar{display:flex;flex-wrap:wrap;gap:14px 28px;align-items:center;margin:24px 0 8px;padding:16px 20px;
+    background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);}
+  .reqbar .rq{font-family:var(--serif);font-size:19px;font-weight:600;}
+  .reqbar .rmeta{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:13px;color:var(--ink-soft);}
+  .reqbar .rmeta b{color:var(--ink);font-weight:600;}
+  .reqbar .rid{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--pom);
+    background:color-mix(in srgb,var(--pom) 10%,var(--surface));padding:5px 11px;border-radius:20px;}
+
+  .layout{display:grid;grid-template-columns:1fr 336px;gap:20px;align-items:start;margin-top:16px;}
+  @media (max-width:900px){.layout{grid-template-columns:1fr;}}
+
+  .line{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);
+    margin-bottom:16px;overflow:hidden;}
+  .lhead{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;padding:15px 18px 12px;}
+  .lhead .lem{font-size:24px;}
+  .lhead .lname{font-family:var(--serif);font-size:19px;font-weight:600;}
+  .lhead .lneed{font-size:12.5px;color:var(--ink-soft);}
+  .fillwrap{margin-left:auto;min-width:170px;flex:1;max-width:260px;}
+  .fillbar{height:9px;border-radius:6px;background:var(--surface-2);overflow:hidden;border:1px solid var(--line);}
+  .fillbar i{display:block;height:100%;background:var(--herb);transition:width .35s ease;}
+  .fillbar.part i{background:var(--apricot);}
+  .filltxt{font-family:var(--mono);font-size:11px;margin-top:4px;color:var(--ink-soft);text-align:right;}
+  .filltxt b{color:var(--ink);}
+
+  .quotes{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;padding:4px 18px 18px;}
+  .quote{border:1px solid var(--line);border-radius:11px;padding:12px 13px;cursor:pointer;background:var(--surface);
+    text-align:left;font-family:inherit;transition:border-color .15s,background .15s,transform .1s;position:relative;}
+  .quote:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--pom) 30%,var(--line));}
+  .quote:focus-visible{outline:2px solid var(--pom);outline-offset:2px;}
+  .quote.on{border-color:var(--herb);background:color-mix(in srgb,var(--herb) 9%,var(--surface));
+    box-shadow:inset 0 0 0 1px var(--herb);}
+  .quote .qsup{font-weight:600;font-size:14px;display:flex;align-items:center;gap:6px;}
+  .quote .qprice{font-family:var(--serif);font-size:20px;font-weight:600;margin:6px 0 2px;font-variant-numeric:tabular-nums;}
+  .quote .qprice small{font-family:var(--sans);font-size:12px;font-weight:500;color:var(--ink-soft);}
+  .quote .qrow{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11.5px;color:var(--ink-soft);margin-top:5px;}
+  .quote .qrow b{color:var(--ink);font-weight:600;}
+  .star{color:var(--apricot);font-weight:700;}
+  .qcert{display:inline-block;font-size:10px;font-family:var(--mono);color:var(--herb);
+    background:color-mix(in srgb,var(--herb) 15%,var(--surface));padding:1px 6px;border-radius:20px;}
+  .qtake{position:absolute;top:10px;right:10px;font-family:var(--mono);font-size:10.5px;font-weight:700;
+    background:var(--herb);color:var(--on-herb);padding:2px 8px;border-radius:20px;}
+  .qtake.zero{background:var(--surface-2);color:var(--ink-soft);}
+
+  /* summary */
+  .summary{position:sticky;top:16px;background:var(--surface);border:1px solid var(--line);border-radius:16px;
+    box-shadow:var(--shadow);overflow:hidden;}
+  .sh{padding:15px 18px;border-bottom:1px solid var(--line);font-family:var(--serif);font-size:18px;font-weight:600;}
+  .sbody{padding:16px 18px;}
+  .metric{display:flex;justify-content:space-between;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--line);}
+  .metric:last-of-type{border-bottom:0;}
+  .metric .ml{font-size:13px;color:var(--ink-soft);}
+  .metric .mv{font-family:var(--mono);font-weight:700;font-size:15px;font-variant-numeric:tabular-nums;}
+  .metric.total .ml{color:var(--ink);font-weight:600;font-size:14px;}
+  .metric.total .mv{font-family:var(--serif);font-size:22px;color:var(--pom);}
+
+  .cont{margin:14px 0 6px;}
+  .cont .ct{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);
+    display:flex;justify-content:space-between;margin-bottom:6px;}
+  .cbar{height:14px;border-radius:8px;background:var(--surface-2);border:1px solid var(--line);overflow:hidden;position:relative;}
+  .cbar i{display:block;height:100%;background:linear-gradient(90deg,var(--pom-deep),var(--pom));transition:width .35s ease;}
+  .cbar.over i{background:repeating-linear-gradient(45deg,var(--pom) 0 8px,var(--pom-deep) 8px 16px);}
+  .cbar .cap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-size:10px;font-weight:700;color:var(--on-pom);mix-blend-mode:normal;}
+  .csub{font-size:11px;color:var(--ink-soft);margin-top:4px;font-family:var(--mono);}
+
+  .status{margin:14px 0 12px;padding:10px 12px;border-radius:10px;font-size:13px;display:flex;gap:9px;align-items:flex-start;}
+  .status.ready{background:color-mix(in srgb,var(--herb) 13%,var(--surface));color:var(--ink);}
+  .status.wait{background:color-mix(in srgb,var(--apricot) 14%,var(--surface));color:var(--ink);}
+  .status .si{font-weight:800;}
+
+  .cta{width:100%;border:0;border-radius:11px;padding:14px;font-family:var(--sans);font-size:15px;font-weight:700;
+    cursor:pointer;background:var(--pom);color:var(--on-pom);transition:transform .12s,opacity .15s;}
+  .cta:hover:not(:disabled){transform:translateY(-1px);} .cta:disabled{opacity:.45;cursor:not-allowed;}
+  .cta:focus-visible{outline:2px solid var(--apricot);outline-offset:2px;}
+  .ctahint{text-align:center;font-size:11.5px;color:var(--ink-soft);margin-top:8px;}
+
+  footer{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-soft);max-width:82ch;}
+  footer b{color:var(--ink);}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style></head>
+<body>
+<a href="../" class="shuka-back">← Back to Shuka</a>
+
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Shuka · Buyer console</p>
+    <h1>One requirement, many Armenian suppliers, <em>one</em> container — approve the mix and watch the landed cost settle.</h1>
+    <p class="lead">A German supermarket chain posted a four-category requirement. Suppliers submitted offers per line.
+      Approve any combination — even splitting a single line across two suppliers — and the consolidation engine live-updates
+      the container fill and the true landed cost before a cent leaves escrow.</p>
+  </header>
+
+  <div class="reqbar">
+    <div>
+      <div class="rq">REWE Deutschland · Autumn assortment</div>
+      <div class="rmeta"><span>Deliver to <b>Köln DC</b></span><span>Window <b>Nov 2026</b></span>
+        <span>Destination <b>EU</b></span><span>Incoterm <b>DDP</b></span></div>
+    </div>
+    <span class="rid">REQ-1042</span>
+  </div>
+
+  <div class="layout">
+    <div id="lines"></div>
+    <div><div class="summary" id="summary"></div></div>
+  </div>
+
+  <footer>
+    <b>The consolidation engine is doing the work you can see.</b> Freight for the shared container (€4,200) is
+    allocated across approved lines by volume, so filling the box lowers everyone's per-unit landed cost — the
+    incentive that makes pooling small Armenian producers worthwhile. Duties/excise are illustrative EU rates. Landed
+    cost = supplier price + allocated freight + duty, shown per unit so the buyer compares true delivered cost, not
+    sticker price. Nothing is charged until <b>Fund escrow</b> — then the order enters the lifecycle flow.
+  </footer>
+</div>
+
+<script>
+const CAP_VOL=32, CAP_WT=20000, FREIGHT=4200; // 40ft consolidated container
+const LINES=[
+ {id:'apr',em:'🍑',name:'Dried apricots',unit:'kg',need:2000,vol:0.003,wt:1,duty:0.06,
+  quotes:[
+   {id:'ararat',sup:'Ararat Foods',price:4.20,avail:1200,lead:3,rating:4.8,cert:'EU-ready'},
+   {id:'sevan',sup:'Sevan Dried Goods',price:3.95,avail:2000,lead:4,rating:4.5,cert:'EU-ready'},
+   {id:'goris',sup:'Goris Orchards',price:4.50,avail:800,lead:2,rating:4.9,cert:'Organic'}]},
+ {id:'wine',em:'🍷',name:'Wine',unit:'cases',need:500,vol:0.02,wt:16,duty:0.20,
+  quotes:[
+   {id:'areni',sup:'Areni Cellars',price:38,avail:500,lead:5,rating:4.7,cert:'VI-1 ready'},
+   {id:'vayots',sup:'Vayots Dzor Winery',price:33,avail:300,lead:6,rating:4.4,cert:'VI-1 ready'}]},
+ {id:'pres',em:'🍓',name:'Preserves & honey',unit:'units',need:800,vol:0.008,wt:6,duty:0.12,
+  quotes:[
+   {id:'lori',sup:'Lori Preserves',price:2.80,avail:800,lead:3,rating:4.6,cert:'EU-ready'},
+   {id:'tavush',sup:'Tavush Jams',price:2.60,avail:500,lead:4,rating:4.3,cert:'EU-ready'}]},
+ {id:'chur',em:'🟤',name:'Churchkhela',unit:'units',need:600,vol:0.004,wt:2,duty:0.09,
+  quotes:[
+   {id:'arsweet',sup:'Areni Sweets',price:1.90,avail:600,lead:4,rating:4.5,cert:'EU-ready'},
+   {id:'goris2',sup:'Goris Orchards',price:2.10,avail:400,lead:2,rating:4.9,cert:'Organic'}]},
+];
+// default selection demonstrates a split on apricots (Ararat 1200 + Sevan 800)
+const sel={apr:['ararat','sevan'],wine:['areni'],pres:['lori'],chur:['arsweet']};
+
+const money=n=>'€'+Math.round(n).toLocaleString('en-US');
+const money2=n=>'€'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+function allocLine(line){
+  const order=sel[line.id]||[];
+  let remaining=line.need; const parts=[];
+  order.forEach(qid=>{
+    const q=line.quotes.find(x=>x.id===qid); if(!q)return;
+    const take=Math.max(0,Math.min(q.avail,remaining)); remaining-=take;
+    parts.push({q,take});
+  });
+  return {parts,filled:line.need-Math.max(0,remaining)};
+}
+function compute(){
+  let totalVol=0,totalWt=0,goods=0,duty=0; const sups=new Set(); const per={};
+  LINES.forEach(line=>{
+    const {parts,filled}=allocLine(line);
+    const lvol=filled*line.vol, lwt=filled*line.wt;
+    let lgoods=0; parts.forEach(p=>{if(p.take>0){lgoods+=p.take*p.q.price; sups.add(p.q.sup);}});
+    totalVol+=lvol; totalWt+=lwt; goods+=lgoods; duty+=lgoods*line.duty;
+    per[line.id]={filled,lvol,lwt,lgoods,parts};
+  });
+  const perM3=totalVol>0?FREIGHT/totalVol:0;
+  LINES.forEach(line=>{const p=per[line.id]; p.freight=p.lvol*perM3;
+    p.landed=p.filled>0?(p.lgoods+p.lgoods*line.duty+p.freight)/p.filled:0;});
+  return {totalVol,totalWt,goods,duty,freight:totalVol>0?FREIGHT:0,per,
+    sups:sups.size,volPct:totalVol/CAP_VOL*100,wtPct:totalWt/CAP_WT*100};
+}
+
+function renderLines(c){
+  document.getElementById('lines').innerHTML=LINES.map(line=>{
+    const p=c.per[line.id]; const pct=Math.min(100,p.filled/line.need*100);
+    const done=p.filled>=line.need;
+    const q=line.quotes.map(q=>{
+      const on=(sel[line.id]||[]).includes(q.id);
+      const part=p.parts.find(x=>x.q.id===q.id);
+      const take=part?part.take:0;
+      const badge=on?`<span class="qtake ${take?'':'zero'}">${take?('+'+take.toLocaleString('en-US')+' '+line.unit):'not needed'}</span>`:'';
+      return `<button class="quote ${on?'on':''}" data-line="${line.id}" data-q="${q.id}">
+        ${badge}
+        <div class="qsup">${q.sup}</div>
+        <div class="qprice">${money2(q.price)}<small> / ${line.unit.replace(/s$/,'')}</small></div>
+        <div class="qrow"><span><span class="star">★</span> <b>${q.rating}</b></span>
+          <span>up to <b>${q.avail.toLocaleString('en-US')}</b></span>
+          <span><b>${q.lead}</b>wk lead</span></div>
+        <div class="qrow"><span class="qcert">${q.cert}</span>
+          ${on&&take>0?`<span>landed ~<b>${money2(p.landed)}</b></span>`:''}</div>
+      </button>`;
+    }).join('');
+    return `<div class="line">
+      <div class="lhead"><span class="lem">${line.em}</span>
+        <div><div class="lname">${line.name}</div>
+          <div class="lneed">Requested: <b>${line.need.toLocaleString('en-US')} ${line.unit}</b></div></div>
+        <div class="fillwrap">
+          <div class="fillbar ${done?'':'part'}"><i style="width:${pct}%"></i></div>
+          <div class="filltxt"><b>${p.filled.toLocaleString('en-US')}</b> / ${line.need.toLocaleString('en-US')} ${line.unit} ${done?'· complete':'· '+Math.round(pct)+'%'}</div>
+        </div>
+      </div>
+      <div class="quotes">${q}</div>
+    </div>`;
+  }).join('');
+  document.querySelectorAll('.quote').forEach(b=>b.addEventListener('click',()=>{
+    const l=b.dataset.line,q=b.dataset.q; const arr=sel[l]||(sel[l]=[]);
+    const i=arr.indexOf(q); if(i>=0)arr.splice(i,1); else arr.push(q);
+    render();
+  }));
+}
+
+function renderSummary(c){
+  const total=c.goods+c.duty+c.freight;
+  const allFilled=LINES.every(l=>c.per[l.id].filled>=l.need);
+  const over=c.volPct>100||c.wtPct>100;
+  const ready=allFilled&&!over;
+  const volShown=Math.min(100,c.volPct), wtShown=Math.min(100,c.wtPct);
+  document.getElementById('summary').innerHTML=`
+    <div class="sh">Consolidation summary</div>
+    <div class="sbody">
+      <div class="metric"><span class="ml">Approved suppliers</span><span class="mv">${c.sups}</span></div>
+      <div class="metric"><span class="ml">Goods value</span><span class="mv">${money(c.goods)}</span></div>
+      <div class="metric"><span class="ml">Duty &amp; excise</span><span class="mv">${money(c.duty)}</span></div>
+      <div class="metric"><span class="ml">Freight (shared)</span><span class="mv">${money(c.freight)}</span></div>
+      <div class="metric total"><span class="ml">Escrow total</span><span class="mv">${money(total)}</span></div>
+
+      <div class="cont">
+        <div class="ct"><span>Container · volume</span><span>${c.volPct.toFixed(0)}%</span></div>
+        <div class="cbar ${c.volPct>100?'over':''}"><i style="width:${volShown}%"></i><span class="cap">${c.totalVol.toFixed(1)} / ${CAP_VOL} m³</span></div>
+      </div>
+      <div class="cont">
+        <div class="ct"><span>Container · weight</span><span>${c.wtPct.toFixed(0)}%</span></div>
+        <div class="cbar ${c.wtPct>100?'over':''}"><i style="width:${wtShown}%"></i><span class="cap">${(c.totalWt/1000).toFixed(1)} / ${(CAP_WT/1000)} t</span></div>
+      </div>
+      <div class="csub">${over?'⚠ Over capacity — needs a second container or trimmed quantities.':'Room to spare — add more categories to lower everyone’s freight share.'}</div>
+
+      <div class="status ${ready?'ready':'wait'}">
+        <span class="si">${ready?'✓':'⧗'}</span>
+        <span>${ready?'All four lines filled and within capacity. Ready to lock the basket.':(over?'Reduce quantities or split into two containers before funding.':'Some lines aren’t fully filled yet — approve more offers to reach the requested amounts.')}</span>
+      </div>
+
+      <button class="cta" ${ready?'':'disabled'}>${ready?'Fund escrow · '+money(total):'Complete the basket to fund'}</button>
+      <div class="ctahint">Funds are held, not paid — released to each supplier on verified delivery.</div>
+    </div>`;
+  const cta=document.querySelector('.cta');
+  if(ready)cta.addEventListener('click',()=>{cta.textContent='🔒 Escrow funded — order enters fulfilment';cta.disabled=true;cta.style.background='var(--herb)';cta.style.color='var(--on-herb)';cta.style.opacity='1';});
+}
+
+function render(){const c=compute();renderLines(c);renderSummary(c);}
+render();
+</script>
+
+</body>
+</html>
