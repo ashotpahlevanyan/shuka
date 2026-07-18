@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shuka — Investor Deck</title>
+<meta name="description" content="Shuka investor deck: the consolidated-procurement rail connecting Armenian producers to EU and US buyers.">
+<meta name="theme-color" content="#A32138">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%87%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --ground:#F6EDE6;--surface:#FFFFFF;--surface-2:#FBF3ED;--ink:#2B1B1E;--ink-soft:#6B554C;
+    --line:#E7D8CE;--pom:#A32138;--pom-deep:#7C1A2E;--on-pom:#FEF6F2;--apricot:#E0862A;
+    --apricot-ink:#2B1B1E;--wine:#5E2233;--herb:#43704F;--on-herb:#F4FAF5;
+    --shadow:0 1px 2px rgba(43,27,30,.06),0 10px 34px rgba(124,26,46,.10);
+    --serif:"Hoefler Text","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono:"SF Mono",ui-monospace,"Cascadia Code",Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --ground:#181012;--surface:#241A1C;--surface-2:#2C2023;--ink:#F2E6DF;--ink-soft:#BCA69C;
+    --line:#3A2A2D;--pom:#C8506A;--pom-deep:#A33350;--on-pom:#1A1012;--apricot:#EBA24A;
+    --apricot-ink:#1A1012;--wine:#B36A7E;--herb:#84B091;--on-herb:#12201A;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 40px rgba(0,0,0,.4);}}
+  :root[data-theme="light"]{--ground:#F6EDE6;--surface:#FFFFFF;--surface-2:#FBF3ED;--ink:#2B1B1E;
+    --ink-soft:#6B554C;--line:#E7D8CE;--pom:#A32138;--pom-deep:#7C1A2E;--on-pom:#FEF6F2;
+    --apricot:#E0862A;--apricot-ink:#2B1B1E;--wine:#5E2233;--herb:#43704F;--on-herb:#F4FAF5;}
+  :root[data-theme="dark"]{--ground:#181012;--surface:#241A1C;--surface-2:#2C2023;--ink:#F2E6DF;
+    --ink-soft:#BCA69C;--line:#3A2A2D;--pom:#C8506A;--pom-deep:#A33350;--on-pom:#1A1012;
+    --apricot:#EBA24A;--apricot-ink:#1A1012;--wine:#B36A7E;--herb:#84B091;--on-herb:#12201A;}
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;height:100%}
+  body{background:var(--ground);color:var(--ink);font-family:var(--sans);line-height:1.55;
+    -webkit-font-smoothing:antialiased;overflow:hidden;}
+
+  .deck{position:fixed;inset:0;}
+  .slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
+    padding:clamp(28px,6vw,80px);opacity:0;visibility:hidden;transition:opacity .4s ease;overflow:auto;}
+  .slide.active{opacity:1;visibility:visible;}
+  .s-inner{max-width:960px;margin:0 auto;width:100%;}
+  .eyebrow{font-family:var(--mono);font-size:13px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--pom);margin:0 0 18px;font-weight:700;}
+  h1{font-family:var(--serif);font-weight:600;font-size:clamp(30px,5.2vw,56px);line-height:1.04;
+    letter-spacing:-.015em;margin:0 0 18px;text-wrap:balance;}
+  h1 em{font-style:italic;color:var(--pom);}
+  h2{font-family:var(--serif);font-weight:600;font-size:clamp(26px,4.4vw,44px);line-height:1.06;
+    letter-spacing:-.01em;margin:0 0 22px;text-wrap:balance;}
+  .lead{font-size:clamp(17px,2.1vw,22px);color:var(--ink-soft);max-width:60ch;margin:0;}
+  .lead.big{font-size:clamp(19px,2.4vw,26px);color:var(--ink);}
+
+  /* cover + closing */
+  .slide.cover,.slide.closing{background:linear-gradient(140deg,var(--pom-deep),var(--pom));color:var(--on-pom);}
+  .slide.cover .eyebrow,.slide.closing .eyebrow{color:color-mix(in srgb,var(--on-pom) 80%,var(--pom));}
+  .slide.cover h1,.slide.closing h1{color:var(--on-pom);}
+  .slide.cover h1 em,.slide.closing h1 em{color:color-mix(in srgb,var(--on-pom) 90%,var(--apricot));font-style:normal;}
+  .slide.cover .lead,.slide.closing .lead{color:color-mix(in srgb,var(--on-pom) 86%,var(--pom));}
+  .cover-logo{display:flex;align-items:center;gap:11px;font-family:var(--serif);font-weight:600;
+    font-size:26px;margin-bottom:36px;}
+  .cover-logo .seed{width:20px;height:25px;background:var(--on-pom);border-radius:50% 50% 50% 50%/60% 60% 40% 40%;
+    transform:rotate(-8deg);display:inline-block;}
+  .cover-meta{margin-top:40px;font-family:var(--mono);font-size:13px;letter-spacing:.06em;
+    color:color-mix(in srgb,var(--on-pom) 72%,var(--pom));}
+
+  ul.pts{list-style:none;padding:0;margin:8px 0 0;display:flex;flex-direction:column;gap:16px;max-width:66ch;}
+  ul.pts li{display:flex;gap:14px;font-size:clamp(16px,1.9vw,20px);}
+  ul.pts li .k{flex:none;width:26px;height:26px;border-radius:50%;background:var(--pom);color:var(--on-pom);
+    font-family:var(--mono);font-weight:700;font-size:13px;display:grid;place-items:center;margin-top:3px;}
+  ul.pts li b{color:var(--ink);}
+  ul.pts.check li .k{background:var(--herb);color:var(--on-herb);}
+
+  .grid{display:grid;gap:14px;margin-top:6px;}
+  .g3{grid-template-columns:repeat(3,1fr);} .g2{grid-template-columns:repeat(2,1fr);}
+  .g5{grid-template-columns:repeat(5,1fr);}
+  @media (max-width:800px){.g3,.g2,.g5{grid-template-columns:1fr;}}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;box-shadow:var(--shadow);}
+  .card .rn{font-family:var(--mono);font-size:12px;color:var(--apricot);font-weight:700;}
+  .card h3{font-family:var(--serif);font-size:19px;font-weight:600;margin:8px 0 6px;}
+  .card p{margin:0;font-size:14.5px;color:var(--ink-soft);}
+
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);
+    border-radius:14px;overflow:hidden;margin-top:14px;}
+  @media (max-width:700px){.stats{grid-template-columns:1fr;}}
+  .stat{background:var(--surface);padding:22px 20px;}
+  .stat .sv{font-family:var(--serif);font-size:clamp(26px,3.6vw,36px);font-weight:600;line-height:1;color:var(--pom);}
+  .stat .sl{font-size:14px;color:var(--ink-soft);margin-top:9px;}
+
+  .ph{background:color-mix(in srgb,var(--apricot) 14%,var(--surface));border:1px dashed color-mix(in srgb,var(--apricot) 55%,var(--line));
+    border-radius:6px;padding:1px 8px;color:var(--ink);font-weight:600;font-style:normal;}
+  .flag{display:inline-block;font-size:13px;font-family:var(--mono);color:var(--ink-soft);margin-top:20px;}
+
+  /* chrome */
+  .back{position:fixed;top:14px;left:14px;z-index:20;font-size:13px;font-weight:600;text-decoration:none;
+    color:var(--ink);background:var(--surface);border:1px solid var(--line);padding:7px 13px;border-radius:20px;
+    box-shadow:var(--shadow);}
+  .back:hover{color:var(--pom);border-color:var(--pom);}
+  .cover .back,.closing .back{color:var(--on-pom);background:transparent;border-color:color-mix(in srgb,var(--on-pom) 40%,transparent);}
+  .progress{position:fixed;top:0;left:0;height:3px;background:var(--pom);width:0;z-index:25;transition:width .35s ease;}
+  .ctrl{position:fixed;bottom:16px;left:0;right:0;display:flex;justify-content:center;align-items:center;gap:14px;z-index:20;}
+  .ctrl button{font-family:var(--sans);font-weight:700;font-size:15px;background:var(--surface);color:var(--ink);
+    border:1px solid var(--line);border-radius:10px;width:44px;height:44px;cursor:pointer;box-shadow:var(--shadow);
+    transition:transform .12s,border-color .15s;}
+  .ctrl button:hover:not(:disabled){transform:translateY(-1px);border-color:var(--pom);}
+  .ctrl button:disabled{opacity:.4;cursor:default;}
+  .ctrl button:focus-visible,.back:focus-visible{outline:3px solid var(--pom);outline-offset:2px;}
+  .counter{font-family:var(--mono);font-size:13px;color:var(--ink-soft);min-width:66px;text-align:center;
+    font-variant-numeric:tabular-nums;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:8px 12px;box-shadow:var(--shadow);}
+  .hint{position:fixed;bottom:18px;right:18px;z-index:20;font-size:11.5px;color:var(--ink-soft);font-family:var(--mono);opacity:.7;}
+  @media (max-width:640px){.hint{display:none;}}
+  @media (prefers-reduced-motion:reduce){.slide{transition:none;}.progress{transition:none;}}
+</style>
+</head>
+<body>
+<a href="../" class="back">← Shuka</a>
+<div class="progress" id="prog"></div>
+
+<div class="deck" id="deck">
+
+  <!-- 1 cover -->
+  <section class="slide cover active">
+    <div class="s-inner">
+      <div class="cover-logo"><span class="seed"></span>Shuka</div>
+      <h1>Armenia, brought to your <em>market</em>.</h1>
+      <p class="lead">The consolidated-procurement rail connecting hundreds of Armenian producers to EU &amp; US buyers — as one trustworthy counterparty.</p>
+      <div class="cover-meta">Seed round · <span class="ph">2026</span> · Confidential</div>
+    </div>
+  </section>
+
+  <!-- 2 problem -->
+  <section class="slide">
+    <div class="s-inner">
+      <p class="eyebrow">01 · The problem</p>
+      <h2>A whole country's producers just lost their market.</h2>
+      <ul class="pts">
+        <li><span class="k">1</span><span><b>Russia is closing</b> to Armenian goods — the market that historically absorbed a large share of the country's food &amp; drink exports.</span></li>
+        <li><span class="k">2</span><span>Thousands of <b>small, fragmented producers</b> are stranded. The EU and US are wealthier markets, but out of reach alone.</span></li>
+        <li><span class="k">3</span><span>A lone grower can't <b>find buyers, clear regulations, fill a container, or be trusted</b> across borders. The barrier was never quality — it's access.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3 why now -->
+  <section class="slide">
+    <div class="s-inner">
+      <p class="eyebrow">02 · Why now</p>
+      <h2>The re-route is happening — <em>right now</em>.</h2>
+      <p class="lead big">A geopolitical shock is forcing Armenian supply to find new markets this year, not eventually. Whoever becomes the rail as the corridor forms owns the aggregation. Windows like this don't stay open.</p>
+    </div>
+  </section>
+
+  <!-- 4 solution -->
+  <section class="slide">
+    <div class="s-inner">
+      <p class="eyebrow">03 · The solution</p>
+      <h2>Armenia, represented as a single market.</h2>
+      <div class="grid g3">
+        <div class="card"><div class="rn">01</div><h3>One supply pool</h3><p>Hundreds of producers appear to the world as one trustworthy source. Buyers sign one contract, not a hundred.</p></div>
+        <div class="card"><div class="rn">02</div><h3>Demand-led</h3><p>Buyers post what they need; Shuka pulls the right producers. Producers never prospect — the market finds them.</p></div>
+        <div class="card"><div class="rn">03</div><h3>Consolidated</h3><p>Many suppliers &amp; categories combine into one compliant container — economics no small producer could reach alone.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 how it works -->
+  <section class="slide">
+    <div class="s-inner">
+      <p class="eyebrow">04 · How it works</p>
+      <h2>Quote → escrow → consolidate → deliver.</h2>
+      <ul class="pts">
+        <li><span class="k">1</span><span><b>Buyer posts a requirement</b> — many categories, defined quantities, in one basket.</span></li>
+        <li><span class="k">2</span><span><b>Eligible producers quote</b> per line (offers, not an auction); buyer approves a mix, even split across producers.</span></li>
+        <li><span class="k">3</span><span><b>Escrow funds</b> are held; producers ship to the Armenian hub; goods are QC'd, labelled and packed into one container.</span></li>
+        <li><span class="k">4</span><span><b>One customs event, one delivery</b> — escrow releases to each producer on verified receipt.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 6 product -->
+  <section class="slide">
+    <div class="s-inner">
+      <p class="eyebrow">05 · Product</p>
+      <h2>Working software, not slideware.</h2>
+      <p class="lead" style="margin-bottom:20px">Every core piece already exists as an interactive prototype — live at <b>getshuka.com</b>.</p>
+      <div class="grid g3">
+        <div class="card"><h3>✅ Compliance agent</h3><p>Vets each product for EU/US import eligibility before it's ever offered.</p></div>
+        <div class="card"><h3>📦 Consolidation engine</h3><p>Bin-packs many suppliers into shared containers; allocates freight &amp; duty per line.</p></div>
+        <div class="card"><h3>🔒 Escrow &amp; ops</h3><p>Holds funds, releases on delivery; the RFQ engine and ops console run the flow.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 moat / consolidation -->
+  <section class="slide">
+    <div class="s-inner">
+      <p class="eyebrow">06 · The hard part</p>
+      <h2>Six producers. <em>One</em> container.</h2>
+      <p class="lead big">Anyone can build a directory of Armenian producers. Almost no one can <b>profitably pack six of them into one EU-compliant container</b> — bin-packing, fair cost allocation, minimum-order reconciliation and compliance, all at once. That engine is the defensible IP, and it improves with volume.</p>
+    </div>
+  </section>
+
+  <!-- 8 market -->
+  <section class="slide">
+    <div class="s-inner">
+      <p class="eyebrow">07 · Market</p>
+      <h2>Three demand pools, one redirecting supply.</h2>
+      <div class="stats">
+        <div class="stat"><div class="sv">EU</div><div class="sl">Specialty &amp; ethnic food — a multi-billion-€ market, growing. Your beachhead.</div></div>
+        <div class="stat"><div class="sv">US</div><div class="sl">Specialty grocery + a large, affluent Armenian diaspora.</div></div>
+        <div class="stat"><div class="sv">↺</div><div class="sl">Armenian food exports historically concentrated on Russia — now re-routing west.</div></div>
+      </div>
+      <span class="flag">Figures are directional; full market sizing in the data room <span class="ph">[to complete]</span>.</span>
+    </div>
+  </section>
+
+  <!-- 9 business model -->
+  <section class="slide">
+    <div class="s-inner">
+      <p class="eyebrow">08 · Business model</p>
+      <h2>Five ways one order pays.</h2>
+      <div class="grid g5">
+        <div class="card"><div class="rn">01</div><h3>Commission</h3><p>Take rate on order value.</p></div>
+        <div class="card"><div class="rn">02</div><h3>Logistics</h3><p>Consolidation &amp; freight margin.</p></div>
+        <div class="card"><div class="rn">03</div><h3>FX spread</h3><p>Cross-border settlement.</p></div>
+        <div class="card"><div class="rn">04</div><h3>Compliance</h3><p>Certification as a service.</p></div>
+        <div class="card"><div class="rn">05</div><h3>Financing</h3><p>Advances on confirmed orders.</p></div>
+      </div>
+      <p class="lead" style="margin-top:20px">Illustrative: a single <b>€40,000</b> mixed container stacks to a healthy double-digit gross margin — and every added category makes it more efficient.</p>
+    </div>
+  </section>
+
+  <!-- 10 go to market -->
+  <section class="slide">
+    <div class="s-inner">
+      <p class="eyebrow">09 · Go to market</p>
+      <h2>Land the corridor, then widen it.</h2>
+      <ul class="pts check">
+        <li><span class="k">A</span><span><b>Beachhead: Armenia → Germany.</b> Large diaspora, strong specialty-food retail, clear EU rules.</span></li>
+        <li><span class="k">B</span><span><b>Compliance-clear categories first:</b> wine, dried fruit, preserves, spices, crafts — not blocked meat/dairy.</span></li>
+        <li><span class="k">C</span><span><b>Then widen:</b> broader EU &amp; US, and <b>trade-fair sales campaigns</b> where Shuka represents the whole pool as one stand.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 11 moat compounds -->
+  <section class="slide">
+    <div class="s-inner">
+      <p class="eyebrow">10 · Why it compounds</p>
+      <h2>An aggregation flywheel.</h2>
+      <div class="grid g3">
+        <div class="card"><h3>Flywheel</h3><p>More producers attract more buyers, which attracts more producers. Supply density is the moat.</p></div>
+        <div class="card"><h3>The single face</h3><p>Owning the one trusted counterparty for Armenian supply is hard to dislodge once established.</p></div>
+        <div class="card"><h3>Replicable rail</h3><p>The same engine extends to Georgia, Central Asia and other fragmented-producer regions.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 traction -->
+  <section class="slide">
+    <div class="s-inner">
+      <p class="eyebrow">11 · Traction</p>
+      <h2>Already built.</h2>
+      <ul class="pts check">
+        <li><span class="k">✓</span><span><b>Seven interactive prototypes</b> — compliance agent, order console, consolidation visual, order lifecycle, year planner, architecture map, and the live marketing site.</span></li>
+        <li><span class="k">✓</span><span><b>Live at getshuka.com</b>, with the full model demonstrable end-to-end.</span></li>
+        <li><span class="k">✓</span><span><b>Corridor &amp; category strategy defined</b>, ready to pilot Armenia → Germany.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 13 roadmap -->
+  <section class="slide">
+    <div class="s-inner">
+      <p class="eyebrow">12 · Roadmap</p>
+      <h2>The next 12 months.</h2>
+      <div class="grid g2">
+        <div class="card"><h3>Build</h3><p>Ship the compliance agent to production; integrate a licensed escrow provider (Mangopay / Lemonway).</p></div>
+        <div class="card"><h3>Corridor</h3><p>Open Armenia → Germany; sign the first producers and pilot buyers.</p></div>
+        <div class="card"><h3>Hub</h3><p>Stand up the first consolidation warehouse in Armenia.</p></div>
+        <div class="card"><h3>Proof</h3><p>First paid, consolidated containers delivered — the pilot that de-risks the model.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14 team -->
+  <section class="slide">
+    <div class="s-inner">
+      <p class="eyebrow">13 · Team</p>
+      <h2>Who's building it.</h2>
+      <div class="grid g2">
+        <div class="card"><h3><span class="ph">[Founder name]</span></h3><p><span class="ph">[Background — trade / logistics / Armenia network / prior ventures]</span></p></div>
+        <div class="card"><h3><span class="ph">[Co-founder / key hire]</span></h3><p><span class="ph">[Background — compliance / engineering / ops]</span></p></div>
+      </div>
+      <span class="flag">Advisors &amp; ground-team in Armenia <span class="ph">[to add]</span>.</span>
+    </div>
+  </section>
+
+  <!-- 15 ask -->
+  <section class="slide">
+    <div class="s-inner">
+      <p class="eyebrow">14 · The ask</p>
+      <h2>Raising <span class="ph">[€X.Xm]</span> to open the corridor.</h2>
+      <ul class="pts">
+        <li><span class="k">1</span><span><b>Product</b> — ship the compliance agent and escrow integration to production.</span></li>
+        <li><span class="k">2</span><span><b>Operations</b> — stand up the Armenian consolidation hub and first logistics lane.</span></li>
+        <li><span class="k">3</span><span><b>Corridor</b> — sign producers &amp; pilot buyers, deliver the first paid containers.</span></li>
+      </ul>
+      <span class="flag">Detailed use of funds &amp; milestones in the data room <span class="ph">[to complete]</span>.</span>
+    </div>
+  </section>
+
+  <!-- 16 closing -->
+  <section class="slide closing">
+    <div class="s-inner">
+      <div class="cover-logo"><span class="seed"></span>Shuka</div>
+      <h1>Armenia, brought to your <em>market</em>.</h1>
+      <p class="lead">Back the rail as the corridor forms.</p>
+      <div class="cover-meta">getshuka.com · <span class="ph">[hello@getshuka.com]</span></div>
+    </div>
+  </section>
+
+</div>
+
+<div class="ctrl">
+  <button id="prev" aria-label="Previous slide">←</button>
+  <span class="counter" id="counter">1 / 16</span>
+  <button id="next" aria-label="Next slide">→</button>
+</div>
+<div class="hint">← → arrows to navigate</div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+const N=slides.length;
+let i=0;
+const prog=document.getElementById('prog'), counter=document.getElementById('counter');
+const prevB=document.getElementById('prev'), nextB=document.getElementById('next');
+const body=document.body;
+function show(n){
+  i=Math.max(0,Math.min(N-1,n));
+  slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+  prog.style.width=((i+1)/N*100)+'%';
+  counter.textContent=(i+1)+' / '+N;
+  prevB.disabled=i===0; nextB.disabled=i===N-1;
+  // tint chrome on gradient slides
+  const grad=slides[i].classList.contains('cover')||slides[i].classList.contains('closing');
+  body.classList.toggle('cover',grad); body.classList.toggle('closing',grad);
+  location.hash=i+1;
+}
+function next(){show(i+1);} function prev(){show(i-1);}
+nextB.addEventListener('click',next); prevB.addEventListener('click',prev);
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){e.preventDefault();next();}
+  else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();prev();}
+  else if(e.key==='Home'){e.preventDefault();show(0);}
+  else if(e.key==='End'){e.preventDefault();show(N-1);}
+});
+// swipe
+let x0=null;
+addEventListener('touchstart',e=>x0=e.touches[0].clientX,{passive:true});
+addEventListener('touchend',e=>{if(x0===null)return;const dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>50){dx<0?next():prev();}x0=null;},{passive:true});
+// deep link via hash
+const start=parseInt(location.hash.replace('#',''),10);
+show(Number.isFinite(start)&&start>=1?start-1:0);
+</script>
+</body>
+</html>
