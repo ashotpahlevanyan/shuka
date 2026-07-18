@@ -1,0 +1,13 @@
+{
+  "name": "@shuka/platform",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Shuka platform — modular-monolith skeleton. Core services behind contracts; extract only when earned.",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/app/server.js",
+    "demo": "npm run build && node dist/app/server.js",
+    "dev": "tsc -w -p tsconfig.json"
+  },
+  "devDependencies": { "typescript": "^5.5.0", "@types/node": "^20.14.0" }
+}
