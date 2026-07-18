@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shuka — Shipment Tracking</title>
+<meta name="description" content="Track a consolidated Armenian container from the Yerevan hub to the buyer's dock — route, milestones, per-producer status and escrow state.">
+<meta name="theme-color" content="#A32138">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%87%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --ground:#F6EDE6;--surface:#FFFFFF;--surface-2:#FBF3ED;--ink:#2B1B1E;--ink-soft:#6B554C;
+    --line:#E7D8CE;--pom:#A32138;--pom-deep:#7C1A2E;--on-pom:#FEF6F2;--apricot:#E0862A;
+    --apricot-ink:#2B1B1E;--wine:#5E2233;--herb:#43704F;--on-herb:#F4FAF5;
+    --shadow:0 1px 2px rgba(43,27,30,.06),0 10px 34px rgba(124,26,46,.10);
+    --serif:"Hoefler Text","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono:"SF Mono",ui-monospace,"Cascadia Code",Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --ground:#181012;--surface:#241A1C;--surface-2:#2C2023;--ink:#F2E6DF;--ink-soft:#BCA69C;
+    --line:#3A2A2D;--pom:#C8506A;--pom-deep:#A33350;--on-pom:#1A1012;--apricot:#EBA24A;
+    --apricot-ink:#1A1012;--wine:#B36A7E;--herb:#84B091;--on-herb:#12201A;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 40px rgba(0,0,0,.4);}}
+  :root[data-theme="light"]{--ground:#F6EDE6;--surface:#FFFFFF;--surface-2:#FBF3ED;--ink:#2B1B1E;
+    --ink-soft:#6B554C;--line:#E7D8CE;--pom:#A32138;--pom-deep:#7C1A2E;--on-pom:#FEF6F2;
+    --apricot:#E0862A;--apricot-ink:#2B1B1E;--wine:#5E2233;--herb:#43704F;--on-herb:#F4FAF5;}
+  :root[data-theme="dark"]{--ground:#181012;--surface:#241A1C;--surface-2:#2C2023;--ink:#F2E6DF;
+    --ink-soft:#BCA69C;--line:#3A2A2D;--pom:#C8506A;--pom-deep:#A33350;--on-pom:#1A1012;
+    --apricot:#EBA24A;--apricot-ink:#1A1012;--wine:#B36A7E;--herb:#84B091;--on-herb:#12201A;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1060px;margin:0 auto;padding:clamp(20px,4vw,40px) clamp(16px,4vw,28px) 60px;}
+  .back{display:inline-block;font-size:13px;font-weight:600;text-decoration:none;color:var(--ink-soft);margin-bottom:20px;}
+  .back:hover{color:var(--pom);}
+  header .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--pom);margin:0 0 10px;font-weight:700;}
+  header h1{font-family:var(--serif);font-weight:600;font-size:clamp(26px,4.6vw,40px);line-height:1.05;letter-spacing:-.01em;margin:0 0 8px;text-wrap:balance;}
+  header p{color:var(--ink-soft);font-size:16px;margin:0;max-width:62ch;}
+
+  .ships{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0 18px;}
+  @media (max-width:720px){.ships{grid-template-columns:1fr;}}
+  .ship{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:15px;cursor:pointer;text-align:left;font-family:inherit;box-shadow:var(--shadow);transition:border-color .15s,transform .1s;}
+  .ship:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--pom) 35%,var(--line));}
+  .ship.on{border-color:var(--pom);box-shadow:inset 0 0 0 1px var(--pom),var(--shadow);}
+  .ship:focus-visible{outline:3px solid var(--pom);outline-offset:2px;}
+  .ship .sid{font-family:var(--mono);font-size:12px;color:var(--ink-soft);font-weight:700;}
+  .ship .sb{font-family:var(--serif);font-size:17px;font-weight:600;margin:3px 0 8px;}
+  .ship .srow{display:flex;justify-content:space-between;align-items:center;}
+  .pill{font-family:var(--mono);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:2px 8px;border-radius:20px;}
+  .p-mid{background:color-mix(in srgb,var(--pom) 15%,var(--surface));color:var(--pom);}
+  .p-early{background:color-mix(in srgb,var(--apricot) 20%,var(--surface));color:var(--apricot-ink);}
+  .p-done{background:var(--herb);color:var(--on-herb);}
+  .miniprog{height:5px;border-radius:4px;background:var(--surface-2);border:1px solid var(--line);overflow:hidden;margin-top:9px;}
+  .miniprog i{display:block;height:100%;background:var(--pom);}
+
+  .detail{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden;}
+  .dhead{padding:20px 22px 18px;border-bottom:1px solid var(--line);}
+  .dtop{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;}
+  .dtop h2{font-family:var(--serif);font-size:22px;font-weight:600;margin:0;}
+  .dtop .sid2{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);font-weight:700;}
+  .dmeta{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:13.5px;color:var(--ink-soft);margin-top:8px;}
+  .dmeta b{color:var(--ink);font-weight:600;}
+  .prog{display:flex;align-items:center;gap:12px;margin-top:14px;}
+  .prog .pb{flex:1;height:9px;border-radius:6px;background:var(--surface-2);border:1px solid var(--line);overflow:hidden;}
+  .prog .pb i{display:block;height:100%;background:var(--herb);transition:width .4s ease;}
+  .prog .pt{font-family:var(--mono);font-size:12px;font-weight:700;min-width:46px;text-align:right;}
+
+  /* route */
+  .route{padding:20px 22px;border-bottom:1px solid var(--line);overflow-x:auto;}
+  .rtrack{display:flex;align-items:flex-start;min-width:520px;}
+  .rnode{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;}
+  .rnode .rdot{width:34px;height:34px;border-radius:50%;background:var(--surface-2);border:2px solid var(--line);display:grid;place-items:center;font-size:16px;z-index:2;}
+  .rnode.done .rdot{background:var(--herb);border-color:var(--herb);}
+  .rnode.cur .rdot{background:var(--pom);border-color:var(--pom);box-shadow:0 0 0 5px color-mix(in srgb,var(--pom) 20%,transparent);}
+  .rnode .rl{font-size:11.5px;font-weight:600;margin-top:8px;color:var(--ink);max-width:96px;}
+  .rnode .rsub{font-size:10.5px;color:var(--ink-soft);}
+  .rline{position:absolute;top:16px;left:50%;width:100%;height:3px;background:var(--line);z-index:1;}
+  .rline.fill{background:var(--herb);}
+  .rnode:last-child .rline{display:none;}
+
+  .grid2{display:grid;grid-template-columns:1.05fr 1fr;gap:0;}
+  @media (max-width:760px){.grid2{grid-template-columns:1fr;}}
+  .col{padding:20px 22px;} .col+.col{border-left:1px solid var(--line);}
+  @media (max-width:760px){.col+.col{border-left:0;border-top:1px solid var(--line);}}
+  .sh{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 14px;}
+
+  /* timeline */
+  .tl{list-style:none;padding:0;margin:0;}
+  .tl li{display:flex;gap:12px;padding-bottom:16px;position:relative;}
+  .tl li:last-child{padding-bottom:0;}
+  .tl .tdot{flex:none;width:20px;height:20px;border-radius:50%;border:2px solid var(--line);background:var(--surface);z-index:2;margin-top:1px;display:grid;place-items:center;font-size:10px;color:#fff;}
+  .tl li.done .tdot{background:var(--herb);border-color:var(--herb);}
+  .tl li.cur .tdot{background:var(--pom);border-color:var(--pom);}
+  .tl li::before{content:"";position:absolute;left:9px;top:20px;bottom:0;width:2px;background:var(--line);}
+  .tl li.done::before{background:var(--herb);}
+  .tl li:last-child::before{display:none;}
+  .tl .tt{font-size:14px;font-weight:600;} .tl li.up .tt{color:var(--ink-soft);font-weight:500;}
+  .tl .td{font-size:12px;color:var(--ink-soft);}
+  .tl .tdate{margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);white-space:nowrap;padding-left:8px;}
+  .tl li.cur .tdate{color:var(--pom);font-weight:700;}
+
+  /* producers + escrow */
+  .prod{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid var(--line);}
+  .prod:last-of-type{border-bottom:0;}
+  .prod .pn{font-weight:600;font-size:13.5px;} .prod .pp{font-size:12px;color:var(--ink-soft);}
+  .prod .ps{margin-left:auto;font-size:11px;font-family:var(--mono);font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap;}
+  .ps-wait{background:var(--surface-2);color:var(--ink-soft);}
+  .ps-go{background:color-mix(in srgb,var(--pom) 13%,var(--surface));color:var(--pom);}
+  .ps-done{background:var(--herb);color:var(--on-herb);}
+  .escrow{margin-top:16px;padding:14px 15px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line);}
+  .escrow .er{display:flex;justify-content:space-between;align-items:center;font-size:13.5px;}
+  .escrow .er+.er{margin-top:8px;}
+  .escrow .ev{font-family:var(--mono);font-weight:700;}
+  .etag{font-family:var(--mono);font-size:10.5px;font-weight:800;text-transform:uppercase;padding:2px 8px;border-radius:20px;}
+  .et-held{background:var(--apricot);color:var(--apricot-ink);} .et-rel{background:var(--herb);color:var(--on-herb);}
+
+  .advance{margin:16px 22px 22px;}
+  .btn{font-family:var(--sans);font-weight:700;font-size:14.5px;border-radius:11px;padding:11px 20px;cursor:pointer;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);transition:transform .12s,border-color .15s;}
+  .btn:hover:not(:disabled){transform:translateY(-1px);border-color:var(--pom);}
+  .btn:disabled{opacity:.45;cursor:not-allowed;}
+  .btn:focus-visible{outline:3px solid var(--pom);outline-offset:2px;}
+  .advance .note{font-size:12px;color:var(--ink-soft);margin-top:8px;}
+
+  footer{margin-top:28px;padding-top:18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-soft);max-width:82ch;}
+  footer b{color:var(--ink);}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="../" class="back">← Back to Shuka</a>
+  <header>
+    <p class="eyebrow">Operations · Shipment tracking</p>
+    <h1>Follow the container, from Yerevan to the dock.</h1>
+    <p>One consolidated shipment, many producers — tracked through every milestone, with each producer's status and the escrow state visible to both sides at once.</p>
+  </header>
+
+  <div class="ships" id="ships"></div>
+  <div class="detail" id="detail"></div>
+
+  <footer>
+    <b>One shipment, shared visibility.</b> Buyers and producers see the same live status — where the goods are, which
+    producer's lot is where, and exactly when escrow releases (on verified delivery). The "advance status" button
+    simulates the shipment moving forward so you can see how the tracker updates. Data is illustrative.
+  </footer>
+</div>
+
+<script>
+const STAGES=[
+ ['Order confirmed','Escrow funded, producers notified'],
+ ['Producers delivering','Lots arriving at the Yerevan hub'],
+ ['Quality check & labelling','QC + EU/US compliant labels'],
+ ['Container loaded & sealed','Packed to plan, sealed'],
+ ['Export customs cleared','Armenian export declaration'],
+ ['In transit','En route Armenia → EU/US'],
+ ['Import customs cleared','Destination import clearance'],
+ ['Out for delivery','Last mile to the buyer'],
+ ['Delivered · escrow released','Handover verified, producers paid'],
+];
+const SHORT=['Confirmed','At hub','QC & labels','Loaded','Export cleared','In transit','Import cleared','Out for delivery','Delivered'];
+// route macro node per stage
+const MACRO=[0,0,0,0,1,2,3,4,4];
+const RNODES=[['🏭','Yerevan hub','consolidate'],['🛂','Export','Armenia'],['🚢','In transit','AM → EU/US'],['🛃','Import','destination'],['🏬','Buyer DC','delivered']];
+
+const SHIPMENTS=[
+ {id:'SHK-1042',buyer:'REWE Deutschland',dest:'Köln DC 🇩🇪',stage:5,escrow:39443,pill:'p-mid',
+  sched:['8 Jul','9 Jul','11 Jul','12 Jul','13 Jul','15 Jul','22 Jul','24 Jul','25 Jul'],
+  producers:[{n:'Ararat Foods',p:'Dried apricots · 2,000 kg'},{n:'Areni Cellars',p:'Wine · 500 cases'},
+   {n:'Lori Preserves',p:'Preserves · 800 units'},{n:'Areni Sweets',p:'Churchkhela · 600 units'}]},
+ {id:'SHK-1043',buyer:'Carrefour France',dest:'Paris DC 🇫🇷',stage:2,escrow:28900,pill:'p-early',
+  sched:['14 Jul','16 Jul','18 Jul','19 Jul','20 Jul','22 Jul','29 Jul','31 Jul','1 Aug'],
+  producers:[{n:'Sevan Dried Goods',p:'Dried fruit · 1,500 kg',force:'done'},
+   {n:'Vayots Dzor Winery',p:'Wine · 300 cases',force:'go'},{n:'Tavush Herbs',p:'Spices · 400 units',force:'wait'}]},
+ {id:'SHK-1051',buyer:'Whole Foods Market',dest:'New York DC 🇺🇸',stage:8,escrow:52100,pill:'p-done',
+  sched:['20 Jun','21 Jun','23 Jun','24 Jun','25 Jun','27 Jun','3 Jul','4 Jul','5 Jul'],
+  producers:[{n:'Goris Orchards',p:'Dried fruit & nuts · 2,200 kg'},{n:'Ararat Foods',p:'Pomegranate · 900 units'},
+   {n:'Goris Crafts',p:'Ceramics · 300 units'}]},
+];
+const euro=n=>'€'+Math.round(n).toLocaleString('en-US');
+let sel='SHK-1042';
+
+function prodStatus(stage){
+  if(stage>=8)return['Delivered','ps-done'];
+  if(stage>=5)return['In transit','ps-go'];
+  if(stage>=4)return['Loaded & sealed','ps-go'];
+  if(stage>=3)return['Loaded','ps-go'];
+  if(stage===2)return['QC & labelling','ps-go'];
+  if(stage===1)return['At hub','ps-go'];
+  return['Pending pickup','ps-wait'];
+}
+function renderShips(){
+  document.getElementById('ships').innerHTML=SHIPMENTS.map(s=>{
+    const pct=Math.round(s.stage/8*100);
+    return `<button class="ship ${s.id===sel?'on':''}" data-id="${s.id}">
+      <div class="sid">${s.id}</div><div class="sb">${s.buyer}</div>
+      <div class="srow"><span class="pill ${s.pill}">${SHORT[s.stage]}</span><span style="font-size:12px;color:var(--ink-soft)">${s.dest}</span></div>
+      <div class="miniprog"><i style="width:${pct}%"></i></div></button>`;
+  }).join('');
+  document.querySelectorAll('.ship').forEach(b=>b.addEventListener('click',()=>{sel=b.dataset.id;render();}));
+}
+function renderDetail(){
+  const s=SHIPMENTS.find(x=>x.id===sel);
+  const pct=Math.round(s.stage/8*100);
+  const macro=MACRO[s.stage];
+  const held=s.stage<8;
+  // route
+  const route=RNODES.map((n,idx)=>{
+    const cls=idx<macro?'done':(idx===macro?'cur':'');
+    return `<div class="rnode ${cls}"><div class="rline ${idx<macro?'fill':''}"></div><div class="rdot" aria-hidden="true">${n[0]}</div><div class="rl">${n[1]}</div><div class="rsub">${n[2]}</div></div>`;
+  }).join('');
+  // timeline
+  const tl=STAGES.map((st,idx)=>{
+    const cls=idx<s.stage?'done':(idx===s.stage?'cur':'up');
+    return `<li class="${cls}"><span class="tdot">${idx<s.stage?'✓':''}</span>
+      <div><div class="tt">${st[0]}</div><div class="td">${st[1]}</div></div>
+      <span class="tdate">${idx<=s.stage?s.sched[idx]:'~'+s.sched[idx]}</span></li>`;
+  }).join('');
+  // producers
+  const prods=s.producers.map(p=>{
+    let st;
+    if(s.stage===2 && p.force){ st = p.force==='done'?['At hub','ps-done']:p.force==='go'?['QC in progress','ps-go']:['Pending pickup','ps-wait']; }
+    else st=prodStatus(s.stage);
+    return `<div class="prod"><div><div class="pn">${p.n}</div><div class="pp">${p.p}</div></div><span class="ps ${st[1]}">${st[0]}</span></div>`;
+  }).join('');
+  document.getElementById('detail').innerHTML=`
+    <div class="dhead">
+      <div class="dtop"><h2>${s.buyer}</h2><span class="sid2">${s.id}</span></div>
+      <div class="dmeta"><span>Route <b>Yerevan hub → ${s.dest}</b></span><span>${s.producers.length} producers</span>
+        <span>Status <b>${STAGES[s.stage][0]}</b></span><span>${s.stage>=8?'Delivered':'ETA'} <b>${s.sched[8]}</b></span></div>
+      <div class="prog"><div class="pb"><i style="width:${pct}%"></i></div><span class="pt">${pct}%</span></div>
+    </div>
+    <div class="route"><div class="rtrack">${route}</div></div>
+    <div class="grid2">
+      <div class="col"><p class="sh">Milestones</p><ul class="tl">${tl}</ul></div>
+      <div class="col"><p class="sh">Producers in this container</p>${prods}
+        <div class="escrow">
+          <div class="er"><span>Escrow held</span><span class="etag ${held?'et-held':'et-rel'}">${held?'Held':'Released'}</span></div>
+          <div class="er"><span>Amount</span><span class="ev">${euro(s.escrow)}</span></div>
+          <div class="er"><span style="color:var(--ink-soft);font-size:12.5px">${held?'Releases to each producer on verified delivery.':'Paid out to each producer on delivery.'}</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="advance">
+      <button class="btn" id="adv" ${s.stage>=8?'disabled':''}>▸ Advance status (demo)</button>
+      <div class="note">${s.stage>=8?'This shipment is delivered and settled.':'Simulate the shipment moving to its next milestone.'}</div>
+    </div>`;
+  const adv=document.getElementById('adv');
+  if(adv)adv.addEventListener('click',()=>{s.stage=Math.min(8,s.stage+1);
+    s.pill=s.stage>=8?'p-done':s.stage>=4?'p-mid':'p-early'; render();});
+}
+function render(){renderShips();renderDetail();}
+render();
+</script>
+</body>
+</html>
