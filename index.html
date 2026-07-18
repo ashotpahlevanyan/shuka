@@ -478,7 +478,7 @@ const AUD={
  producers:{tag:'For producers · Armenian growers, winemakers &amp; makers',
   h:'Stop chasing buyers. Let the market come to you.',
   p:'Lost the Russian market? List your goods once and Shuka puts you in front of EU and US buyers — and handles the compliance, labelling, logistics, customs and payment collection you can\'t do alone.',
-  cta:'List your goods →', mail:'Producer%20enquiry',
+  cta:'Start onboarding →', mail:'Producer%20enquiry', link:'tools/onboarding.html',
   pts:[
    ['🌍','The market finds you','No prospecting, no trade fairs, no cold outreach. Buyers post demand; we match you to it.'],
    ['📦','Ship what you can\'t fill alone','Pool into shared containers with other producers, so small volumes finally reach export markets.'],
@@ -505,7 +505,7 @@ function renderAud(){
     <div class="audhead"><div class="at">${a.tag}</div><h3>${a.h}</h3><p>${a.p}</p></div>
     <div class="audpoints">${a.pts.map(p=>`<div class="apoint"><div class="ai" aria-hidden="true">${p[0]}</div><h5>${p[1]}</h5><p>${p[2]}</p></div>`).join('')}</div>
     <div class="audfoot"><span class="afn">Ready to move?</span>
-      <a href="mailto:hello@shuka.example?subject=${a.mail}" class="btn btn-p">${a.cta}</a></div>`;
+      <a href="${a.link||('mailto:hello@shuka.example?subject='+a.mail)}" class="btn btn-p">${a.cta}</a></div>`;
 }
 document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>{
   curAud=b.dataset.aud;

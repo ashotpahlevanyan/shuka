@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shuka — Join as a Producer</title>
+<meta name="description" content="List your goods, pass the export-readiness check, and let EU and US buyers come to you. Producer onboarding for Shuka.">
+<meta name="theme-color" content="#A32138">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%87%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --ground:#F6EDE6;--surface:#FFFFFF;--surface-2:#FBF3ED;--ink:#2B1B1E;--ink-soft:#6B554C;
+    --line:#E7D8CE;--pom:#A32138;--pom-deep:#7C1A2E;--on-pom:#FEF6F2;--apricot:#E0862A;
+    --apricot-ink:#2B1B1E;--wine:#5E2233;--herb:#43704F;--on-herb:#F4FAF5;
+    --shadow:0 1px 2px rgba(43,27,30,.06),0 10px 34px rgba(124,26,46,.10);
+    --serif:"Hoefler Text","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono:"SF Mono",ui-monospace,"Cascadia Code",Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --ground:#181012;--surface:#241A1C;--surface-2:#2C2023;--ink:#F2E6DF;--ink-soft:#BCA69C;
+    --line:#3A2A2D;--pom:#C8506A;--pom-deep:#A33350;--on-pom:#1A1012;--apricot:#EBA24A;
+    --apricot-ink:#1A1012;--wine:#B36A7E;--herb:#84B091;--on-herb:#12201A;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 40px rgba(0,0,0,.4);}}
+  :root[data-theme="light"]{--ground:#F6EDE6;--surface:#FFFFFF;--surface-2:#FBF3ED;--ink:#2B1B1E;
+    --ink-soft:#6B554C;--line:#E7D8CE;--pom:#A32138;--pom-deep:#7C1A2E;--on-pom:#FEF6F2;
+    --apricot:#E0862A;--apricot-ink:#2B1B1E;--wine:#5E2233;--herb:#43704F;--on-herb:#F4FAF5;}
+  :root[data-theme="dark"]{--ground:#181012;--surface:#241A1C;--surface-2:#2C2023;--ink:#F2E6DF;
+    --ink-soft:#BCA69C;--line:#3A2A2D;--pom:#C8506A;--pom-deep:#A33350;--on-pom:#1A1012;
+    --apricot:#EBA24A;--apricot-ink:#1A1012;--wine:#B36A7E;--herb:#84B091;--on-herb:#12201A;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);line-height:1.55;
+    -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:760px;margin:0 auto;padding:clamp(20px,4vw,40px) clamp(16px,4vw,28px) 60px;}
+  .back{display:inline-block;font-size:13px;font-weight:600;text-decoration:none;color:var(--ink-soft);
+    margin-bottom:22px;}
+  .back:hover{color:var(--pom);}
+  header .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--pom);margin:0 0 10px;font-weight:700;}
+  header h1{font-family:var(--serif);font-weight:600;font-size:clamp(26px,4.6vw,38px);line-height:1.05;
+    letter-spacing:-.01em;margin:0 0 8px;text-wrap:balance;}
+  header p{color:var(--ink-soft);font-size:16px;margin:0;max-width:56ch;}
+
+  /* stepper */
+  .stepper{display:flex;align-items:center;gap:6px;margin:26px 0 24px;}
+  .stp{display:flex;flex-direction:column;align-items:center;gap:6px;flex:none;width:74px;text-align:center;}
+  .stp .dot{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);
+    font-weight:700;font-size:14px;border:2px solid var(--line);background:var(--surface);color:var(--ink-soft);transition:.2s;}
+  .stp .lbl{font-size:11.5px;font-weight:600;color:var(--ink-soft);}
+  .stp.active .dot{background:var(--pom);border-color:var(--pom);color:var(--on-pom);}
+  .stp.done .dot{background:var(--herb);border-color:var(--herb);color:var(--on-herb);}
+  .stp.active .lbl,.stp.done .lbl{color:var(--ink);}
+  .bar{flex:1;height:2px;background:var(--line);border-radius:2px;}
+  .bar.fill{background:var(--herb);}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);
+    padding:clamp(20px,4vw,32px);}
+  .panel h2{font-family:var(--serif);font-size:22px;font-weight:600;margin:0 0 6px;}
+  .panel .sub{color:var(--ink-soft);font-size:14.5px;margin:0 0 22px;max-width:58ch;}
+
+  label.field{display:block;margin-bottom:16px;}
+  label.field .lt{display:block;font-size:13px;font-weight:600;margin-bottom:6px;}
+  input,select{width:100%;font-family:inherit;font-size:15px;color:var(--ink);background:var(--surface-2);
+    border:1px solid var(--line);border-radius:10px;padding:11px 13px;}
+  input:focus,select:focus{outline:2px solid var(--pom);outline-offset:1px;border-color:var(--pom);}
+
+  .hintbox{display:flex;gap:11px;align-items:flex-start;margin-top:6px;padding:13px 15px;border-radius:12px;
+    background:color-mix(in srgb,var(--herb) 11%,var(--surface));border:1px solid color-mix(in srgb,var(--herb) 30%,var(--line));
+    font-size:13.5px;color:var(--ink);}
+  .hintbox .hi{color:var(--herb);font-weight:800;flex:none;}
+
+  .prodgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+  @media (max-width:560px){.prodgrid{grid-template-columns:1fr;}}
+  .prod{display:flex;align-items:center;gap:11px;padding:13px 14px;border:1px solid var(--line);border-radius:12px;
+    background:var(--surface);cursor:pointer;text-align:left;font-family:inherit;transition:border-color .15s,background .15s;}
+  .prod:hover{border-color:var(--pom);}
+  .prod.on{border-color:var(--pom);background:color-mix(in srgb,var(--pom) 8%,var(--surface));box-shadow:inset 0 0 0 1px var(--pom);}
+  .prod:focus-visible{outline:3px solid var(--pom);outline-offset:2px;}
+  .prod .pe{font-size:20px;flex:none;} .prod .pn{font-weight:600;font-size:14.5px;}
+  .prod .chk{margin-left:auto;width:20px;height:20px;border-radius:50%;border:2px solid var(--line);flex:none;display:grid;place-items:center;font-size:12px;color:#fff;}
+  .prod.on .chk{background:var(--pom);border-color:var(--pom);}
+
+  .desttoggle{display:inline-flex;background:var(--surface-2);border:1px solid var(--line);border-radius:9px;padding:3px;gap:2px;margin-bottom:16px;}
+  .desttoggle button{font-family:var(--sans);font-size:13.5px;font-weight:600;color:var(--ink-soft);background:transparent;border:0;border-radius:6px;padding:7px 15px;cursor:pointer;}
+  .desttoggle button.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow);}
+
+  .cresult{display:flex;gap:12px;align-items:flex-start;padding:13px 0;border-bottom:1px solid var(--line);}
+  .cresult:last-child{border-bottom:0;}
+  .cresult .ce{font-size:20px;flex:none;} .cresult .cn{font-weight:600;font-size:14.5px;}
+  .cresult .cd{font-size:13px;color:var(--ink-soft);margin-top:2px;}
+  .vb{flex:none;font-family:var(--mono);font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;
+    padding:3px 9px;border-radius:20px;margin-left:auto;}
+  .v-ok{background:var(--herb);color:var(--on-herb);} .v-warn{background:var(--apricot);color:var(--apricot-ink);}
+  .v-block{background:var(--pom);color:var(--on-pom);}
+  .csum{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:16px;padding-top:14px;border-top:2px solid var(--line);font-size:13.5px;color:var(--ink-soft);}
+  .csum b{font-family:var(--mono);color:var(--ink);}
+
+  /* ready */
+  .ready-badge{width:66px;height:66px;border-radius:50%;background:var(--herb);color:var(--on-herb);display:grid;place-items:center;font-size:32px;margin:0 auto 16px;}
+  .panel.done{text-align:center;}
+  .panel.done h2{font-size:26px;}
+  .whatnext{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:22px 0;text-align:left;}
+  @media (max-width:600px){.whatnext{grid-template-columns:1fr;}}
+  .wn{background:var(--surface);padding:15px 14px;}
+  .wn .wk{font-family:var(--mono);font-size:11px;color:var(--pom);font-weight:700;}
+  .wn h4{margin:6px 0 3px;font-size:14px;font-weight:600;} .wn p{margin:0;font-size:12.5px;color:var(--ink-soft);}
+  .pull{font-family:var(--serif);font-size:19px;font-style:italic;color:var(--ink);margin:18px auto;max-width:44ch;text-wrap:balance;}
+
+  .nav{display:flex;justify-content:space-between;gap:12px;margin-top:22px;}
+  .btn{font-family:var(--sans);font-weight:700;font-size:15px;border-radius:11px;padding:12px 22px;cursor:pointer;
+    border:1px solid var(--line);background:var(--surface);color:var(--ink);text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:transform .12s,border-color .15s;}
+  .btn:hover:not(:disabled){transform:translateY(-1px);border-color:var(--pom);}
+  .btn.p{background:var(--pom);color:var(--on-pom);border-color:transparent;} .btn.p:hover{background:var(--pom-deep);}
+  .btn:disabled{opacity:.4;cursor:not-allowed;}
+  .btn:focus-visible{outline:3px solid var(--pom);outline-offset:2px;}
+  .warnmsg{font-size:13px;color:var(--pom);margin-top:10px;min-height:18px;}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="../" class="back">← Back to Shuka</a>
+  <header>
+    <p class="eyebrow">Producers · Join in 4 steps</p>
+    <h1>List your goods. Let the market come to you.</h1>
+    <p>No prospecting, no trade fairs. Tell us what you make, pass a quick export-readiness check, and EU &amp; US buyers start finding you.</p>
+  </header>
+
+  <div class="stepper" id="stepper"></div>
+
+  <!-- STEP 1 -->
+  <section class="panel" data-step="0">
+    <h2>Your workshop</h2>
+    <p class="sub">This is all we need to start — the paperwork and buyers are our job, not yours.</p>
+    <label class="field"><span class="lt">Producer / workshop name</span>
+      <input id="f-name" type="text" placeholder="e.g. Ararat Valley Foods" autocomplete="organization"></label>
+    <label class="field"><span class="lt">Region</span>
+      <select id="f-region">
+        <option>Vayots Dzor</option><option>Ararat</option><option>Armavir</option><option>Yerevan</option>
+        <option>Lori</option><option>Tavush</option><option>Syunik (Goris)</option><option>Shirak</option>
+        <option>Gegharkunik</option><option>Kotayk</option><option>Aragatsotn</option>
+      </select></label>
+    <label class="field"><span class="lt">What best describes you</span>
+      <select id="f-role"><option>Grower</option><option>Winemaker / distiller</option><option>Food producer</option><option>Maker / artisan</option></select></label>
+    <div class="hintbox"><span class="hi">✓</span><span>That's it. Once you're in the pool, buyers post what they need and we match you — you never chase a sale.</span></div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section class="panel" data-step="1" hidden>
+    <h2>What do you make?</h2>
+    <p class="sub">Select everything you produce. Next, we'll check each one for export eligibility to the EU and US.</p>
+    <div class="prodgrid" id="prodgrid"></div>
+    <div class="warnmsg" id="warn2"></div>
+  </section>
+
+  <!-- STEP 3 -->
+  <section class="panel" data-step="2" hidden>
+    <h2>Export-readiness check</h2>
+    <p class="sub">Our compliance agent screens each product against real import rules — before any buyer ever sees it.</p>
+    <div class="desttoggle" id="dest"><button data-d="eu" class="on">→ EU</button><button data-d="us">→ US</button></div>
+    <div id="cresults"></div>
+    <div class="csum" id="csum"></div>
+  </section>
+
+  <!-- STEP 4 -->
+  <section class="panel done" data-step="3" hidden>
+    <div class="ready-badge">✓</div>
+    <h2 id="readyhead">You're in the pool.</h2>
+    <p class="sub" id="readysub" style="margin-left:auto;margin-right:auto"></p>
+    <div class="whatnext">
+      <div class="wn"><div class="wk">01</div><h4>Buyers post demand</h4><p>EU/US retailers list what they need.</p></div>
+      <div class="wn"><div class="wk">02</div><h4>Shuka matches you</h4><p>We pull you into the right orders.</p></div>
+      <div class="wn"><div class="wk">03</div><h4>You ship to the hub</h4><p>One drop-off; we consolidate &amp; export.</p></div>
+      <div class="wn"><div class="wk">04</div><h4>You're paid</h4><p>Escrow releases on delivery.</p></div>
+    </div>
+    <p class="pull">"You don't chase buyers. The market finds you."</p>
+    <a class="btn p" id="finish" href="#" style="justify-content:center">Finish &amp; join Shuka</a>
+  </section>
+
+  <div class="nav">
+    <button class="btn" id="back" disabled>← Back</button>
+    <button class="btn p" id="next">Next →</button>
+  </div>
+</div>
+
+<script>
+const STEPS=['Workshop','Products','Check','Ready'];
+const PRODUCTS=[
+ {id:'wine',em:'🍷',name:'Wine',            eu:['ok','VI-1 import cert + sulphite label'],            us:['ok','TTB permit + COLA label approval']},
+ {id:'brandy',em:'🥃',name:'Armenian brandy', eu:['ok','Label as “Armenian brandy”; excise duty'],     us:['ok','TTB permit + COLA']},
+ {id:'dried',em:'🍑',name:'Dried fruit & nuts',eu:['ok','EU food label + origin cert; declare SO₂'],    us:['ok','FDA FSVP + prior notice']},
+ {id:'churchkhela',em:'🟤',name:'Churchkhela', eu:['ok','Tree-nut allergen labelling'],                 us:['ok','FDA FSVP + allergen label']},
+ {id:'preserves',em:'🍓',name:'Preserves & jams',eu:['ok','EU-permitted additives + label'],            us:['ok','FDA FSVP + label']},
+ {id:'honey',em:'🍯',name:'Honey',            eu:['warn','Needs EU residue-monitoring plan for Armenia'],us:['ok','FDA FSVP + origin label']},
+ {id:'spices',em:'🌿',name:'Spices & herbs',   eu:['warn','Aflatoxin/Salmonella limits — testing likely'],us:['warn','FDA microbiological screening']},
+ {id:'walnuts',em:'🌰',name:'Walnuts',         eu:['warn','Aflatoxin testing certificate'],             us:['ok','FDA FSVP; keep aflatoxin data']},
+ {id:'pom',em:'🍾',name:'Pomegranate products',eu:['ok','EU label + origin cert'],                      us:['ok','FDA FSVP + label']},
+ {id:'ceramics',em:'🏺',name:'Ceramics & crafts',eu:['ok','Food-contact lead/cadmium test if used with food'],us:['ok','Food-contact + Prop 65 if applicable']},
+ {id:'cheese',em:'🧀',name:'Cheese',          eu:['block','Dairy needs an EU-approved establishment listing'],us:['warn','Only hard cheese aged 60+ days may qualify']},
+ {id:'sujukh',em:'🥩',name:'Sujukh / basturma',eu:['block','Meat needs an EU-approved establishment (Armenia not listed)'],us:['block','USDA/FSIS equivalence required']},
+];
+const VMETA={ok:{c:'v-ok',w:'Eligible'},warn:{c:'v-warn',w:'Needs a step'},block:{c:'v-block',w:'Blocked'}};
+
+const state={step:0,selected:new Set(),dest:'eu'};
+
+// stepper
+function renderStepper(){
+  const el=document.getElementById('stepper'); let h='';
+  STEPS.forEach((s,i)=>{
+    const cls=i<state.step?'done':(i===state.step?'active':'');
+    h+=`<div class="stp ${cls}"><div class="dot">${i<state.step?'✓':i+1}</div><div class="lbl">${s}</div></div>`;
+    if(i<STEPS.length-1) h+=`<div class="bar ${i<state.step?'fill':''}"></div>`;
+  });
+  el.innerHTML=h;
+}
+// products
+function renderProducts(){
+  document.getElementById('prodgrid').innerHTML=PRODUCTS.map(p=>
+    `<button class="prod ${state.selected.has(p.id)?'on':''}" data-id="${p.id}" aria-pressed="${state.selected.has(p.id)}">
+      <span class="pe" aria-hidden="true">${p.em}</span><span class="pn">${p.name}</span>
+      <span class="chk">${state.selected.has(p.id)?'✓':''}</span></button>`).join('');
+  document.querySelectorAll('.prod').forEach(b=>b.addEventListener('click',()=>{
+    const id=b.dataset.id; state.selected.has(id)?state.selected.delete(id):state.selected.add(id);
+    renderProducts(); document.getElementById('warn2').textContent='';
+  }));
+}
+// compliance
+function renderCheck(){
+  const sel=PRODUCTS.filter(p=>state.selected.has(p.id));
+  const order={ok:0,warn:1,block:2};
+  sel.sort((a,b)=>order[a[state.dest][0]]-order[b[state.dest][0]]);
+  document.getElementById('cresults').innerHTML=sel.map(p=>{
+    const v=p[state.dest]; const m=VMETA[v[0]];
+    return `<div class="cresult"><span class="ce" aria-hidden="true">${p.em}</span>
+      <div><div class="cn">${p.name}</div><div class="cd">${v[1]}</div></div>
+      <span class="vb ${m.c}">${m.w}</span></div>`;
+  }).join('');
+  const ok=sel.filter(p=>p[state.dest][0]==='ok').length;
+  const warn=sel.filter(p=>p[state.dest][0]==='warn').length;
+  const block=sel.filter(p=>p[state.dest][0]==='block').length;
+  const D=state.dest==='eu'?'EU':'US';
+  document.getElementById('csum').innerHTML=
+    `<span><b>${ok}</b> ready to export</span><span><b>${warn}</b> need one step</span><span><b>${block}</b> can't ship to the ${D} yet</span>`;
+  document.querySelectorAll('#dest button').forEach(b=>b.classList.toggle('on',b.dataset.d===state.dest));
+}
+document.getElementById('dest').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b)return; state.dest=b.dataset.d; renderCheck();
+});
+// ready
+function renderReady(){
+  const name=(document.getElementById('f-name').value||'Your workshop').trim();
+  const sel=PRODUCTS.filter(p=>state.selected.has(p.id));
+  const ready=sel.filter(p=>p[state.dest][0]!=='block').length;
+  document.getElementById('readyhead').textContent=`You're in the pool, ${name}.`;
+  document.getElementById('readysub').innerHTML=`<b>${ready}</b> of your ${sel.length} product${sel.length!==1?'s':''} ${ready===1?'is':'are'} export-ready and now visible to ${state.dest==='eu'?'EU':'US'} buyers. We handle the rest — compliance, labelling, logistics, customs and payment.`;
+  const body=`Producer%20onboarding%20—%20${encodeURIComponent(name)}`;
+  document.getElementById('finish').href=`mailto:hello@getshuka.com?subject=${body}`;
+}
+
+// navigation
+function show(){
+  document.querySelectorAll('.panel').forEach(p=>p.hidden=(+p.dataset.step!==state.step));
+  renderStepper();
+  document.getElementById('back').disabled=state.step===0;
+  const nextBtn=document.getElementById('next');
+  nextBtn.style.display=state.step===STEPS.length-1?'none':'';
+  nextBtn.textContent=state.step===STEPS.length-2?'See result →':'Next →';
+  if(state.step===1)renderProducts();
+  if(state.step===2)renderCheck();
+  if(state.step===3)renderReady();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.getElementById('next').addEventListener('click',()=>{
+  if(state.step===1 && state.selected.size===0){document.getElementById('warn2').textContent='Select at least one product to continue.';return;}
+  state.step=Math.min(STEPS.length-1,state.step+1); show();
+});
+document.getElementById('back').addEventListener('click',()=>{state.step=Math.max(0,state.step-1);show();});
+show();
+</script>
+</body>
+</html>
